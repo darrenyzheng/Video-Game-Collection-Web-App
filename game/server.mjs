@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 // Resolve the path to the .env file
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -18,7 +19,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { body, validationResult } from 'express-validator';
 
-import * as users from './src/models/user_model.mjs';
+import { createUser, User } from './src/models/user_model.mjs';
 const app = express();
 
 const port = 5000;
@@ -79,9 +80,6 @@ app.post('/users',
     body('username')
         .custom(isUsernameValid)
         .withMessage('Invalid username'),
-    body('emailAddress')
-        .custom(isEmailAddressValid)
-        .withMessage('Invalid email address'),
     body('password')
         .custom(isPasswordValid)
         .withMessage('Invalid password'),
@@ -97,15 +95,13 @@ app.post('/users',
         try {
             // Check for duplicates in parallel
             const [usernameDuplicate, emailDuplicate] = await Promise.all([
-                users.User.findOne({ username }),
-                users.User.findOne({ emailAddress })
+                User.findOne({ username }),
+                User.findOne({ emailAddress })
             ]);
 
             // If any duplicates are found, respond with a 409 Conflict status
             if (!usernameDuplicate && !emailDuplicate) {
-                const newUser = new users.User({ username, emailAddress, password });
-                await newUser.save();
-    
+                const newUser = await createUser( username, emailAddress, password);
                 return res.status(201).json({ message: 'User registered successfully', user: newUser });
             }
 
@@ -125,6 +121,58 @@ app.post('/users',
     }
 );
 
+app.post('/login',
+    body('username')
+        .custom(isUsernameValid)
+        .withMessage('Invalid username'),
+    body('password')
+        .custom(isPasswordValid)
+        .withMessage('Invalid password'),
+    async (req, res) => {
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        try {
+            const { username, password } = req.body;
+            const user = await User.login(username, password);
+
+            if (!user) {
+                return res.status(401).json({});
+            }
+            
+            const sanitizedUser = {username: user.username, emailAddress: user.emailAddress}
+            jwt.sign({sanitizedUser}, 'secretkey', { expiresIn: '3d'}, (err, token) => {
+                res.json({
+                    token
+                });
+            })
+            return res.status(201).json({});
+            
+         
+        } catch (error) {
+            console.error('Error during registration:', error);
+            return res.status(500).json({ error: 'Server error', details: error.message });
+        }
+    }
+);
+
+app.get('/collection', verifyToken, (req, res) => {
+    jwt.verify(req.token, 'secretkey', (err, auth))
+});
+
+function verifyToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        return next();
+    }
+    res.status(403);
+
+}
 app.listen(port, (error) => {
     if (!error) {
         console.log(`Server is running on ${port}`)

@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IoPerson, IoPeople } from "react-icons/io5";
 const Settings = () => {
     const [tab, setTab] = useState(1);
 
     const handleChange = (index) => {
         setTab(index);
-        console.log('hi?');
-        console.log(tab);
     }
+
+
+    useEffect(() => {
+        
+    }
+    ); 
     return <form className='acctForm' >
-        <h2 className='settingsHeader'> Settings </h2>
-        <p className='settingsParagraph'> Manage your account and profile settings. </p>
+        <div className='settingsDiv'>
+            <h2 className='settingsHeader'> Settings </h2>
+            <p className='settingsParagraph'> Manage your account and profile settings. </p>
+        </div>
         <span className='bar' />
+
         <div className='tabContainer'>
             <div className={tab === 1 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(1)}> Account  </div>
             <div className={tab === 2 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(2)}> Profile  </div>
@@ -157,13 +164,13 @@ const Settings = () => {
 
             <div className='collectionDetailsContainer'>
                 <div className='leftCollectionDetailsContainer'>
-                    <label htmlFor="acctCollectionDetails" className ='acctCollectionDetailsLabel'> Details: </label>
+                    <label htmlFor="acctCollectionDetails" className='acctCollectionDetailsLabel'> Details: </label>
                     <p className='acctCollectionDetailsText'> Update the details. </p>
                 </div>
 
             </div>
-
         </div>
+
 
     </form>
 }

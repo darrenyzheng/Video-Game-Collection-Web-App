@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import '../App.css';
-import { IoPerson, IoLockClosed, IoMail, IoGameController } from "react-icons/io5";
+import { IoPerson, IoLockClosed, IoMail, IoGameController, IoCheckmarkOutline, IoCloseSharp, IoWarningOutline, IoCloseCircleSharp } from "react-icons/io5";
 
 const SignUp = () => {
     const [values, setValues] = useState({
@@ -13,12 +13,37 @@ const SignUp = () => {
         username: '',
         emailAddress: '',
         password: ''
-    })
+    });
+
+    const [toastType, setToastType] = useState();
+    const [isVisible, setIsVisible] = useState();
+    const timeoutRef = useRef(null);
+
 
     const handleChange = (e) => {
         const newValues = { ...values, [e.target.name]: e.target.value }
         setValues(newValues);
     }
+    const handleToast = (boolean) => {
+        setIsVisible(boolean);
+        const progressBar = document.querySelector('.progressBar');
+
+        if (boolean === true) {
+
+            timeoutRef.current = setTimeout(() => {
+                setIsVisible(false);
+            }, 5000);
+            setTimeout(() => {
+                progressBar.classList.add('active');
+            }, 0); // Start the animation immediately after setting the timeout
+        }
+
+        else {
+            clearTimeout(timeoutRef.current);
+            progressBar.classList.remove('active');
+
+        }
+    };
 
     const handleValidation = () => {
         let newErrors = {};
@@ -60,7 +85,10 @@ const SignUp = () => {
                 body: JSON.stringify(values)
             }).then(response => {
                 if (response.status === 201) {
-                    return (response.json());
+                    return (response.json()).then(data => {
+                        setToastType('success');
+                        handleToast(true);
+                    })
                 }
 
                 else if (response.status === 409) {
@@ -82,19 +110,63 @@ const SignUp = () => {
                         else {
                             newErrors.emailAddress = '';
                         }
+                        setToastType('warning');
                         setErrors(newErrors);
+                        handleToast(true);
                     });
                 }
             })
                 .catch((error) => {
                     console.error('Error:', error);
-                    alert('There was a problem with your submission');
+                    setToastType('failure');
+                    handleToast(true);
+
                 });
         }
     }
     return (
 
-        <div className='card'>
+        <div className='card signup'>
+
+            <div className='wrapper'>
+                <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
+
+                    {toastType === 'success' ? (
+                        <IoCheckmarkOutline size={15} className='icon success' />
+                    ) : toastType === 'warning' ? (
+                        <IoWarningOutline size={15} className='icon warning' />
+                    ) : (
+                        <IoCloseCircleSharp size={15} className='icon failure' />
+                    )}
+                    <div className='message'>
+                        {toastType === 'success' && (
+                            <>
+                                <p><b>Success!</b></p>
+                                <p>User can now log in.</p>
+                            </>
+                        )}
+                        {toastType === 'warning' && (
+                            <>
+                                <p><b>Warning!</b></p>
+                                <p> Check for errors.</p>
+                            </>
+                        )}
+                        {toastType === 'failure' && (
+                            <>
+                                <p><b>Failure!</b></p>
+                                <p> Server error. </p>
+                            </>
+                        )}
+
+                    </div>
+                    <IoCloseSharp className='close' onClick={() => handleToast()} />
+                    <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+                    </div>
+                </div>
+
+
+            </div>
+
             <div className='headings'>
                 <h1 className='header'> Create an account </h1>
                 <h2 className='header'> Start collecting. </h2>
@@ -143,7 +215,7 @@ const SignUp = () => {
                     </div>
                     {errors.password && <p className='registerError'> {errors.password} </p>}
 
-                    <button id='register'
+                    <button id='form-button'
                         type='submit'
                     >
                         <b>                         Register

@@ -3,10 +3,9 @@ import {Routes, Route, Link} from 'react-router-dom';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import Search from './components/Search';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Settings from './components/Settings';
+import Collection from './components/Collection';
 
 function App() {
   return (
@@ -21,10 +20,10 @@ function App() {
       <Route path='/login' element={<Login/>}> </Route> 
       <Route path='/register' element={<SignUp/>}> </Route> 
       <Route path='/search' element={<Search/>}> </Route> 
+      <Route path='/collection' element={<Collection/>}> </Route> 
 
     </Routes> 
     </div>
-    <Footer/>
     </div>
   );
 }
