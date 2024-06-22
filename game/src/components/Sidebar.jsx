@@ -1,4 +1,4 @@
-import { IoHome, IoSettings, IoFileTrayStacked, IoLogInOutline, IoCreateOutline, IoSunnyOutline, IoSunny, IoMoon, IoMoonOutline } from "react-icons/io5";
+import { IoHome, IoSettings, IoFileTrayStacked, IoLogInOutline, IoCreateOutline, IoSunnyOutline, IoBarChartSharp, IoSunny, IoMoon, IoSearch, IoMoonOutline } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom'
 
 const Sidebar = () => {
@@ -22,6 +22,19 @@ const Sidebar = () => {
                             Collection
                         </Link>
                     </li>
+                    <li className={`row ${location.pathname === '/statistics' ? 'row-active' : ''}`}>
+                        <IoBarChartSharp  className='icons' />
+                        <Link to='/statistics' className='navlinks'  >
+                            Statistics
+                        </Link>
+                    </li>
+
+                    <li className={`row ${location.pathname === '/search' ? 'row-active' : ''}`}>
+                        <IoSearch className='icons' />
+                        <Link to='/search' className='navlinks'  >
+                            Search
+                        </Link>
+                    </li>
 
 
 
@@ -35,14 +48,14 @@ const Sidebar = () => {
             </div>
             <div className='bottomNavigation'>
                 <div className='signupLogin'>
-                    <Link to='/register'          className={`links ${location.pathname === '/register' ? 'active-link' : ''}`}
-        >
+                    <Link to='/register' className={`links ${location.pathname === '/register' ? 'active-link' : ''}`}
+                    >
 
-                        <IoCreateOutline className='bottomLinks'/>
+                        <IoCreateOutline className='bottomLinks' />
                         Register
                     </Link>
-                    <Link to='/login'    className={`links ${location.pathname === '/login' ? 'active-link' : ''}`}>
-                        <IoLogInOutline className='bottomLinks'/>
+                    <Link to='/login' className={`links ${location.pathname === '/login' ? 'active-link' : ''}`}>
+                        <IoLogInOutline className='bottomLinks' />
                         Login
                     </Link>
                 </div>

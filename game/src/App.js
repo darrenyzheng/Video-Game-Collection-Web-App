@@ -6,6 +6,7 @@ import Search from './components/Search';
 import Sidebar from './components/Sidebar';
 import Settings from './components/Settings';
 import Collection from './components/Collection';
+import Statistics from './components/Statistics';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path='/register' element={<SignUp/>}> </Route> 
       <Route path='/search' element={<Search/>}> </Route> 
       <Route path='/collection' element={<Collection/>}> </Route> 
+      <Route path='/statistics' element={<Statistics/>}> </Route> 
 
     </Routes> 
     </div>

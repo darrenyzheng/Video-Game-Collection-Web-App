@@ -64,7 +64,6 @@ app.post('/search', (req, res) => {
             console.log('Error response status code:', response.status);
         }
         else {
-
             return response.json(); // parse the JSON response
         }
     }).then(data => {
@@ -101,7 +100,7 @@ app.post('/users',
 
             // If any duplicates are found, respond with a 409 Conflict status
             if (!usernameDuplicate && !emailDuplicate) {
-                const newUser = await createUser( username, emailAddress, password);
+                const newUser = await createUser(username, emailAddress, password);
                 return res.status(201).json({ message: 'User registered successfully', user: newUser });
             }
 
@@ -141,16 +140,13 @@ app.post('/login',
             if (!user) {
                 return res.status(401).json({});
             }
-            
-            const sanitizedUser = {username: user.username, emailAddress: user.emailAddress}
-            jwt.sign({sanitizedUser}, 'secretkey', { expiresIn: '3d'}, (err, token) => {
-                res.json({
-                    token
-                });
+
+            const sanitizedUser = { username: user.username }
+            jwt.sign({ sanitizedUser }, 'secretkey', { expiresIn: '3d' }, (err, token) => {
+                return res.status(201).json({ token });
             })
-            return res.status(201).json({});
-            
-         
+
+
         } catch (error) {
             console.error('Error during registration:', error);
             return res.status(500).json({ error: 'Server error', details: error.message });
@@ -158,8 +154,20 @@ app.post('/login',
     }
 );
 
-app.get('/collection', verifyToken, (req, res) => {
-    jwt.verify(req.token, 'secretkey', (err, auth))
+
+app.post('/settings', verifyToken, async (req, res) => {
+    try {
+        const payload = jwt.verify(req.token, 'secretkey');
+        const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
+        if (!user) {
+            return res.status(403).json({ message: 'User not found.' });
+        }
+
+        return res.status(201).json({ user });
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        return res.status(500).json({ message: 'Database error' });
+    }
 });
 
 function verifyToken(req, res, next) {
@@ -170,9 +178,11 @@ function verifyToken(req, res, next) {
         req.token = bearerToken;
         return next();
     }
-    res.status(403);
+    else {
+        return res.status(403).send('Forbidden');
+    }
+};
 
-}
 app.listen(port, (error) => {
     if (!error) {
         console.log(`Server is running on ${port}`)

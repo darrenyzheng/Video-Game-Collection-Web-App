@@ -3,13 +3,13 @@
   height: 100vh;
   width: 100vw;
   background-color: #262626;
-  overflow: hidden; /* Prevents scrolling issues */
 }
 
 * {
   margin: 0;
   padding: 0;
 }
+
 
 /* global.css */
 .wrapper {
@@ -80,13 +80,16 @@
   animation: progress 5s linear forwards;
   transform-origin: left;
 }
+
 .progressBar.inactive {
-  transform: scaleX(0); 
+  transform: scaleX(0);
 }
+
 @keyframes progress {
   from {
     transform: scaleX(1);
   }
+
   to {
     transform: scaleX(0);
   }
@@ -97,12 +100,12 @@
   justify-content: center;
   align-items: center;
   margin-left: 10px;
-  }
+}
 
 .icon.success {
   background-color: #4070f4;
   color: white;
-  border-radius: 50%; 
+  border-radius: 50%;
 
 }
 
@@ -119,6 +122,7 @@
   opacity: 0.7;
   margin-left: auto;
 }
+
 .close:hover {
   opacity: 1;
   cursor: pointer;
@@ -136,21 +140,15 @@
   opacity: 0;
 }
 
-  
-.sideBar {
-  background-color: #333333;
-  width: 15%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+
 
 .MainContent {
   display: flex;
   height: 100%;
-  width: 85%;
+  width: 86%;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 
 }
 
@@ -175,6 +173,7 @@
 .card.signup {
   justify-content: space-evenly;
 }
+
 .card.login {
   justify-content: space-around;
 }
@@ -195,14 +194,16 @@
 .card form {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center form elements horizontally */
+  align-items: center;
+  /* Center form elements horizontally */
   width: 100%;
 }
 
 .inputs {
   display: flex;
   flex-direction: column;
-  width: 80%; /* Ensure inputs container takes full width of the form */
+  width: 80%;
+  /* Ensure inputs container takes full width of the form */
   box-sizing: border-box;
   gap: 12px;
   margin-bottom: 20px;
@@ -213,7 +214,8 @@
   align-items: center;
   background: #eaeaea;
   height: 55px;
-  width: 100%; /* Take full width of the container */
+  width: 100%;
+  /* Take full width of the container */
   border-radius: 6px;
   border: 1px solid black;
   box-sizing: border-box;
@@ -224,8 +226,10 @@
 }
 
 .input input {
-  height: 100%; /* Full height of the input container */
-  width: 100%; /* Full width of the remaining space in the input container */
+  height: 100%;
+  /* Full height of the input container */
+  width: 100%;
+  /* Full width of the remaining space in the input container */
   background: transparent;
   border: none;
   outline: none;
@@ -234,7 +238,7 @@
   margin: 0;
 }
 
- #form-button {
+#form-button {
   font-size: 14px;
   font-family: 'Raedex Pro', sans-serif;
   padding: 0.5em 1em;
@@ -242,7 +246,7 @@
   border-radius: 1em;
   border: none;
   outline: none;
-  background-color:   #155EEF;
+  background-color: #155EEF;
   color: white;
   height: 40px;
   box-sizing: border-box;
@@ -264,12 +268,6 @@
 
 }
 
-.search {
-  display: flex;
-  border-radius: 15px;
-  width: 23%;
-  height: 50%;
-}
 
 .icons {
   flex: 30%;
@@ -277,7 +275,7 @@
 
 .sideBar {
   background-color: #333333;
-  width: 15%;
+  width: 14%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -287,7 +285,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  margin: auto; /* Center vertically */
+  margin: auto;
+  /* Center vertically */
 }
 
 .sideBar .list {
@@ -355,9 +354,7 @@
   transform: translateX(-5px);
 }
 
-
-
-.acctForm {
+.settingsBig {
   display: flex;
   flex-direction: column;
   width: 85%;
@@ -365,11 +362,21 @@
   background-color: #4D4D4D;
   color: #FFFFFF;
   padding: 50px;
-  justify-content: flex-start;
-  gap: 5%;
+
 }
+
+.acctForm {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex: 1;
+  justify-content: flex-start;
+  /* Ensure space between sections */
+}
+
 .content {
   display: none;
+
 }
 
 .active-content {
@@ -377,13 +384,14 @@
   flex-direction: column;
 }
 
+
 .tabContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   background-color: #2C2C2C;
   opacity: 90%;
-  height: 40px;
+  height: 6%;
   width: 100%;
   align-items: center;
   margin-top: 25px;
@@ -391,17 +399,24 @@
 
 .tabs {
   cursor: pointer;
-  display: flex; /* Add this line */
-  align-items: center; /* Add this line */
-  justify-content: center; /* Add this line */
+  display: flex;
+  /* Add this line */
+  align-items: center;
+  /* Add this line */
+  justify-content: center;
+  /* Add this line */
   width: 18%;
   height: 100%;
+  padding: 20px;
+  ;
 }
 
 .active-tab {
   background-color: #3A3A3A;
   border-bottom: 2px solid white;
   color: #CCCCCC;
+  box-sizing: border-box;
+
 }
 
 .settingsHeader {
@@ -428,6 +443,8 @@
   display: flex;
   justify-content: space-between;
   padding: 40px 0;
+  box-sizing: border-box;
+
 }
 
 .leftUserNameContainer {
@@ -443,7 +460,7 @@
   display: flex;
   justify-content: space-between;
   padding: 40px 0;
-
+  box-sizing: border-box;
 }
 
 .leftEmailContainer {
@@ -458,7 +475,7 @@
 .emailValidation {
   font-size: 15px;
   margin: 0;
-  
+
 }
 
 .acctEmailText {
@@ -488,11 +505,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 40px 0;
+  padding: 30px 0;
+  box-sizing: border-box;
+
 }
 
 .passwordValidation {
-  font-size: 15px ;
+  font-size: 10px;
 }
 
 .rightUserNameContainer {
@@ -506,6 +525,7 @@
   flex-direction: column;
   width: 15%;
 }
+
 .rightPasswordContainer {
   display: flex;
   flex-direction: column;
@@ -543,6 +563,7 @@
   margin-top: 3px;
   font-size: 20px;
 }
+
 .rightPrivacyContainer {
   display: block;
   width: 17%;
@@ -582,4 +603,312 @@
 .bioContainer {
   display: flex;
   justify-content: space-between;
+}
+
+.searchComponent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+
+.interactable {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+
+.platformItems {
+  list-style: none;
+  font-size: 1.25rem;
+  font-family: 'Kanit', sans-serif;
+}
+
+.search {
+  display: flex;
+  width: 40%;
+  height: 40%;
+  /* Make the search container take full width */
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.filter {
+  display: flex;
+  width: 25%;
+  height: 40%;
+  /* Make the search container take full width */
+  padding: 20px;
+}
+
+.filter input {
+  flex: 1;
+  /* Allow the input to grow and take available space */
+  padding: 10px;
+  /* Add padding for a bigger feel */
+  font-size: 16px;
+  /* Adjust font size for better readability */
+  border: 1px solid #ccc;
+  /* Add a border */
+  border-radius: 10px;
+  /* Optional: add rounded corners */
+}
+
+.filter svg {
+  position: relative;
+  right: 40px;
+  /* Position the icon 10px from the right */
+  transform: translateY(40%);
+  /* Adjust to vertically center */
+}
+
+.search input {
+  flex: 1;
+  /* Allow the input to grow and take available space */
+  padding: 10px;
+  /* Add padding for a bigger feel */
+  font-size: 16px;
+  /* Adjust font size for better readability */
+  border: 1px solid #ccc;
+  /* Add a border */
+  border-radius: 10px;
+  /* Optional: add rounded corners */
+}
+
+.search svg {
+  position: relative;
+  right: 40px;
+  /* Position the icon 10px from the right */
+  transform: translateY(10%);
+  /* Adjust to vertically center */
+}
+
+.search button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.gamecover {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+.gamecard {
+  display: flex;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-46%, -48%);
+  width: 74vw;
+  height: 82%;
+  min-width: 1200px;
+  background-color: #555;
+  padding: 30px;
+  border-radius: 2em;
+  color: #fff ;
+  font-family: 'Kanit', sans-serif;
+  justify-content: space-around;
+}
+
+.genreHeader {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+}
+
+.platformHeader {
+  font-size: 2rem;
+  font-family: 'Oswald', sans-serif;
+}
+
+.gamecard .coverContainer {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid white;
+  height: 100%;
+  
+}
+
+.gamecard .miscallenous {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.gamecard .genreItems {
+  list-style-type: none;
+  font-size: 1.25rem;
+  font-weight: 100;
+  font-family: 'Kanit', sans-serif;
+}
+.gamecard .coverContainer img {
+  max-width: 500px;
+  object-fit: cover;
+  border-bottom: 2px solid white;
+}
+
+.gamecard .releaseDateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.gamesList {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 20px;
+}
+
+.searchHeader {
+  color: white;
+  padding-left: 20px;
+}
+
+.searchQuery {
+  display: flex;
+  width: 100%;
+  height: 10%;
+}
+
+.screenshot {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.screenshot img {
+  height: 500px;
+}
+.genreContainer {
+  padding-bottom: 40px;
+  font-weight: 500;
+}
+
+.rightSide {
+  display: flex;
+  padding: 20px 50px;
+  margin-left: 10px; 
+  margin-right: 10px; 
+  flex-direction: column;
+  border: 2px solid white;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.addButton{
+  font-size: 14px;
+  font-family: 'Raedex Pro', sans-serif;
+  padding: 0.5em 1em;
+  margin: 0.25em; 
+  border-radius: 1em;
+  border: none;
+  outline: none;
+  background-color: #155EEF;
+  color: white;
+  height: 60px;
+  width: 15%;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 185px;
+
+}
+
+.nameHeader {
+  font-size: 2em;
+}
+
+.summaryContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+
+}
+
+.nameHeader {
+  display: flex;
+  justify-content: center;
+}
+
+.screenshotContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.addContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+}
+
+.itemCondition {
+  display: flex;
+}
+
+.itemConditionContainer {
+  position: relative; /* Ensure relative positioning for absolute child */
+  border: 1px solid white; /* Adjust border styling */
+  height: 5rem;
+  width: 12rem;
+  margin: 20px;
+}
+.radio-label-console {
+  font-size: 1rem;
+}
+.radio-label {
+  font-size: 1rem;
+}
+
+.itemConditionContainer input {
+  position: absolute; /* Hide the radio button visually */
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radioTile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #686868;
+  height: 100%;
+  width: 100%;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+/* Style when the radio button is checked */
+.itemConditionContainer input[type="radio"]:checked + .radioTile {
+  background-color: black;
+  color: white; /* Adjust text color for visibility if needed */
+}
+
+/* Hover effect for the radio button */
+.itemConditionContainer input[type="radio"]:hover + .radioTile {
+  background-color: darkgray; /* Example: Change color on hover */
 }

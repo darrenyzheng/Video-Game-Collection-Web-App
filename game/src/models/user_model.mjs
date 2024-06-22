@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     username: {type: String, required: true, unique: true},
     emailAddress: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    privacy: {type: Boolean},
+    privacy: {type: String, default: 'public'},
     favoriteGenre: {type: String},
     bio: {type: String},
     firstName: {type: String},

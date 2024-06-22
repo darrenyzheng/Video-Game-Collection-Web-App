@@ -77,12 +77,10 @@ const Login = () => {
             }).then(response => {
                 if (response.status === 201) {
                     return (response.json()).then(data => {
-                        console.log('201')
-                        setToastType('success');
-                        handleToast(true);
-                    })
+                        const token = data.token;
+                        localStorage.setItem('access', token);
+                    }); 
                 }
-
                 else if (response.status === 401) {
                     return (response.json()).then(data => {
                         setToastType('warning');
