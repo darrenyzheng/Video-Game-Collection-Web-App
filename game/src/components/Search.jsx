@@ -3,18 +3,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IoSearch, IoFilter } from "react-icons/io5";
 import GameCover from "./GameCover"; // Ensure correct import for GameCover
 import GameCard from "./GameCard"; // Ensure correct import for GameCover
-import Filter from "./Filter";
+import Filter from './Filter';
+
 const Search = () => {
     const [games, setGames] = useState([]); // State for all games
     const [filteredGames, setFilteredGames] = useState([]); // State for filtered games
     const [searchTerm, setSearchTerm] = useState(''); // State to track search status
     const [platforms, setPlatforms] = useState([]); // State for unique platforms
     const [genres, setGenres] = useState([]); // State for unique genres
-    const [filters, setFilters] = useState(false)
     const filterBarRef = useRef(null);
     const [selectedGame, setSelectedGame] = useState(null);
+    const [filter, setFilter] = useState(null);
     const dialogRef = useRef(null);
-
+    const filterRef = useRef(null);
+    const [filters, setFilters] = useState({});
+    const [searchQuery, setSearchQuery] = useState(false);
 
 
     useEffect(() => {
@@ -28,9 +31,26 @@ const Search = () => {
         }
     }, [selectedGame]);
 
+    useEffect(() => {
+        if (!filter) {
+            return;
+        }
+
+        filterRef.current?.showModal();
+        filterRef.current?.addEventListener('close', closeFilter)   
+        return () => {
+            filterRef.current?.removeEventListener('close', closeFilter);
+        }
+    }, [filter]);
+
     function closeModal() {
         dialogRef.current?.close();
         setSelectedGame(null);
+    }
+
+    const closeFilter = () =>  {
+        filterRef.current?.close();
+        setFilter(false);
     }
     // Function to handle form submission
     const handleSubmit = (event) => {
@@ -91,37 +111,33 @@ const Search = () => {
         }
     };
 
-    const handleFilter = (e) => {
-        return (
-            <div>
-
-                <h2>Platform Filter</h2>
-                <div className="platforms">
-                    {platforms.map(platform => (
-                        <div key={platform.id}>
-                            <input type="checkbox" id={platform.id} name="platform" />
-                            <label htmlFor={platform.id}>{platform.name}</label>
-                        </div>
-                    ))}
-                </div>
-
-                <h2>Genre Filter</h2>
-                <div className="genres">
-                    {genres.map(genre => (
-                        <div key={genre.id}>
-                            <input type="checkbox" id={genre.id} name="genre" />
-                            <label htmlFor={genre.id}>{genre.name}</label>
-                        </div>
-                    ))}
-                </div>
-            </div>);
-    }
-
-
     const handleClick = (game) => {
         setSelectedGame(game);
     }
 
+    const showFilter = () => {
+        setFilter(true);
+    }
+
+    const addFilters = (filter) => {
+        setFilters(filter); // Update filters state with selected filters
+    
+        // Apply filters to games based on selected platforms and genres
+        const filteredGames = games.filter(game => {
+            const { platforms, genres } = filter;
+            return (
+                platforms.length === 0 || game.platforms.some(platform => platforms.includes(platform.name))
+            ) && (
+                genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
+            );
+        });
+        setFilteredGames(filteredGames); // Update filtered games state
+        setSearchQuery(searchQuery);
+        
+        if (filterBarRef.current) {
+            filterBarRef.current.value = '';
+        }
+    }
 
     return (
         <div className='searchComponent'>
@@ -142,6 +158,10 @@ const Search = () => {
                         />
                     )}
                 </dialog>
+
+                <dialog ref= {filterRef}>
+                    {filter && ( <Filter platforms={platforms} genres = {genres} onFilter = {addFilters} onClose={closeFilter} /> ) }
+                </dialog> 
                 <div className='interactable'>
                     <div className="search">
                         <input
@@ -162,15 +182,17 @@ const Search = () => {
 
                             onChange={handleSearchFilter}
                         />
+                        <div className='filterSvgContainer'>
                         <IoFilter size={30}
-                            onClick={handleFilter} />
+                            onClick={showFilter} />
+                        </div>
                     </div>
                 </div>
             </form>
 
             <div className="gamesList">
                 {/* Conditional rendering based on searchTerm */}
-                {searchTerm ? (
+                {searchTerm || searchQuery ? (
                     filteredGames.map(filteredGame => (
                         <GameCover key={filteredGame.id} cover={filteredGame.cover}
                             onClick={() => handleClick(filteredGame)} />

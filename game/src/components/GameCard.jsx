@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import platformDict from '../constants/platforms'; // Assuming platformDict is correctly imported
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoCloseCircle } from "react-icons/io5";
 import { FaBoxOpen, FaBox } from 'react-icons/fa';
 
 const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary, screenshots, onClose }) => {
@@ -45,39 +44,35 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
           )}
         </div>
       </div>
-      {/* <div className='releaseDateContainer'>
-        <p><b>Release Dates</b></p>
-        {releaseDate && releaseDate.map((release, index) => (
-          <div key={index}>
-            <p>{release.human}</p>
-            <p>{release.platform.name}</p>
-            <p>
-              <img src={platformDict.get(release.region).flag} alt={`${release.country} flag`} />
-              {' '}
-              {platformDict.get(release.region).country}
-            </p>
-          </div>
-        ))}
-      </div> */}
       <div className='rightSide'>
         <div className='info'>
+          {rating && (
+            <span className='ratingContainer'>   {Math.round(rating)} </span>)}
           {name && <h2 className='nameHeader'> {name} </h2>}
           {summary && <div className='summaryContainer'> <h2> Summary:</h2>
             <p> {summary} </p>
           </div>}
+
           <div className='screenshotContainer'>
             {screenshots && screenshots.length > 0 && (
               <div className='screenshot'>
-                {screenshots.length > 1 && <FaArrowLeft size={30} onClick={decreaseScreenshot} />}
+                {screenshots.length > 1 && <FaArrowLeft className='leftArrow' size={30} onClick={decreaseScreenshot} />}
                 <img
                   key={activeScreenshot}
                   src={`//images.igdb.com/igdb/image/upload/t_screenshot_big/${screenshots[activeScreenshot].image_id}.jpg`}
                   alt={`Screenshot ${activeScreenshot + 1}`}
 
                 />
-                {screenshots.length > 1 && <FaArrowRight size={30} onClick={increaseScreenshot} />}
-                {/* {rating && <p>Rating: {Math.round(rating)}</p>} */}
+                {screenshots.length > 1 && <FaArrowRight className='rightArrow' size={30} onClick={increaseScreenshot} />}
+                {screenshots.length > 0 && <div className='paginationDots'>
+                  {screenshots.map((screenshots, index) => (
+                    <span
+                      className={index === activeScreenshot ? 'dots active' : 'dots'}>
+                    </span>
 
+                  ))}
+                </div>
+                }
               </div>
             )}
           </div>
@@ -123,6 +118,7 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
         </form>
 
       </div >
+      <IoCloseCircle className='closeModal' size={30} onClick={onClose} />
     </div >
 
   );

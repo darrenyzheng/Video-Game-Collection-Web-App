@@ -3,6 +3,7 @@
   height: 100vh;
   width: 100vw;
   background-color: #262626;
+  overflow-x: hidden;
 }
 
 * {
@@ -265,7 +266,6 @@
   padding: 0;
   line-height: 1;
   box-sizing: border-box;
-
 }
 
 
@@ -279,6 +279,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-width: 100px;
 }
 
 .sideBar .middleNavigation {
@@ -625,7 +626,7 @@
 
 .platformItems {
   list-style: none;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: 'Kanit', sans-serif;
 }
 
@@ -636,6 +637,9 @@
   /* Make the search container take full width */
   justify-content: flex-start;
   padding: 20px;
+  min-height: 60px;
+  min-width: 300px;
+  margin-bottom: 30px;
 }
 
 .filter {
@@ -644,6 +648,37 @@
   height: 40%;
   /* Make the search container take full width */
   padding: 20px;
+  min-height: 60px;
+  min-width: 300px;
+}
+
+.filterComponent svg {
+  padding: 10px;
+}
+.filterComponent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+  padding: 20px;
+  margin-left: 20px;
+  position: fixed;
+  flex-wrap: wrap;
+  width: 82%;
+  height: 88%;
+  left: 14%;
+  top: 8%;
+  background-color: #555;
+  opacity: 97%;
+  border-radius: 2em;
+  overflow: auto;
+}
+
+.filterGenreContainer, .filterPlatformContainer {
+  display: flex;
+  flex-wrap: wrap;
+  color: white;
 }
 
 .filter input {
@@ -658,14 +693,26 @@
   border-radius: 10px;
   /* Optional: add rounded corners */
 }
-
-.filter svg {
-  position: relative;
-  right: 40px;
-  /* Position the icon 10px from the right */
-  transform: translateY(40%);
-  /* Adjust to vertically center */
+.filterForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+.filterSvgContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  right: 40px;
+  position: relative;
+  cursor: pointer;
+}
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
 
 .search input {
   flex: 1;
@@ -708,11 +755,9 @@
 .gamecard {
   display: flex;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-46%, -48%);
-  width: 74vw;
-  height: 82%;
+  width: 86%;
+  height: 100vh;
+  left: 14%; /* Positioning it to the right of the sidebar */
   min-width: 1200px;
   background-color: #555;
   padding: 30px;
@@ -720,6 +765,8 @@
   color: #fff ;
   font-family: 'Kanit', sans-serif;
   justify-content: space-around;
+  box-sizing: border-box;
+  min-height: 600px;
 }
 
 .genreHeader {
@@ -737,7 +784,7 @@
   flex-direction: column;
   border: 2px solid white;
   height: 100%;
-  
+  overflow-y: auto;
 }
 
 .gamecard .miscallenous {
@@ -750,11 +797,12 @@
 
 .gamecard .genreItems {
   list-style-type: none;
-  font-size: 1.25rem;
+  font-size: 1em;
   font-weight: 100;
   font-family: 'Kanit', sans-serif;
 }
 .gamecard .coverContainer img {
+  height: 50%;
   max-width: 500px;
   object-fit: cover;
   border-bottom: 2px solid white;
@@ -782,17 +830,23 @@
   display: flex;
   width: 100%;
   height: 10%;
+
 }
 
 .screenshot {
   display: flex;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  height: 100%;
+
 }
 
 .screenshot img {
-  height: 500px;
+  display: flex;
+  width: 100%;
+  height: auto;
 }
+
 .genreContainer {
   padding-bottom: 40px;
   font-weight: 500;
@@ -800,18 +854,25 @@
 
 .rightSide {
   display: flex;
+  width: 70%;
   padding: 20px 50px;
   margin-left: 10px; 
   margin-right: 10px; 
   flex-direction: column;
   border: 2px solid white;
-  justify-content: space-between;
+  justify-content: space-around;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-x: auto;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  box-sizing: border-box;
+  height: 60%;
+  position: relative;
+  align-items: center;
 }
 
 .addButton{
@@ -829,12 +890,17 @@
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+
   align-items: center;
   min-width: 185px;
-
 }
 
+.filterHeaders {
+  color: white;
+  padding-left: 20px;
+  
+}
 .nameHeader {
   font-size: 2em;
 }
@@ -843,7 +909,8 @@
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-
+  box-sizing: border-box;
+  padding-top: 10px;
 }
 
 .nameHeader {
@@ -854,6 +921,10 @@
 .screenshotContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 35%;
+  height: 100%;
 }
 
 .addContainer {
@@ -862,24 +933,23 @@
   justify-content: center;
   flex: 1;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .itemCondition {
   display: flex;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .itemConditionContainer {
   position: relative; /* Ensure relative positioning for absolute child */
   border: 1px solid white; /* Adjust border styling */
-  height: 5rem;
-  width: 12rem;
+  height: 4em;
+  width: 12em;
   margin: 20px;
-}
-.radio-label-console {
-  font-size: 1rem;
-}
-.radio-label {
-  font-size: 1rem;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .itemConditionContainer input {
@@ -887,8 +957,41 @@
   height: 100%;
   width: 100%;
   margin: 0;
-  opacity: 0;
   cursor: pointer;
+  opacity: 0;
+}
+
+.platformFilter {
+  display: flex;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+
+
+.platformFilter {
+  position: relative; /* Ensure relative positioning for absolute child */
+  border: 1px solid white; /* Adjust border styling */
+  height: 4em;
+  width: 10em;
+  margin: 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+.radio-label-console {
+  font-size: 0.75rem;
+}
+.radio-label {
+  font-size: 1rem;
+}
+
+.platformFilter input {
+  position: absolute; /* Hide the radio button visually */
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
 }
 
 .radioTile {
@@ -900,6 +1003,7 @@
   width: 100%;
   border: 2px solid black;
   box-sizing: border-box;
+  
 }
 
 /* Style when the radio button is checked */
@@ -912,3 +1016,114 @@
 .itemConditionContainer input[type="radio"]:hover + .radioTile {
   background-color: darkgray; /* Example: Change color on hover */
 }
+
+/* Style when the radio button is checked */
+.platformFilter input[type="checkbox"]:checked + .radioTile {
+  background-color: black;
+  color: white; /* Adjust text color for visibility if needed */
+}
+
+/* Hover effect for the radio button */
+.platformFilter input[type="checkbox"]:hover + .radioTile {
+  background-color: darkgray; /* Example: Change color on hover */
+}
+@media (max-height: 1080px) {
+  .rightSide {
+    padding: 10px;
+    margin: 5px;
+  }
+
+  .addButton {
+    height: 35px;
+  }
+
+  .itemConditionContainer {
+    height: 3rem;
+    width: 9rem;
+  }
+
+  .nameHeader {
+    font-size: 1em;
+  }
+
+  .summaryContainer {
+    font-size: 0.75rem;
+  }
+
+  .coverContainer img {
+    max-width: 100%; /* Ensure the image fits within the container */
+    height: auto;
+  }
+
+  .screenshotContainer {
+  }
+
+}
+
+.ratingContainer {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  border-radius: 50%;
+  font-family: 'Anton';
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+  }
+
+.rightArrow,
+.leftArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer; /* Add cursor pointer for usability */
+}
+
+.rightArrow {
+  right: 0; /* Position to the right edge */
+}
+
+.leftArrow {
+  left: 0; /* Position to the left edge */
+}
+
+.paginationDots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.dots {
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 5px; /* Adjust spacing between dots */
+  cursor: pointer;
+}
+
+.dots.active {
+  background-color: #333; /* Active dot color */
+}
+
+.closeModal {
+  cursor: pointer;
+  color: #CCCCCC;
+}
+
+.closeFilter {
+  display: flex;
+  cursor: pointer;
+  color: #CCCCCC;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+
+  top: 0;
+}
+
