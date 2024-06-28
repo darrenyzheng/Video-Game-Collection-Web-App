@@ -19,7 +19,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { body, validationResult } from 'express-validator';
 
-import { createUser, User } from './src/models/user_model.mjs';
+import { createUser, User, saveGame } from './src/models/user_model.mjs';
 const app = express();
 
 const port = 5000;
@@ -46,7 +46,6 @@ function isPasswordValid(password) {
 
 
 app.post('/search', (req, res) => {
-    console.log(process.env.Authorization);
 
     const url = new URL('https://api.igdb.com/v4/games');
     const search = req.body.search;
@@ -57,7 +56,7 @@ app.post('/search', (req, res) => {
             'Client-ID': process.env.Client_ID,
             'Authorization': process.env.Authorization,
         },
-        body: `search "${search}"; limit 500; fields rating, cover.*, release_dates.human, release_dates.platform.name, release_dates.region, genres.name, name, platforms.name, screenshots.*, summary;`
+        body: `search "${search}"; limit 500; fields rating, cover.*, genres.name, name, platforms.name, screenshots.*, summary;`
 
     }).then(response => {
         if (!response.ok) {
@@ -170,6 +169,38 @@ app.post('/settings', verifyToken, async (req, res) => {
     }
 });
 
+
+app.get('/collection', verifyToken, async (req, res) => {
+    try {
+        const payload = jwt.verify(req.token, 'secretkey');
+        const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
+        if (!user) {
+            return res.status(403).json({ message: 'User not found.' });
+        }
+        return res.status(201).json({ user });
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        return res.status(500).json({ message: 'Database error' });
+    }
+});
+
+app.post('/addGame', verifyToken, async (req, res) => {
+    console.log('yes');
+    try {
+        const payload = jwt.verify(req.token, 'secretkey');
+        const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
+        if (!user) {
+            return res.status(403).json({ message: 'User not found.' });
+        }
+        const { id, name, rating, cover, genres, platform, summary, screenshots, condition } = req.body;
+        saveGame(user, id, rating, summary, name, genres, platform, screenshots, cover, condition);
+
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        return res.status(500).json({ message: 'Database error' });
+    }
+
+})
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {

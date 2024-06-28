@@ -17,12 +17,11 @@ const Search = () => {
     const dialogRef = useRef(null);
     const filterRef = useRef(null);
     const [filters, setFilters] = useState({});
-    const [searchQuery, setSearchQuery] = useState(false);
-
+    const [searchQuery, setSearchQuery] = useState();
 
     useEffect(() => {
         if (!selectedGame) {
-            return; 
+            return;
         }
         dialogRef.current?.showModal();
         dialogRef.current?.addEventListener('close', closeModal);
@@ -37,7 +36,7 @@ const Search = () => {
         }
 
         filterRef.current?.showModal();
-        filterRef.current?.addEventListener('close', closeFilter)   
+        filterRef.current?.addEventListener('close', closeFilter)
         return () => {
             filterRef.current?.removeEventListener('close', closeFilter);
         }
@@ -48,7 +47,7 @@ const Search = () => {
         setSelectedGame(null);
     }
 
-    const closeFilter = () =>  {
+    const closeFilter = () => {
         filterRef.current?.close();
         setFilter(false);
     }
@@ -74,6 +73,8 @@ const Search = () => {
             return response.json();
         }).then(data => {
             setGames(data);
+            setSearchQuery();
+
             // Extract unique genres and platforms
             const allGenres = data.flatMap(game => game.genres).filter(genre => genre !== undefined);
             const uniqueGenres = Array.from(new Set(allGenres.map(genre => genre.name)));
@@ -121,47 +122,46 @@ const Search = () => {
 
     const addFilters = (filter) => {
         setFilters(filter); // Update filters state with selected filters
-    
         // Apply filters to games based on selected platforms and genres
-        const filteredGames = games.filter(game => {
+        const gamesWithGenresPlatforms = games.filter((game => game.genres && game.platforms));
+
+        const filteredGames = gamesWithGenresPlatforms.filter(game => {
             const { platforms, genres } = filter;
             return (
                 platforms.length === 0 || game.platforms.some(platform => platforms.includes(platform.name))
             ) && (
-                genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
-            );
+                    genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
+                );
         });
         setFilteredGames(filteredGames); // Update filtered games state
-        setSearchQuery(searchQuery);
-        
-        if (filterBarRef.current) {
-            filterBarRef.current.value = '';
-        }
+        setSearchQuery(!searchQuery);
+        console.log(filteredGames);
     }
 
     return (
         <div className='searchComponent'>
-            <form onSubmit={handleSubmit} className='searchQuery'>
-                <dialog ref={dialogRef}>
-                    {selectedGame && (
-                        <GameCard
-                            dialogRef={dialogRef}
-                            name={selectedGame.name}
-                            rating={selectedGame.rating}
-                            cover={selectedGame.cover}
-                            releaseDate={selectedGame.release_dates}
-                            genre={selectedGame.genres}
-                            platforms={selectedGame.platforms}
-                            summary={selectedGame.summary}
-                            screenshots={selectedGame.screenshots}
-                            onClose={closeModal}
-                        />
-                    )}
-                </dialog>
+            <dialog ref={dialogRef}>
+                {selectedGame && (
+                    <GameCard
+                        dialogRef={dialogRef}
+                        id={selectedGame.id}
+                        name={selectedGame.name}
+                        rating={selectedGame.rating}
+                        cover={selectedGame.cover}
+                        releaseDate={selectedGame.release_dates}
+                        genres={selectedGame.genres}
+                        platforms={selectedGame.platforms}
+                        summary={selectedGame.summary}
+                        screenshots={selectedGame.screenshots}
+                        onClose={closeModal}
+                    />
+                )}
+            </dialog>
 
-                <dialog ref= {filterRef}>
-                    {filter && ( <Filter platforms={platforms} genres = {genres} onFilter = {addFilters} onClose={closeFilter} /> ) }
-                </dialog> 
+            <dialog ref={filterRef}>
+                {filter && (<Filter platforms={platforms} genres={genres} onFilter={addFilters} onClose={closeFilter} />)}
+            </dialog>
+            <form onSubmit={handleSubmit} className='searchQuery'>
                 <div className='interactable'>
                     <div className="search">
                         <input
@@ -183,8 +183,8 @@ const Search = () => {
                             onChange={handleSearchFilter}
                         />
                         <div className='filterSvgContainer'>
-                        <IoFilter size={30}
-                            onClick={showFilter} />
+                            <IoFilter size={30}
+                                onClick={showFilter} />
                         </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@ const Search = () => {
 
             <div className="gamesList">
                 {/* Conditional rendering based on searchTerm */}
-                {searchTerm || searchQuery ? (
+                {searchTerm || searchQuery !== undefined ? (
                     filteredGames.map(filteredGame => (
                         <GameCover key={filteredGame.id} cover={filteredGame.cover}
                             onClick={() => handleClick(filteredGame)} />

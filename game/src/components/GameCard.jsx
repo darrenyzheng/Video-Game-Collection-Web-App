@@ -3,7 +3,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { IoAdd, IoCloseCircle } from "react-icons/io5";
 import { FaBoxOpen, FaBox } from 'react-icons/fa';
 
-const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary, screenshots, onClose }) => {
+const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, summary, screenshots, onClose }) => {
   const [activeScreenshot, setActiveScreenshot] = useState(0);
 
   // Function to handle changing the active screenshot
@@ -16,17 +16,53 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
       (prevIndex - 1 + screenshots.length) % screenshots.length);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const form = document.getElementById('gameDetails');
+    const formData = new FormData(form);
+
+    const condition = formData.get('condition[]');
+    const platform = formData.get('platform');
+    console.log(platform);
+
+    const game = {
+      id: id,
+      name: name,
+      rating: rating,
+      cover: cover.url,
+      genres: genres,
+      platform: platform,
+      condition: condition,
+      summary: summary,
+      screenshots: screenshots,
+    };
+
+    const token = localStorage.getItem('access');
+    console.log('test');
+    fetch('http://localhost:5000/addGame', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer: ${token}`
+      },
+      body: JSON.stringify(game)
+    }).
+      catch(error => {
+        console.error(`Error: ${error}`)
+      })
+  }
   return (
     <div className="gamecard">
       <div className='coverContainer'>
 
         {cover && <img src={`//images.igdb.com/igdb/image/upload/t_1080p/${cover.image_id}.jpg`} alt={name} />}
         <div className='miscallenous'>
-          {genre && (
+          {genres && (
             <div className='genreContainer'>
               <h3 className='genreHeader'>Genres</h3>
               <ul>
-                {genre.map((g, index) => (
+                {genres.map((g, index) => (
                   <li className='genreItems' key={index}>{g.name}</li>
                 ))}
               </ul>
@@ -77,12 +113,12 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
             )}
           </div>
         </div>
-        <form action="" className='addContainer'>
+        <form onSubmit={handleSubmit} className='addContainer' id='gameDetails'>
           {platforms && (
-            <div class="itemCondition">
+            <div className="itemCondition">
               {platforms.map((platform, index) => (
                 <div className="itemConditionContainer">
-                  <input type="radio" name="platform" value={platform.name} />
+                  <input type="radio" name="platform" value={platform.name} required/>
                   <div className='radioTile'>
                     <span className="radio-label-console"> {platform.name} </span>
                   </div>
@@ -93,7 +129,7 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
           )}
           <div className="itemCondition">
             <div className="itemConditionContainer">
-              <input type="radio" name="condition[]" value="loose" />
+              <input type="radio" name="condition[]" value="loose" required />
               <div className='radioTile'>
                 <FaBoxOpen />
                 <span className="radio-label"> &nbsp; Loose </span>
@@ -111,8 +147,10 @@ const GameCard = ({ name, rating, cover, releaseDate, genre, platforms, summary,
 
 
           <div className='collection'>
-            <button className='addButton'>
+
+            <button type = 'submit'className='addButton'>
               <IoAdd size={20} />
+
               Add to Collection </button>
           </div>
         </form>

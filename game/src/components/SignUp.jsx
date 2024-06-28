@@ -41,7 +41,6 @@ const SignUp = () => {
         else {
             clearTimeout(timeoutRef.current);
             progressBar.classList.remove('active');
-
         }
     };
 

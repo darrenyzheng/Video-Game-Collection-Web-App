@@ -7,8 +7,6 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
 
     const passFilter = (e) => {
         e.preventDefault();
-        console.log(platformFilters);
-        console.log(genreFilters);
         const filters = {
             platforms: platformFilters,
             genres: genreFilters
