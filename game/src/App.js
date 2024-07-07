@@ -14,7 +14,7 @@ function App() {
         {/* <Header/>  */}
             <Sidebar/> 
 
-        <div className='MainContent'>
+    <div className='MainContent'>
 
     <Routes className = 'routes'> 
       <Route path='/settings' element={<Settings/>}> </Route> 

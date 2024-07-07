@@ -135,7 +135,6 @@ app.post('/login',
         try {
             const { username, password } = req.body;
             const user = await User.login(username, password);
-
             if (!user) {
                 return res.status(401).json({});
             }
@@ -154,7 +153,7 @@ app.post('/login',
 );
 
 
-app.post('/settings', verifyToken, async (req, res) => {
+app.get('/settings', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, 'secretkey');
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
@@ -162,7 +161,7 @@ app.post('/settings', verifyToken, async (req, res) => {
             return res.status(403).json({ message: 'User not found.' });
         }
 
-        return res.status(201).json({ user });
+        return res.status(201).json({ user: user });
     } catch (err) {
         console.error(err); // Log the error for debugging
         return res.status(500).json({ message: 'Database error' });
@@ -177,7 +176,8 @@ app.get('/collection', verifyToken, async (req, res) => {
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
         }
-        return res.status(201).json({ user });
+
+        return res.status(201).json({ collection: user.gameCollection });
     } catch (err) {
         console.error(err); // Log the error for debugging
         return res.status(500).json({ message: 'Database error' });
@@ -192,8 +192,13 @@ app.post('/addGame', verifyToken, async (req, res) => {
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
         }
-        const { id, name, rating, cover, genres, platform, summary, screenshots, condition } = req.body;
-        saveGame(user, id, rating, summary, name, genres, platform, screenshots, cover, condition);
+        const { id, name, rating, cover, genres, platforms, platform, summary, screenshots, condition } = req.body;
+        const status = saveGame(user, id, rating, summary, name, genres, platforms, platform, screenshots, cover, condition);
+        if (!status) {
+            return res.status(409).json({ message: 'Game already exists.' })
+        }
+
+        return res.status(200).json({ message: 'Game saved.' })
 
     } catch (err) {
         console.error(err); // Log the error for debugging
@@ -201,6 +206,24 @@ app.post('/addGame', verifyToken, async (req, res) => {
     }
 
 })
+
+app.post('/deleteGame', verifyToken, async (req, res) => {
+    try {
+        const payload = jwt.verify(req.token, 'secretkey');
+        const user = await User.findOne({ username: payload.sanitizedUser.username}).exec();
+        if (!user) {
+            return res.status(403).json({ message: 'User not found.' });
+        }
+        
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Database error' });
+    }
+
+
+})
+
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {

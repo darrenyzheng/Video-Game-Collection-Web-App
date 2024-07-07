@@ -36,6 +36,47 @@
 
 }
 
+.statisticsComponent {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid white;
+  justify-content: center;
+  align-items: center;
+}
+
+.statisticsHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 40px;
+  color: white;
+}
+
+.totalGames {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chartTitle {
+  margin-bottom: 20px;
+}
+
+.chart {
+  padding: 100px;
+  height: 500px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+}
+
 .toast.show {
   opacity: 1;
 }
@@ -145,12 +186,14 @@
 
 .MainContent {
   display: flex;
+  flex-direction: column;
   height: 100%;
   width: 86%;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .routes {
@@ -239,7 +282,7 @@
   margin: 0;
 }
 
-#form-button {
+.form-button {
   font-size: 14px;
   font-family: 'Raedex Pro', sans-serif;
   padding: 0.5em 1em;
@@ -253,7 +296,15 @@
   box-sizing: border-box;
 }
 
-#form-button:hover {
+.form-button.settings {
+  width: 20%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 95%;
+  left: 50%
+}
+
+.form-button:hover {
   cursor: pointer;
 }
 
@@ -363,6 +414,16 @@
   background-color: #4D4D4D;
   color: #FFFFFF;
   padding: 50px;
+  justify-content: center;
+  position: relative;
+}
+
+.collectionComponent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: white;
 
 }
 
@@ -377,7 +438,8 @@
 
 .content {
   display: none;
-
+  height: 100%;
+  justify-content: space-around;
 }
 
 .active-content {
@@ -392,7 +454,7 @@
   justify-content: space-evenly;
   background-color: #2C2C2C;
   opacity: 90%;
-  height: 6%;
+  height: 7%;
   width: 100%;
   align-items: center;
   margin-top: 25px;
@@ -401,15 +463,12 @@
 .tabs {
   cursor: pointer;
   display: flex;
-  /* Add this line */
   align-items: center;
-  /* Add this line */
   justify-content: center;
-  /* Add this line */
-  width: 18%;
+  width: 33%;
   height: 100%;
   padding: 20px;
-  ;
+  box-sizing: border-box;
 }
 
 .active-tab {
@@ -417,16 +476,14 @@
   border-bottom: 2px solid white;
   color: #CCCCCC;
   box-sizing: border-box;
-
+  height: 100%;
 }
 
 .settingsHeader {
-  margin-bottom: 0;
   font-size: 50px;
 }
 
 .settingsParagraph {
-  margin-top: 0;
   font-size: 20px;
 }
 
@@ -443,9 +500,7 @@
 .userNameContainer {
   display: flex;
   justify-content: space-between;
-  padding: 40px 0;
   box-sizing: border-box;
-
 }
 
 .leftUserNameContainer {
@@ -453,14 +508,12 @@
 }
 
 .userNameValidation {
-  font-size: 15px;
-  margin: 0;
+  font-size: 20px;
 }
 
 .emailContainer {
   display: flex;
   justify-content: space-between;
-  padding: 40px 0;
   box-sizing: border-box;
 }
 
@@ -469,14 +522,11 @@
 }
 
 .acctUsernameText {
-  margin-top: 3px;
   font-size: 20px;
 }
 
 .emailValidation {
-  font-size: 15px;
-  margin: 0;
-
+  font-size: 20px;
 }
 
 .acctEmailText {
@@ -506,13 +556,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 30px 0;
   box-sizing: border-box;
 
 }
 
 .passwordValidation {
-  font-size: 10px;
+  font-size: 18px;
 }
 
 .rightUserNameContainer {
@@ -534,52 +583,58 @@
   justify-content: center;
 }
 
-.leftPrivacyContainer {
-  display: block;
-}
-
-.privacyContainer {
+.favoriteGenreContainer {
   display: flex;
-  margin-top: 20px;
-  margin-bottom: 50px;
   justify-content: space-between;
+  align-items: center;
+
+
 }
 
-.privacyLabel {
-  font-weight: bold;
-  font-size: 35px;
+.leftFavoriteGenreContainer {
+  display: block;
 }
 
 .acctFavoriteGenreLabel {
   font-weight: bold;
   font-size: 35px;
+
 }
 
-.acctPrivacyText {
-  margin-top: 3px;
-  font-size: 20px;
-}
-
-.acctFavoriteGenreText {
-  margin-top: 3px;
-  font-size: 20px;
-}
-
-.rightPrivacyContainer {
-  display: block;
-  width: 17%;
-  text-align: left;
-  width: 18%;
-  margin-top: 20px;
-}
-
-.acctBioLabel {
+.acctFavoriteGameLabel {
   font-weight: bold;
   font-size: 35px;
 }
 
-.acctBioText {
-  margin-top: 3px;
+.favoriteGameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.leftFavoriteGameContainer {
+  display: block;
+
+}
+
+.acctFavoriteGameText {
+  font-size: 20px;
+}
+
+.acctFavoriteGenreText {
+  font-size: 20px;
+}
+
+.acctFirstNameText {
+  font-size: 20px;
+}
+
+.acctLastNameText {
+  font-size: 20px;
+}
+
+.acctBirthdayText {
   font-size: 20px;
 }
 
@@ -594,16 +649,51 @@
 
 .profilePictureContainer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-.leftBioContainer {
+.firstNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftFirstNameContainer {
   display: block;
 }
 
-.bioContainer {
+.acctFirstNameLabel {
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.acctLastNameLabel {
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.acctBirthdayLabel {
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.leftLastNameContainer {
+  display: block;
+
+}
+
+.lastNameContainer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
+}
+
+.birthdayContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .searchComponent {
@@ -611,16 +701,26 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-
 }
 
+.collectionHeader {
+  margin-left: 40px;
+}
 
+.filterText {
+  color: white;
+  margin-left: 40px;
+  margin-top: 10px
+}
 
+.searchHeader {
+  margin-left: 20px;
+}
 
 .interactable {
   display: flex;
-  width: 100%;
   justify-content: flex-start;
+  width: 100%;
 }
 
 
@@ -632,32 +732,70 @@
 
 .search {
   display: flex;
-  width: 40%;
   height: 40%;
   /* Make the search container take full width */
   justify-content: flex-start;
   padding: 20px;
-  min-height: 60px;
-  min-width: 300px;
-  margin-bottom: 30px;
+  min-height: 45px;
+  width: 39vw;
+
+  margin-left: 20px;
 }
 
 .filter {
   display: flex;
-  width: 25%;
   height: 40%;
   /* Make the search container take full width */
   padding: 20px;
-  min-height: 60px;
-  min-width: 300px;
+  min-height: 45px;
+  width: 20%;
+}
+
+.collectionFilter {
+  display: flex;
+  height: 40%;
+  /* Make the search container take full width */
+  padding: 20px;
+  min-height: 45px;
+  width: 22%;
+  margin-left: 20px;
+}
+
+.gameInfo {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 1px solid green;
+  flex: 1;
+  position: absolute;
+}
+
+.trashCan {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
 }
 
 .filterComponent svg {
   padding: 10px;
 }
+
+.collectionFilter input {
+  flex: 1;
+  /* Allow the input to grow and take available space */
+  padding: 10px;
+  /* Add padding for a bigger feel */
+  font-size: 16px;
+  /* Adjust font size for better readability */
+  border: 1px solid #ccc;
+  /* Add a border */
+  border-radius: 10px;
+  /* Optional: add rounded corners */
+}
+
 .filterComponent {
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   align-content: space-around;
@@ -675,7 +813,8 @@
   overflow: auto;
 }
 
-.filterGenreContainer, .filterPlatformContainer {
+.filterGenreContainer,
+.filterPlatformContainer {
   display: flex;
   flex-wrap: wrap;
   color: white;
@@ -693,11 +832,13 @@
   border-radius: 10px;
   /* Optional: add rounded corners */
 }
+
 .filterForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .filterSvgContainer {
   display: flex;
   align-items: center;
@@ -705,6 +846,7 @@
   right: 40px;
   position: relative;
   cursor: pointer;
+  color: black;
 }
 
 .filterButton {
@@ -733,6 +875,7 @@
   /* Position the icon 10px from the right */
   transform: translateY(10%);
   /* Adjust to vertically center */
+  cursor: pointer;
 }
 
 .search button {
@@ -740,7 +883,6 @@
   border: none;
   padding: 0;
   margin: 0;
-  cursor: pointer;
 }
 
 .gamecover {
@@ -757,12 +899,13 @@
   position: fixed;
   width: 86%;
   height: 100vh;
-  left: 14%; /* Positioning it to the right of the sidebar */
+  left: 14%;
+  /* Positioning it to the right of the sidebar */
   min-width: 1200px;
   background-color: #555;
   padding: 30px;
   border-radius: 2em;
-  color: #fff ;
+  color: #fff;
   font-family: 'Kanit', sans-serif;
   justify-content: space-around;
   box-sizing: border-box;
@@ -801,6 +944,7 @@
   font-weight: 100;
   font-family: 'Kanit', sans-serif;
 }
+
 .gamecard .coverContainer img {
   height: 50%;
   max-width: 500px;
@@ -819,6 +963,50 @@
   display: flex;
   flex-wrap: wrap;
   padding-left: 20px;
+  padding-top: 20px;
+  width: 100%;
+
+}
+
+.gameWrapper {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  width: 300px;
+  height: 400px;
+  align-items: center;
+  padding: 5px;
+  position: relative;
+}
+
+.gameWrapper:hover .gamecover {
+  opacity: 0.5;
+}
+
+.gamecover {
+  cursor: pointer;
+}
+
+.gameWrapper:hover .gameInfo {
+  display: flex;
+}
+
+.gameInfo {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  flex-direction: column;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.collectionGames {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .searchHeader {
@@ -856,14 +1044,15 @@
   display: flex;
   width: 70%;
   padding: 20px 50px;
-  margin-left: 10px; 
-  margin-right: 10px; 
+  margin-left: 10px;
+  margin-right: 10px;
   flex-direction: column;
   border: 2px solid white;
-  justify-content: space-around;
+  justify-content: space-between;
   box-sizing: border-box;
   height: 100%;
   overflow-x: auto;
+
 }
 
 .info {
@@ -875,11 +1064,11 @@
   align-items: center;
 }
 
-.addButton{
+.addButton {
   font-size: 14px;
   font-family: 'Raedex Pro', sans-serif;
   padding: 0.5em 1em;
-  margin: 0.25em; 
+  margin: 0.25em;
   border-radius: 1em;
   border: none;
   outline: none;
@@ -899,8 +1088,9 @@
 .filterHeaders {
   color: white;
   padding-left: 20px;
-  
+
 }
+
 .nameHeader {
   font-size: 2em;
 }
@@ -943,8 +1133,10 @@
 }
 
 .itemConditionContainer {
-  position: relative; /* Ensure relative positioning for absolute child */
-  border: 1px solid white; /* Adjust border styling */
+  position: relative;
+  /* Ensure relative positioning for absolute child */
+  border: 1px solid white;
+  /* Adjust border styling */
   height: 4em;
   width: 12em;
   margin: 20px;
@@ -953,7 +1145,8 @@
 }
 
 .itemConditionContainer input {
-  position: absolute; /* Hide the radio button visually */
+  position: absolute;
+  /* Hide the radio button visually */
   height: 100%;
   width: 100%;
   margin: 0;
@@ -970,23 +1163,28 @@
 
 
 .platformFilter {
-  position: relative; /* Ensure relative positioning for absolute child */
-  border: 1px solid white; /* Adjust border styling */
+  position: relative;
+  /* Ensure relative positioning for absolute child */
+  border: 1px solid white;
+  /* Adjust border styling */
   height: 4em;
   width: 10em;
   margin: 20px;
   box-sizing: border-box;
   flex-wrap: wrap;
 }
+
 .radio-label-console {
   font-size: 0.75rem;
 }
+
 .radio-label {
   font-size: 1rem;
 }
 
 .platformFilter input {
-  position: absolute; /* Hide the radio button visually */
+  position: absolute;
+  /* Hide the radio button visually */
   height: 100%;
   width: 100%;
   margin: 0;
@@ -1003,30 +1201,35 @@
   width: 100%;
   border: 2px solid black;
   box-sizing: border-box;
-  
+
 }
 
 /* Style when the radio button is checked */
-.itemConditionContainer input[type="radio"]:checked + .radioTile {
+.itemConditionContainer input[type="radio"]:checked+.radioTile {
   background-color: black;
-  color: white; /* Adjust text color for visibility if needed */
+  color: white;
+  /* Adjust text color for visibility if needed */
 }
 
 /* Hover effect for the radio button */
-.itemConditionContainer input[type="radio"]:hover + .radioTile {
-  background-color: darkgray; /* Example: Change color on hover */
+.itemConditionContainer input[type="radio"]:hover+.radioTile {
+  background-color: darkgray;
+  /* Example: Change color on hover */
 }
 
 /* Style when the radio button is checked */
-.platformFilter input[type="checkbox"]:checked + .radioTile {
+.platformFilter input[type="checkbox"]:checked+.radioTile {
   background-color: black;
-  color: white; /* Adjust text color for visibility if needed */
+  color: white;
+  /* Adjust text color for visibility if needed */
 }
 
 /* Hover effect for the radio button */
-.platformFilter input[type="checkbox"]:hover + .radioTile {
-  background-color: darkgray; /* Example: Change color on hover */
+.platformFilter input[type="checkbox"]:hover+.radioTile {
+  background-color: darkgray;
+  /* Example: Change color on hover */
 }
+
 @media (max-height: 1080px) {
   .rightSide {
     padding: 10px;
@@ -1051,12 +1254,12 @@
   }
 
   .coverContainer img {
-    max-width: 100%; /* Ensure the image fits within the container */
+    max-width: 100%;
+    /* Ensure the image fits within the container */
     height: auto;
   }
 
-  .screenshotContainer {
-  }
+  .screenshotContainer {}
 
 }
 
@@ -1073,22 +1276,25 @@
   position: absolute;
   right: 0;
   box-sizing: border-box;
-  }
+}
 
 .rightArrow,
 .leftArrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer; /* Add cursor pointer for usability */
+  cursor: pointer;
+  /* Add cursor pointer for usability */
 }
 
 .rightArrow {
-  right: 0; /* Position to the right edge */
+  right: 0;
+  /* Position to the right edge */
 }
 
 .leftArrow {
-  left: 0; /* Position to the left edge */
+  left: 0;
+  /* Position to the left edge */
 }
 
 .paginationDots {
@@ -1103,12 +1309,14 @@
   width: 10px;
   background-color: #bbb;
   border-radius: 50%;
-  margin: 0 5px; /* Adjust spacing between dots */
+  margin: 0 5px;
+  /* Adjust spacing between dots */
   cursor: pointer;
 }
 
 .dots.active {
-  background-color: #333; /* Active dot color */
+  background-color: #333;
+  /* Active dot color */
 }
 
 .closeModal {
@@ -1126,4 +1334,3 @@
 
   top: 0;
 }
-

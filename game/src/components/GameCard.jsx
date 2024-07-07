@@ -3,7 +3,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { IoAdd, IoCloseCircle } from "react-icons/io5";
 import { FaBoxOpen, FaBox } from 'react-icons/fa';
 
-const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, summary, screenshots, onClose }) => {
+const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screenshots, search, onClose }) => {
   const [activeScreenshot, setActiveScreenshot] = useState(0);
 
   // Function to handle changing the active screenshot
@@ -30,8 +30,9 @@ const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, sum
       id: id,
       name: name,
       rating: rating,
-      cover: cover.url,
+      cover: cover,
       genres: genres,
+      platforms: platforms,
       platform: platform,
       condition: condition,
       summary: summary,
@@ -39,7 +40,6 @@ const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, sum
     };
 
     const token = localStorage.getItem('access');
-    console.log('test');
     fetch('http://localhost:5000/addGame', {
       method: 'POST',
       headers: {
@@ -113,12 +113,12 @@ const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, sum
             )}
           </div>
         </div>
-        <form onSubmit={handleSubmit} className='addContainer' id='gameDetails'>
+        {search && <form onSubmit={handleSubmit} className='addContainer' id='gameDetails'>
           {platforms && (
             <div className="itemCondition">
               {platforms.map((platform, index) => (
                 <div className="itemConditionContainer">
-                  <input type="radio" name="platform" value={platform.name} required/>
+                  <input type="radio" name="platform" value={platform.name} required />
                   <div className='radioTile'>
                     <span className="radio-label-console"> {platform.name} </span>
                   </div>
@@ -148,12 +148,13 @@ const GameCard = ({ id, name, rating, cover, releaseDate, genres, platforms, sum
 
           <div className='collection'>
 
-            <button type = 'submit'className='addButton'>
+            <button type='submit' className='addButton'>
               <IoAdd size={20} />
 
               Add to Collection </button>
           </div>
-        </form>
+        </form>}
+
 
       </div >
       <IoCloseCircle className='closeModal' size={30} onClick={onClose} />

@@ -163,7 +163,7 @@ const Login = () => {
                     </div>
                     {errors.password && <p className='registerError'> {errors.password} </p>}
 
-                    <button id='form-button'
+                    <button className='form-button'
                         type='submit'
                     >
                         <b>                         Login

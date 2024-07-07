@@ -84,7 +84,7 @@ const Search = () => {
 
             setPlatforms(uniquePlatforms);
             setGenres(uniqueGenres);
-
+            setFilters();
             setSearchTerm('');
 
             if (filterBarRef.current) {
@@ -109,6 +109,7 @@ const Search = () => {
                 game.name.toLowerCase().includes(searchTerm)
             );
             setFilteredGames(filteredResults); // Update filtered games with filtered results
+            setFilters();
         }
     };
 
@@ -117,7 +118,9 @@ const Search = () => {
     }
 
     const showFilter = () => {
-        setFilter(true);
+        if (games.length > 0) {
+            setFilter(true);
+        }
     }
 
     const addFilters = (filter) => {
@@ -140,6 +143,7 @@ const Search = () => {
 
     return (
         <div className='searchComponent'>
+            <h1 className='searchHeader'> Search </h1>
             <dialog ref={dialogRef}>
                 {selectedGame && (
                     <GameCard
@@ -148,11 +152,11 @@ const Search = () => {
                         name={selectedGame.name}
                         rating={selectedGame.rating}
                         cover={selectedGame.cover}
-                        releaseDate={selectedGame.release_dates}
                         genres={selectedGame.genres}
                         platforms={selectedGame.platforms}
                         summary={selectedGame.summary}
                         screenshots={selectedGame.screenshots}
+                        search={true}
                         onClose={closeModal}
                     />
                 )}
@@ -188,21 +192,45 @@ const Search = () => {
                         </div>
                     </div>
                 </div>
-            </form>
 
+            </form>
+            {filters && filters.genres && filters.genres.length > 0 && <p className='filterText'> Selected genre: {filters.genres.join(', ')}  </p>}
+            {filters && filters.platforms && filters.platforms.length > 0 && <p className='filterText'> Selected platform: {filters.platforms.join(', ')} </p>}
             <div className="gamesList">
-                {/* Conditional rendering based on searchTerm */}
                 {searchTerm || searchQuery !== undefined ? (
                     filteredGames.map(filteredGame => (
-                        <GameCover key={filteredGame.id} cover={filteredGame.cover}
-                            onClick={() => handleClick(filteredGame)} />
+                        <div key={filteredGame.id}>
+                            {filteredGame.cover && (
+                                <div className='gameWrapper'>
+
+                                    <GameCover
+                                        key={filteredGame.id}
+                                        cover={filteredGame.cover}
+                                        onClick={() => handleClick(filteredGame)}
+                                    />
+                                    <h5>{filteredGame.name}</h5>
+
+                                </div>
+                            )}
+                        </div>
                     ))
                 ) : (
                     games.map(game => (
-                        <GameCover
-                            key={game.id}
-                            cover={game.cover}
-                            onClick={() => handleClick(game)} />
+                        <div key={game.id}>
+                            {game.cover && (
+                                <div className='gameWrapper'>
+
+                                    <GameCover
+                                        key={game.id}
+                                        cover={game.cover}
+                                        onClick={() => handleClick(game)}
+                                    />
+                                    <h5>{game.name}</h5>
+
+                                </div>
+                                
+                            )}
+                        </div>
                     ))
                 )}
             </div>

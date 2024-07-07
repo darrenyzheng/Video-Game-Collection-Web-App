@@ -8,14 +8,6 @@ const Sidebar = () => {
         <nav className='sideBar'>
             <div className='middleNavigation'>
                 <ul className='list'>
-                    <li className={`row ${location.pathname === '/' ? 'row-active' : ''}`}>
-                        <IoHome className='icons' />
-                        <Link index className='navlinks' >
-                            Home
-
-                        </Link>
-                    </li>
-
                     <li className={`row ${location.pathname === '/collection' ? 'row-active' : ''}`}>
                         <IoFileTrayStacked className='icons' />
                         <Link to='/collection' className='navlinks'  >
@@ -23,7 +15,7 @@ const Sidebar = () => {
                         </Link>
                     </li>
                     <li className={`row ${location.pathname === '/statistics' ? 'row-active' : ''}`}>
-                        <IoBarChartSharp  className='icons' />
+                        <IoBarChartSharp className='icons' />
                         <Link to='/statistics' className='navlinks'  >
                             Statistics
                         </Link>

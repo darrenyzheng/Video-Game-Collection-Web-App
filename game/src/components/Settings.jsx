@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate  } from 'react-router-dom';
-import { IoPerson, IoPeople } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 const Settings = () => {
     const [tab, setTab] = useState(1);
-    const [userData, setUserData] = useState([{
-    }
-    ]);
     const navigate = useNavigate();
+    const [userData, setUserData] = useState({
+    });
 
     const handleChange = (index) => {
         setTab(index);
@@ -19,7 +17,7 @@ const Settings = () => {
             return;
         };
         fetch('http://localhost:5000/settings', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
@@ -32,7 +30,7 @@ const Settings = () => {
                 return response.json();
             })
             .then(data => {
-                setUserData(data);
+                setUserData(data.user);
             })
             .catch(error => {
                 console.error('Fetch error:', error);
@@ -51,10 +49,6 @@ const Settings = () => {
                     <div className={tab === 1 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(1)}> Account  </div>
                     <div className={tab === 2 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(2)}> Profile  </div>
                     <div className={tab === 3 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(3)}> Personal  </div>
-                    <div className={tab === 4 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(4)}> Collection  </div>
-                    <div className={tab === 5 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(5)}> Activity   </div>
-                    <div className={tab === 6 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(6)}> Information  </div>
-
                 </div>
 
                 <div className={tab === 1 ? "content active-content" : "content"}>
@@ -67,7 +61,11 @@ const Settings = () => {
 
                         <div className='rightUserNameContainer'>
                             <p className='userNameValidation'> Usernames must be between 5 - 16 characters. </p>
-                            <input type='text' className='acctUsername' />
+                            <input
+                                type='text'
+                                className='acctUsername'
+                                value={userData.username}
+                            />
                         </div>
                     </div>
                     <span className='bar' >  </span>
@@ -79,7 +77,9 @@ const Settings = () => {
                         </div>
                         <div className='rightEmailContainer'>
                             <p className='emailValidation'> Emails must have an @ and a domain. </p>
-                            <input type='email' className='acctEmail' />
+                            <input type='email' className='acctEmail'
+                                value={userData.emailAddress}
+                            />
                         </div>
                     </div>
                     <span className='bar' >  </span>
@@ -98,43 +98,29 @@ const Settings = () => {
                 </div>
 
                 <div className={tab === 2 ? "content active-content" : "content"}>
-                    <div className='privacyContainer'>
-                        <div className='leftPrivacyContainer' >
-                            <label htmlFor="acctPrivacy" className='privacyLabel'> Privacy </label>
-                            <p className='acctPrivacyText'> Update privacy settings. </p>
-                        </div>
 
-                        <div className='rightPrivacyContainer'>
-                            <input type="radio" id='publicPrivacy' name='privacy' value='public' />
-                            <label htmlFor="publicPrivacy"> Public </label>
-                            <IoPerson />
-                            <p> Only you can see your profile. </p>
-                            <input type="radio" id='privatePrivacy' name='privacy' value='private' />
-                            <label htmlFor="privatePrivacy"> Private </label>
-                            <IoPeople />
-                            <p> Everyone can see your profile.</p>
+                    <div className='favoriteGenreContainer'>
+                        <div className='leftFavoriteGenreContainer'>
+                            <label htmlFor="acctFavoriteGenre" className='acctFavoriteGenreLabel'> Favorite Genre</label>
+                            <p className='acctFavoriteGenreText'> Update your favorite genre. </p>
                         </div>
+                        <input type='text' className='acctFavoriteGenre' value={userData.favoriteGenre}/>
                     </div>
                     <span className='bar' >  </span>
 
-                    <div className='favoriteGenreContainer'>
-                        <label htmlFor="acctFavoriteGenre" className='acctFavoriteGenreLabel'> Favorite Genres: </label>
-                        <p className='acctFavoriteGenreText'> Update your favorite genre. </p>
-                        <input type='select' className='acctFavoriteGenre' />
-                    </div>
-
-                    <div className='bioContainer'>
-                        <div className='leftBioContainer'>
-                            <label htmlFor="acctBio" className='acctBioLabel'> Bio: </label>
-                            <p className='acctBioText'> Update your biography.</p>
+                    <div className='favoriteGameContainer'>
+                        <div className='leftFavoriteGameContainer'>
+                            <label htmlFor="acctFavoriteGenre" className='acctFavoriteGameLabel'> Favorite Game </label>
+                            <p className='acctFavoriteGameText'> Update your favorite game.</p>
                         </div>
 
-                        <input type='textarea' className='acctBio' />
+                        <input type='text' className='acctFavoriteGame' value={userData.favoriteGame} />
                     </div>
+                    <span className='bar' >  </span>
 
                     <div className='profilePictureContainer'>
                         <div className='leftProfilePictureContainer'>
-                            <label htmlFor="acctProfilePicture" className='acctProfilePictureLabel'> Profile Picture: </label>
+                            <label htmlFor="acctProfilePicture" className='acctProfilePictureLabel'> Profile Picture </label>
                             <p className='acctProfilePictureText'> Update your profile picture. </p>
                         </div>
                         <div className='rightProfilePictureContainer'>
@@ -147,60 +133,49 @@ const Settings = () => {
                 <div className={tab === 3 ? "content active-content" : "content"}>
                     <div className='firstNameContainer'>
                         <div className='leftFirstNameContainer'>
-                            <label htmlFor="acctFirstName" className='acctFirstNameLabel'> First Name:</label>
+                            <label htmlFor="acctFirstName" className='acctFirstNameLabel'> First Name</label>
                             <p className='acctFirstNameText'> Update your first name. </p>
                         </div>
-                    </div>
+                        <div className='rightFirstNameContainer'>
+                            <input type="text" className="acctFirstName" value={userData.firstName} />
+                        </div>
 
-                    <div className='rightFirstNameContainer'>
-                        <input type="text" name="" id="acctFirstName" />
                     </div>
+                    <span className='bar' />
+
 
                     <div className='lastNameContainer'>
                         <div className='leftLastNameContainer'>
-                            <label htmlFor="acctLastName" className='acctLastNameLabel'> Last Name:</label>
+                            <label htmlFor="acctLastName" className='acctLastNameLabel'> Last Name</label>
                             <p className='acctLastNameText'> Update your last name. </p>
                         </div>
+                        <div className='rightLastNameContainer'>
+                            <input type="text" className="acctLastName"
+                            value={userData.lastName} />
+                        </div>
                     </div>
+                    <span className='bar' />
 
-                    <div className='rightLastNameContainer'>
-                        <input type="text" name="" id="acctLastName" />
-                    </div>
+
 
                     <div className='birthdayContainer'>
                         <div className='leftBirthdayContainer'>
-                            <label htmlFor="acctBirthday" className='acctBirthdayLabel'> Birthday:</label>
+                            <label htmlFor="acctBirthday" className='acctBirthdayLabel'> Birthday</label>
                             <p className='acctBirthdayText'> Update your birthday. </p>
                         </div>
                         <div className='rightBirthdayContainer'>
-                            <input type="date" id='acctBirthday' />
+                            <input type="date" className='acctBirthday'  value={userData.birthday}/>
                         </div>
                     </div>
                 </div>
 
-                <div className={tab === 4 ? "content active-content" : "content"}>
-                    <div className='collectionPrivacyContainer'>
-                        <div className='leftCollectionPrivacyContainer'>
-                            <label html='acctCollectionPrivacy' className='acctCollectionPrivacyLabel'> Privacy: </label>
-                            <p className='acctCollectionPrivacyText'> Update the privacy of your collection. </p>
-                        </div>
 
-                        <div className='rightCollectionPrivacyContainer'>
-
-                        </div>
-                    </div>
-
-                    <div className='collectionDetailsContainer'>
-                        <div className='leftCollectionDetailsContainer'>
-                            <label htmlFor="acctCollectionDetails" className='acctCollectionDetailsLabel'> Details: </label>
-                            <p className='acctCollectionDetailsText'> Update the details. </p>
-                        </div>
-
-                    </div>
-                </div>
-
-
-            </form>
+                <button className='form-button settings'
+                    type='submit'
+                >
+                    <b>                         Save
+                    </b>
+                </button>            </form>
         </div>
     )
 }

@@ -41,10 +41,13 @@ const userSchema = mongoose.Schema({
         genres: [{
             name: { type: String, required: true }
         }],
-        platform: { type: [] },
+        platforms: { type: [] },
+        platformOwned: {
+            type: Map,
+            of: [String]
+        },
         screenshots: { type: [] },
-        cover: { type: String },
-        condition: { type: [] }
+        cover: { type: Object },
     }]
 }, { timestamps: true });
 
@@ -68,40 +71,69 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.statics.login = async function (username, password) {
-    const user = await this.findOne({ username });
-    if (!user) {
-        return false;
+    try {
+        const user = await this.findOne({ username });
+        if (!user) {
+            return false;
+        }
+        const correctPassword = bcrypt.compare(password, user.password);
+        if (!correctPassword) {
+            return false;
+        }
+        return user;
+    } catch (error) {
+        console.error('Error during login:', error);
+        return false; // Or handle the error appropriately
     }
-
-    const correctPassword = await bcrypt.compare(password, user.password);
-
-    if (!correctPassword) {
-        return false;
-    }
-
-    return user;
-
 };
 
-const saveGame = async (user, id, rating, summary, name, genres, platform, screenshots, cover, condition) => {
-    if (!user.gameCollection.some(game => game.id === id)) {
-        user.gameCollection.push({ id: id, rating: rating, summary: summary, name: name, genres: genres, platform: [platform], screenshots: screenshots, cover: cover, condition: [condition] });
+const saveGame = async (user, id, rating, summary, name, genres, platforms, platform, screenshots, cover, condition) => {
+    try {
+        if (!user.gameCollection.some(game => game.id === id)) {
+            user.gameCollection.push({ id: id, rating: rating, summary: summary, name: name, genres: genres, platforms, platformOwned: new Map([[platform, [condition]]]), screenshots: screenshots, cover: cover });
+            await user.save();
+            return true;
+        }
+
+        const index = user.gameCollection.findIndex(game => game.id === id);
+        const gameOfInterest = user.gameCollection[index];
+
+        if (!gameOfInterest.platformOwned.has(platform)) {
+            gameOfInterest.platformOwned.set(platform, [condition]);
+        }
+
+        else {
+            if (gameOfInterest.platformOwned.get(platform).includes(condition)) {
+                return false;
+            }
+            const conditions = gameOfInterest.platformOwned.get(platform);
+            conditions.push(condition);
+            gameOfInterest.platformOwned.set(platform, conditions);
+        }
+
+
         await user.save();
         return true;
     }
 
-    const index = user.gameCollection.findIndex(game => game.id === id);
-    if (user.gameCollection[index].platform.includes(platform)) {
-        return false;
+    catch (err) {
+        throw err;
     }
+}
 
-    if (!user.gameCollection[index].condition.includes(condition)) {
-        user.gameCollection[index].condition.push(condition);
+const deleteGame = async (user, id) => {
+    try {
+        const index = user.gameCollection.findIndex(game => game.id === id);
+        if (index < 0) {
+            return false;
+        }
+        user.gameCollection.splice(index, 1);
+        await user.save();
+        return true;
     }
-    user.gameCollection[index].platform.push(platform);
-
-    await user.save();
-    return true;
+    catch (err) {
+        console.err()
+    }
 }
 
 const User = mongoose.model("User", userSchema);

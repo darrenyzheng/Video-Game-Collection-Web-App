@@ -11,6 +11,7 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
             platforms: platformFilters,
             genres: genreFilters
         }
+
         onFilter(filters);
         onClose()
     }
@@ -35,7 +36,6 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
     return (
         <div className='filterComponent'>
             <h1 className='filterHeaders'> Filter on Genre and Platform</h1>
-
             <IoCloseCircle className='closeFilter' size={30} onClick={onClose} />
 
             <form action="" className='filterForm'>
@@ -56,7 +56,7 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
                 <div className='filterGenreContainer'>
                     {genres.map((genre, index) => (
                         <div className="platformFilter">
-                            <input type="checkbox" name="genre" value={genre} onChange={handleGenre}/>
+                            <input type="checkbox" name="genre" value={genre} onChange={handleGenre} />
                             <div className='radioTile'>
                                 <span className="radio-label-console"> {genre} </span>
                             </div>
