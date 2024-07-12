@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IoFilter, IoTrashSharp } from "react-icons/io5";
+import { IoFilter, IoTrashSharp, IoFunnelOutline, IoCheckmarkOutline, IoCloseCircleSharp, IoCloseSharp } from "react-icons/io5";
 import GameCover from "./GameCover"; // Ensure correct import for GameCover
 import Filter from './Filter';
 import GameCard from "./GameCard"; // Ensure correct import for GameCover
+import { useAuth } from "../contexts/AuthContext";
 
 
 const Collection = () => {
@@ -20,11 +21,16 @@ const Collection = () => {
     const filterRef = useRef(null);
     const [selectedGame, setSelectedGame] = useState(null);
     const dialogRef = useRef(null);
+    const [toastType, setToastType] = useState();
+    const [isVisible, setIsVisible] = useState();
+    const timeoutRef = useRef(null);
+    const { toggleLoggedIn } = useAuth();
 
     useEffect(() => {
         const token = localStorage.getItem('access');
         if (token === null) {
             navigate("/login");
+            toggleLoggedIn(false);
             return;
         };
         fetch('http://localhost:5000/collection', {
@@ -35,34 +41,42 @@ const Collection = () => {
             },
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch');
+                if (response.status === 401) {
+                    navigate("/login");
+                    localStorage.removeItem('access');
+                    toggleLoggedIn(false);
+                    return;
                 }
                 return response.json();
             }).then(data => {
+
                 setGames(data.collection);
                 const allGenres = data.collection.map(game => game.genres).filter(genre => genre !== undefined);
                 const allPlatforms = data.collection.map(game => game.platformOwned).filter(platform => platform !== undefined);
                 const uniqueGenres = [...new Set(allGenres.flatMap(genreArray => genreArray.map(obj => obj.name)))];
                 const uniquePlatforms = [...new Set(allPlatforms.flatMap(obj => Object.keys(obj)))];
-                
+
                 setPlatforms(uniquePlatforms);
                 setGenres(uniqueGenres);
+                setFilteredGames(data.collection);
 
             })
             .catch(error => {
                 console.error('Fetch error:', error);
+                setToastType('failure');
+                handleToast(true);
             });
-    }, [navigate]); // Empty dependency array means this effect runs once on mount
+    }, [navigate, toggleLoggedIn]); // Empty dependency array means this effect runs once on mount
 
     useEffect(() => {
         if (!selectedGame) {
             return;
         }
+        const currentRef = dialogRef.current;
         dialogRef.current?.showModal();
         dialogRef.current?.addEventListener('close', closeModal);
         return () => {
-            dialogRef.current?.removeEventListener('close', closeModal);
+            currentRef.removeEventListener('close', closeModal);
         }
     }, [selectedGame]);
 
@@ -70,11 +84,11 @@ const Collection = () => {
         if (!filter) {
             return;
         }
-
+        const currentRef = dialogRef.current;
         filterRef.current?.showModal();
         filterRef.current?.addEventListener('close', closeFilter)
         return () => {
-            filterRef.current?.removeEventListener('close', closeFilter);
+            currentRef.removeEventListener('close', closeFilter);
         }
     }, [filter]);
 
@@ -105,7 +119,6 @@ const Collection = () => {
         });
         setFilteredGames(filteredGames); // Update filtered games state
         setSearchQuery(!searchQuery);
-        console.log(filteredGames);
     }
     const handleSearchFilter = (e) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -127,7 +140,7 @@ const Collection = () => {
         setSelectedGame(null);
     }
 
-    const deleteGame = (e, game) => {
+    const deleteGame = (e, gameToDelete) => {
         e.stopPropagation();
         const token = localStorage.getItem('access');
         fetch('http://localhost:5000/deleteGame', {
@@ -136,16 +149,97 @@ const Collection = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer: ${token}`
             },
-        }).
-            catch(error => {
+            body: JSON.stringify(gameToDelete)
+        }).then(response => {
+            if (response.status === 401) {
+                navigate("/login");
+                localStorage.removeItem('access');
+                toggleLoggedIn(false);
+                return;
+            }
+            return response.json();
+        }).then(data => {
+            setGames(data.collection);
+            setToastType('success');
+            handleToast(true);
+            const allGenres = data.collection.map(game => game.genres).filter(genre => genre !== undefined);
+            const allPlatforms = data.collection.map(game => game.platformOwned).filter(platform => platform !== undefined);
+            const uniqueGenres = [...new Set(allGenres.flatMap(genreArray => genreArray.map(obj => obj.name)))];
+            const uniquePlatforms = [...new Set(allPlatforms.flatMap(obj => Object.keys(obj)))];
+
+            setPlatforms(uniquePlatforms);
+            setGenres(uniqueGenres);
+            const newFilteredGames = filteredGames.filter(game => game.id !== gameToDelete.id)
+            setFilteredGames(newFilteredGames);
+        })
+            .catch(error => {
                 console.error(`Error: ${error}`)
+                setToastType('failure');
+                handleToast(true);
             })
     }
 
-    return (
-        <div className='collectionComponent'>
-            <h1 className='collectionHeader'> Collection </h1>
+    const handleToast = (boolean) => {
+        setIsVisible(boolean);
+        const progressBar = document.querySelector('.progressBar');
 
+        if (boolean === true) {
+
+            timeoutRef.current = setTimeout(() => {
+                setIsVisible(false);
+            }, 5000);
+            setTimeout(() => {
+                progressBar.classList.add('active');
+            }, 0); // Start the animation immediately after setting the timeout
+        }
+
+        else {
+            clearTimeout(timeoutRef.current);
+            progressBar.classList.remove('active');
+        }
+    };
+
+    const clearFilters = () => {
+        setFilters();
+        setSearchQuery();
+        setSearchTerm('');
+        if (filterBarRef.current) {
+            filterBarRef.current.value = '';
+        }
+    }
+
+    return (
+        <div className='collectionComponent'>      <div className='wrapperSettings'>
+            <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
+
+                {toastType === 'success' ? (
+                    <IoCheckmarkOutline size={15} className='icon success' />
+                ) : (
+                    <IoCloseCircleSharp size={15} className='icon failure' />
+                )}
+                <div className='message'>
+                    {toastType === 'success' && (
+                        <>
+                            <p><b>Success!</b></p>
+                            <p> Game successfully deleted! </p>
+                        </>
+                    )}
+                    {toastType === 'failure' && (
+                        <>
+                            <p><b>Failure!</b></p>
+                            <p> Server error. </p>
+                        </>
+                    )}
+
+                </div>
+                <IoCloseSharp className='close' onClick={() => handleToast()} />
+                <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+                </div>
+            </div>
+
+
+        </div>
+            <h1 className='collectionHeader'> Collection </h1>
             <div>
                 <div className="collectionFilter">
                     <input
@@ -186,7 +280,12 @@ const Collection = () => {
             </dialog>
             {filters && filters.genres && filters.genres.length > 0 && <p className='filterText'> Selected genre: {filters.genres.join(', ')}  </p>}
             {filters && filters.platforms && filters.platforms.length > 0 && <p className='filterText'> Selected platform: {filters.platforms.join(', ')} </p>}
-
+            {(searchTerm || searchQuery !== undefined) && <button className='clearFilterButton' onClick={clearFilters}>
+                <IoFunnelOutline />
+                <p>
+                    Clear Filters
+                </p>
+            </button>}
             <div className="gamesList">
                 {searchTerm || searchQuery !== undefined ? (
                     filteredGames.map(filteredGame => (
@@ -198,11 +297,10 @@ const Collection = () => {
                                         key={filteredGame.id}
                                         cover={filteredGame.cover}
                                     />
-                                    <h5>{filteredGame.name}</h5>
                                     <div className='gameInfo'
                                         onClick={() => handleClick(filteredGame)}
                                     >
-                                        <IoTrashSharp size={30} className='trashCan' handleClick={(e) => deleteGame(e, filteredGame)} />
+                                        <IoTrashSharp size={30} className='trashCan' onClick={(e) => deleteGame(e, filteredGame)} />
                                         <p> Consoles owned: </p>
                                         {Object.entries(filteredGame.platformOwned).map(([console, owned], index) => (
                                             <p key={console}>{console}, {owned.join(' ')} </p>
@@ -210,6 +308,7 @@ const Collection = () => {
 
                                     </div>
 
+                                    <h5>{filteredGame.name}</h5>
 
                                 </div>
                             )}

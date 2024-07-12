@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { IoAdd, IoCloseCircle } from "react-icons/io5";
+import { IoAdd, IoCloseCircle, IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
 import { FaBoxOpen, FaBox } from 'react-icons/fa';
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screenshots, search, onClose }) => {
   const [activeScreenshot, setActiveScreenshot] = useState(0);
+  const [toastType, setToastType] = useState();
+  const [isVisible, setIsVisible] = useState();
+  const timeoutRef = useRef(null);
+  const { toggleLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   // Function to handle changing the active screenshot
   const increaseScreenshot = () => {
@@ -16,6 +23,31 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
       (prevIndex - 1 + screenshots.length) % screenshots.length);
   };
 
+  const handleToast = (boolean) => {
+    setIsVisible(boolean);
+    const progressBar = document.querySelector('.progressBar');
+
+    if (boolean === true) {
+
+      timeoutRef.current = setTimeout(() => {
+        setIsVisible(false);
+      }, 5000);
+      setTimeout(() => {
+        if (progressBar) {
+          progressBar.classList.add('active');
+        }
+      }, 0); // Start the animation immediately after setting the timeout
+    }
+
+    else {
+      clearTimeout(timeoutRef.current);
+      if (progressBar) {
+        progressBar.classList.remove('active');
+      }
+    }
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,7 +56,6 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
 
     const condition = formData.get('condition[]');
     const platform = formData.get('platform');
-    console.log(platform);
 
     const game = {
       id: id,
@@ -40,6 +71,11 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
     };
 
     const token = localStorage.getItem('access');
+    if (token === null) {
+      navigate("/login");
+      toggleLoggedIn(false);
+      return;
+    };
     fetch('http://localhost:5000/addGame', {
       method: 'POST',
       headers: {
@@ -47,13 +83,75 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
         'Authorization': `Bearer: ${token}`
       },
       body: JSON.stringify(game)
-    }).
-      catch(error => {
-        console.error(`Error: ${error}`)
-      })
+    }).then(response => {
+      if (response.status === 401) {
+        navigate("/login");
+        localStorage.removeItem('access');
+        toggleLoggedIn(false);
+        return;
+      }
+      return response.json();
+    }).then(response => {
+      if (response.status === 200) {
+        return (response.json()).then(data => {
+          setToastType('success');
+          handleToast(true);
+        });
+      }
+      else if (response.status === 409) {
+        return (response.json()).then(data => {
+          setToastType('warning');
+          handleToast(true);
+        });
+      }
+    })
+      .catch((error) => {
+        console.error('Error:', error);
+        setToastType('failure');
+        handleToast(true);
+      });
   }
   return (
     <div className="gamecard">
+      <div className='wrapperGameCard'>
+        <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
+
+          {toastType === 'success' ? (
+            <IoCheckmarkOutline size={15} className='icon success' />
+          ) : toastType === 'warning' ? (
+            <IoWarningOutline size={15} className='icon warning' />
+          ) : (
+            <IoCloseCircleSharp size={15} className='icon failure' />
+          )}
+          <div className='message'>
+            {toastType === 'success' && (
+              <>
+                <p><b>Success!</b></p>
+                <p> Game successfully added! </p>
+              </>
+            )}
+            {toastType === 'warning' && (
+              <>
+                <p><b>Warning!</b></p>
+                <p> This game and condition already exist in the database. </p>
+              </>
+            )}
+            {toastType === 'failure' && (
+              <>
+                <p><b>Failure!</b></p>
+                <p> Server error. </p>
+              </>
+            )}
+
+          </div>
+          <IoCloseSharp className='close' onClick={() => handleToast()} />
+          <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+          </div>
+        </div>
+
+
+      </div>
+
       <div className='coverContainer'>
 
         {cover && <img src={`//images.igdb.com/igdb/image/upload/t_1080p/${cover.image_id}.jpg`} alt={name} />}

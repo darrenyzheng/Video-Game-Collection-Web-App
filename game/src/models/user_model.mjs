@@ -25,13 +25,31 @@ db.once("open", () => {
     console.log("Successfully connected to MongoDB using Mongoose!");
 });
 
+
 const userSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     emailAddress: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    bio: { type: String },
-    firstName: { type: String },
-    lastName: { type: String },
+    favoriteGenre: {
+        type: String, default: '', trim: true,
+        minlength: 2,
+        maxlength: 10
+    },
+    favoriteGame: {
+        type: String, default: '', trim: true,
+        minlength: 2,
+        maxlength: 25
+    },
+    firstName: {
+        type: String, default: '', trim: true,
+        minlength: 2,
+        maxlength: 20
+    },
+    lastName: {
+        type: String, default: '', trim: true,
+        minlength: 2,
+        maxlength: 20,
+    },
     birthday: { type: Date },
     gameCollection: [{
         id: { type: Number },
@@ -59,6 +77,27 @@ const createUser = async (username, emailAddress, password) => {
     return user;
 }
 
+const editUser = async (user, userDetails, newPassword) => {
+    try {
+        const count = await User.countDocuments({emailAddress: userDetails.emailAddress});
+        if (count > 0 && user.emailAddress != userDetails.emailAddress) {
+            return false;
+        }
+
+        Object.keys(userDetails).forEach(key => {
+            user[key] = userDetails[key];
+        });
+
+        await user.updatePassword(newPassword);
+        await user.save();
+        return user;
+    }
+
+    catch (err) {
+        throw err;
+    }
+}
+
 userSchema.pre('save', async function (next) {
     try {
         const salt = await bcrypt.genSalt();
@@ -69,6 +108,17 @@ userSchema.pre('save', async function (next) {
         return next(error);
     }
 });
+
+userSchema.methods.updatePassword = async function(newPassword) {
+    try {
+        const salt = await bcrypt.genSalt();
+        const hash = await bcrypt.hash(newPassword, salt);
+        this.password = hash;
+        return;
+    } catch (error) {
+        return next(error);
+    }
+};
 
 userSchema.statics.login = async function (username, password) {
     try {
@@ -83,7 +133,7 @@ userSchema.statics.login = async function (username, password) {
         return user;
     } catch (error) {
         console.error('Error during login:', error);
-        return false; // Or handle the error appropriately
+        throw error; // Or handle the error appropriately
     }
 };
 
@@ -138,4 +188,4 @@ const deleteGame = async (user, id) => {
 
 const User = mongoose.model("User", userSchema);
 
-export { createUser, saveGame, User }
+export { createUser, saveGame, deleteGame, editUser, User }

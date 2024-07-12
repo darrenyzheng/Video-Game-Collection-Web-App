@@ -1,19 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
+import { useAuth } from "../contexts/AuthContext";
+
 const Settings = () => {
     const [tab, setTab] = useState(1);
     const navigate = useNavigate();
-    const [userData, setUserData] = useState({
-    });
+    const [userData, setUserData] = useState({ username: '', emailAddress: '', password: '', favoriteGenre: '', favoriteGame: '', firstName: '', lastName: '', birthday: '' });
+    let today = new Date().toISOString().split('T')[0];
+    const [toastType, setToastType] = useState();
+    const [isVisible, setIsVisible] = useState();
+    const timeoutRef = useRef(null);
+    const { toggleLoggedIn } = useAuth();
 
-    const handleChange = (index) => {
+    const handleTab = (index) => {
         setTab(index);
+    }
+
+    const handleToast = (boolean) => {
+        setIsVisible(boolean);
+        const progressBar = document.querySelector('.progressBar');
+
+        if (boolean === true) {
+            timeoutRef.current = setTimeout(() => {
+                setIsVisible(false);
+            }, 5000);
+            setTimeout(() => {
+                progressBar.classList.add('active');
+            }, 0); // Start the animation immediately after setting the timeout
+        }
+
+        else {
+            clearTimeout(timeoutRef.current);
+            progressBar.classList.remove('active');
+        }
+    };
+
+    const handleChange = (e) => {
+        const newValues = { ...userData, [e.target.name]: e.target.value }
+        setUserData(newValues);
     }
 
     useEffect(() => {
         const token = localStorage.getItem('access');
         if (token === null) {
             navigate("/login");
+            toggleLoggedIn(false);
             return;
         };
         fetch('http://localhost:5000/settings', {
@@ -24,47 +56,138 @@ const Settings = () => {
             },
         })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch');
+                if (response.status === 401) {
+                    navigate("/login");
+                    localStorage.removeItem('access');
+                    toggleLoggedIn(false);
+                    return; 
                 }
                 return response.json();
             })
             .then(data => {
-                setUserData(data.user);
+                let copyData = { ...data.user };
+                copyData.password = '';
+                if (copyData.birthday) {
+                    const birthDayObject = new Date(copyData.birthday).toISOString().split('T')[0];
+                    copyData.birthday = birthDayObject;
+                }
+                else {
+                    copyData.birthday = '';
+                }
+                setUserData(copyData);
             })
             .catch(error => {
                 console.error('Fetch error:', error);
+                setToastType('failure');
+                handleToast(true);
             });
-    }, [navigate]); // Empty dependency array means this effect runs once on mount
+    }, [navigate, toggleLoggedIn]); // Empty dependency array means this effect runs once on mount
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('access');
+        fetch('http://localhost:5000/settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(userData)
+        }).then(response => {
+            if (response.status === 401) {
+                navigate("/login");
+                localStorage.removeItem('access');
+                toggleLoggedIn(false);
+                return; 
+            }
+            return response.json();
+        }).then(response => {
+            if (response.status === 200) {
+                return (response.json()).then(data => {
+                    setToastType('success');
+                    handleToast(true);
+                });
+            }
+            else if (response.status === 409) {
+                return (response.json()).then(data => {
+                    setToastType('warning');
+                    handleToast(true);
+                });
+            }
+        })
+            .catch((error) => {
+                console.error('Error:', error);
+                setToastType('failure');
+                handleToast(true);
+            });
+    }
     return (
         <div className='settingsBig'>
-            <form className='acctForm' >
+            <form className='acctForm' onSubmit={handleSubmit} >
                 <div className='settingsDiv'>
                     <h2 className='settingsHeader'> Settings </h2>
                     <p className='settingsParagraph'> Manage your account and profile settings. </p>
                 </div>
                 <span className='bar' />
+                <div className='wrapperSettings'>
+                    <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
 
+                        {toastType === 'success' ? (
+                            <IoCheckmarkOutline size={15} className='icon success' />
+                        ) : toastType === 'warning' ? (
+                            <IoWarningOutline size={15} className='icon warning' />
+                        ) : (
+                            <IoCloseCircleSharp size={15} className='icon failure' />
+                        )}
+                        <div className='message'>
+                            {toastType === 'success' && (
+                                <>
+                                    <p><b>Success!</b></p>
+                                    <p> Account details successfully saved. </p>
+                                </>
+                            )}
+                            {toastType === 'warning' && (
+                                <>
+                                    <p><b>Warning!</b></p>
+                                    <p> Email already exists in the database. </p>
+                                </>
+                            )}
+                            {toastType === 'failure' && (
+                                <>
+                                    <p><b>Failure!</b></p>
+                                    <p> Server error. </p>
+                                </>
+                            )}
+
+                        </div>
+                        <IoCloseSharp className='close' onClick={() => handleToast()} />
+                        <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+                        </div>
+                    </div>
+
+
+                </div>
                 <div className='tabContainer'>
-                    <div className={tab === 1 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(1)}> Account  </div>
-                    <div className={tab === 2 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(2)}> Profile  </div>
-                    <div className={tab === 3 ? "tabs active-tab" : "tabs"} onClick={() => handleChange(3)}> Personal  </div>
+                    <div className={tab === 1 ? "tabs active-tab" : "tabs"} onClick={() => handleTab(1)}> Account  </div>
+                    <div className={tab === 2 ? "tabs active-tab" : "tabs"} onClick={() => handleTab(2)}> Profile  </div>
+                    <div className={tab === 3 ? "tabs active-tab" : "tabs"} onClick={() => handleTab(3)}> Personal  </div>
                 </div>
 
                 <div className={tab === 1 ? "content active-content" : "content"}>
                     <div className='userNameContainer'>
                         <div className='leftUserNameContainer'>
                             <label htmlFor="acctUsername" className='label1'> Username</label>
-                            <p className='acctUsernameText'> Update your username. </p>
                         </div>
 
 
                         <div className='rightUserNameContainer'>
                             <p className='userNameValidation'> Usernames must be between 5 - 16 characters. </p>
                             <input
+                                name='username'
                                 type='text'
                                 className='acctUsername'
                                 value={userData.username}
+                                readOnly
                             />
                         </div>
                     </div>
@@ -77,8 +200,9 @@ const Settings = () => {
                         </div>
                         <div className='rightEmailContainer'>
                             <p className='emailValidation'> Emails must have an @ and a domain. </p>
-                            <input type='email' className='acctEmail'
-                                value={userData.emailAddress}
+                            <input
+                                name='emailAddress' type='email' className='acctEmail'
+                                value={userData.emailAddress} onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -91,8 +215,10 @@ const Settings = () => {
                         </div>
 
                         <div className='rightPasswordContainer'>
-                            <p className='passwordValidation'> Passwords must be between 3-16 characters and have a digit, a letter, and a character from the set. </p>
-                            <input type="password" className='acctPassword' />
+                            <p className='passwordValidation'> Passwords must be between 6-16 characters and have a digit, a letter, and a character from the set. </p>
+                            <input type="password" name='password' className='acctPassword' value={userData.password} pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$"
+
+                                onChange={handleChange} />
                         </div>
                     </div>
                 </div>
@@ -104,7 +230,7 @@ const Settings = () => {
                             <label htmlFor="acctFavoriteGenre" className='acctFavoriteGenreLabel'> Favorite Genre</label>
                             <p className='acctFavoriteGenreText'> Update your favorite genre. </p>
                         </div>
-                        <input type='text' className='acctFavoriteGenre' value={userData.favoriteGenre}/>
+                        <input name='favoriteGenre' type='text' className='acctFavoriteGenre' value={userData.favoriteGenre} onChange={handleChange} minLength={2} maxLength={10} />
                     </div>
                     <span className='bar' >  </span>
 
@@ -114,19 +240,9 @@ const Settings = () => {
                             <p className='acctFavoriteGameText'> Update your favorite game.</p>
                         </div>
 
-                        <input type='text' className='acctFavoriteGame' value={userData.favoriteGame} />
+                        <input name='favoriteGame' type='text' className='acctFavoriteGame' value={userData.favoriteGame} onChange={handleChange} minLength={2} maxLength={25} />
                     </div>
-                    <span className='bar' >  </span>
 
-                    <div className='profilePictureContainer'>
-                        <div className='leftProfilePictureContainer'>
-                            <label htmlFor="acctProfilePicture" className='acctProfilePictureLabel'> Profile Picture </label>
-                            <p className='acctProfilePictureText'> Update your profile picture. </p>
-                        </div>
-                        <div className='rightProfilePictureContainer'>
-                            <input type="file" className='acctProfilePicture' />
-                        </div>
-                    </div>
                 </div>
 
 
@@ -137,7 +253,7 @@ const Settings = () => {
                             <p className='acctFirstNameText'> Update your first name. </p>
                         </div>
                         <div className='rightFirstNameContainer'>
-                            <input type="text" className="acctFirstName" value={userData.firstName} />
+                            <input name='firstName' type="text" className="acctFirstName" value={userData.firstName} onChange={handleChange} minLength={2} maxLength={20} />
                         </div>
 
                     </div>
@@ -150,8 +266,8 @@ const Settings = () => {
                             <p className='acctLastNameText'> Update your last name. </p>
                         </div>
                         <div className='rightLastNameContainer'>
-                            <input type="text" className="acctLastName"
-                            value={userData.lastName} />
+                            <input name='lastName' type="text" className="acctLastName" minLength={2} maxLength={20}
+                                value={userData.lastName} onChange={handleChange} />
                         </div>
                     </div>
                     <span className='bar' />
@@ -164,7 +280,7 @@ const Settings = () => {
                             <p className='acctBirthdayText'> Update your birthday. </p>
                         </div>
                         <div className='rightBirthdayContainer'>
-                            <input type="date" className='acctBirthday'  value={userData.birthday}/>
+                            <input type="date" name='birthday' className='acctBirthday' value={userData.birthday} onChange={handleChange} max={today} />
                         </div>
                     </div>
                 </div>
@@ -175,7 +291,8 @@ const Settings = () => {
                 >
                     <b>                         Save
                     </b>
-                </button>            </form>
+                </button>
+            </form>
         </div>
     )
 }

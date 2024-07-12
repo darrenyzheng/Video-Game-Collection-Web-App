@@ -1,13 +1,40 @@
-import { IoHome, IoSettings, IoFileTrayStacked, IoLogInOutline, IoCreateOutline, IoSunnyOutline, IoBarChartSharp, IoSunny, IoMoon, IoSearch, IoMoonOutline } from "react-icons/io5";
-import { Link, useLocation } from 'react-router-dom'
+import { IoLogOutOutline, IoSettings, IoFileTrayStacked, IoLogInOutline, IoCreateOutline,  IoBarChartSharp, IoSearch } from "react-icons/io5";
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../contexts/AuthContext";
 
 const Sidebar = () => {
     const location = useLocation();
+    const { isLoggedIn, toggleLoggedIn } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkLoggedIn = () => {
+            const token = localStorage.getItem('access');
+            if (token === null || token === undefined) {
+                toggleLoggedIn(false);
+            }
+            else {
+                toggleLoggedIn(true);
+            }
+        };
+
+        checkLoggedIn();
+
+
+    }, [toggleLoggedIn]);
+
+    const logout = () => {
+        toggleLoggedIn(false);
+        localStorage.removeItem('access');
+        navigate('/login');
+    }
 
     return (
         <nav className='sideBar'>
             <div className='middleNavigation'>
-                <ul className='list'>
+                {isLoggedIn ? <ul className='list'>
                     <li className={`row ${location.pathname === '/collection' ? 'row-active' : ''}`}>
                         <IoFileTrayStacked className='icons' />
                         <Link to='/collection' className='navlinks'  >
@@ -36,26 +63,34 @@ const Sidebar = () => {
                             Settings
                         </Link>
                     </li>
-                </ul>
-            </div>
-            <div className='bottomNavigation'>
-                <div className='signupLogin'>
-                    <Link to='/register' className={`links ${location.pathname === '/register' ? 'active-link' : ''}`}
-                    >
 
-                        <IoCreateOutline className='bottomLinks' />
-                        Register
-                    </Link>
-                    <Link to='/login' className={`links ${location.pathname === '/login' ? 'active-link' : ''}`}>
-                        <IoLogInOutline className='bottomLinks' />
-                        Login
-                    </Link>
-                </div>
-                <div className='modeContainer'>
-                    <IoSunnyOutline />
-                    <IoMoonOutline />
-                </div>
+                    <li className='row' onClick={logout}>
+                        <IoLogOutOutline className='icons' />
+                        <label className='navlinks'>
+                            Logout
+                        </label>
+                    </li>
+                </ul> :
+                    <ul className='list'>
+                        <li className={`row ${location.pathname === '/register' ? 'row-active' : ''}`}>
+                            <IoCreateOutline className='icons' />
+                            <Link to='/register' className='navlinks'>
+                                Register
+                            </Link>
+
+                        </li>
+                        <li className={`row ${location.pathname === '/login' ? 'row-active' : ''}`}>
+                            <IoLogInOutline className='icons' />
+                            <Link to='/login' className='navlinks'>
+                                Login
+                            </Link>
+                        </li>
+                    </ul>
+                }
+
+
             </div>
+
 
         </nav>
     )

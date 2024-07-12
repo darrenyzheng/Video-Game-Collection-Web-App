@@ -1,6 +1,5 @@
-"use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { IoSearch, IoFilter } from "react-icons/io5";
+import { IoSearch, IoFilter, IoFunnelOutline } from "react-icons/io5";
 import GameCover from "./GameCover"; // Ensure correct import for GameCover
 import GameCard from "./GameCard"; // Ensure correct import for GameCover
 import Filter from './Filter';
@@ -23,10 +22,12 @@ const Search = () => {
         if (!selectedGame) {
             return;
         }
+        const currentRef = dialogRef.current;
+
         dialogRef.current?.showModal();
         dialogRef.current?.addEventListener('close', closeModal);
         return () => {
-            dialogRef.current?.removeEventListener('close', closeModal);
+            currentRef.removeEventListener('close', closeModal);
         }
     }, [selectedGame]);
 
@@ -34,11 +35,11 @@ const Search = () => {
         if (!filter) {
             return;
         }
-
+        const currentRef = filterRef.current;
         filterRef.current?.showModal();
         filterRef.current?.addEventListener('close', closeFilter)
         return () => {
-            filterRef.current?.removeEventListener('close', closeFilter);
+            currentRef.removeEventListener('close', closeFilter);
         }
     }, [filter]);
 
@@ -140,7 +141,15 @@ const Search = () => {
         setSearchQuery(!searchQuery);
         console.log(filteredGames);
     }
-
+    
+    const clearFilters = () => {
+        setFilters();
+        setSearchQuery();
+        setSearchTerm('');
+        if (filterBarRef.current) {
+            filterBarRef.current.value = '';
+        }
+    }
     return (
         <div className='searchComponent'>
             <h1 className='searchHeader'> Search </h1>
@@ -196,6 +205,12 @@ const Search = () => {
             </form>
             {filters && filters.genres && filters.genres.length > 0 && <p className='filterText'> Selected genre: {filters.genres.join(', ')}  </p>}
             {filters && filters.platforms && filters.platforms.length > 0 && <p className='filterText'> Selected platform: {filters.platforms.join(', ')} </p>}
+            {(searchTerm || searchQuery !== undefined) && <button className='clearFilterButton' onClick={clearFilters}>
+                <IoFunnelOutline />
+                <p>
+                    Clear Filters
+                </p>
+            </button>}
             <div className="gamesList">
                 {searchTerm || searchQuery !== undefined ? (
                     filteredGames.map(filteredGame => (
@@ -228,7 +243,7 @@ const Search = () => {
                                     <h5>{game.name}</h5>
 
                                 </div>
-                                
+
                             )}
                         </div>
                     ))

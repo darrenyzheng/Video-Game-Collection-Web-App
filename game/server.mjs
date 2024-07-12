@@ -19,7 +19,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { body, validationResult } from 'express-validator';
 
-import { createUser, User, saveGame } from './src/models/user_model.mjs';
+import { createUser, User, editUser, saveGame, deleteGame } from './src/models/user_model.mjs';
 const app = express();
 
 const port = 5000;
@@ -163,11 +163,52 @@ app.get('/settings', verifyToken, async (req, res) => {
 
         return res.status(201).json({ user: user });
     } catch (err) {
-        console.error(err); // Log the error for debugging
-        return res.status(500).json({ message: 'Database error' });
+
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired. Please log in again.' })
+        }
+        else if (err instanceof mongoose.Error) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error. Please try again later.' });
+        }
+        return res.status(403).json({ message: 'Unauthorized access.' });
     }
 });
 
+app.post('/settings', verifyToken,
+    body('emailAddress')
+        .custom(isEmailAddressValid)
+        .withMessage('Invalid email address'),
+    body('password')
+        .custom(isPasswordValid)
+        .withMessage('Invalid password'),
+    async (req, res) => {
+        try {
+            const payload = jwt.verify(req.token, 'secretkey');
+            const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
+            if (!user) {
+                return res.status(403).json({ message: 'User not found.' });
+            }
+            const newPassword = req.body.password;
+            delete req.body.password;
+            const status = await editUser(user, req.body, newPassword);
+            if (status) {
+                return res.status(200).json({ 'message': 'Account details successfully updated.' })
+            }
+            return res.status(409).json({ 'message': 'Email already exists.' })
+
+        }
+        catch (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token expired. Please log in again.' })
+            }
+            else if (err instanceof mongoose.Error) {
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Database error. Please try again later.' });
+            }
+            return res.status(403).json({ message: 'Unauthorized access.' });
+        }
+    });
 
 app.get('/collection', verifyToken, async (req, res) => {
     try {
@@ -179,13 +220,19 @@ app.get('/collection', verifyToken, async (req, res) => {
 
         return res.status(201).json({ collection: user.gameCollection });
     } catch (err) {
-        console.error(err); // Log the error for debugging
-        return res.status(500).json({ message: 'Database error' });
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired. Please log in again.' })
+        }
+        else if (err instanceof mongoose.Error) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error. Please try again later.' });
+        }
+
+        return res.status(403).json({ message: 'Unauthorized access.' });
     }
 });
 
 app.post('/addGame', verifyToken, async (req, res) => {
-    console.log('yes');
     try {
         const payload = jwt.verify(req.token, 'secretkey');
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
@@ -193,16 +240,22 @@ app.post('/addGame', verifyToken, async (req, res) => {
             return res.status(403).json({ message: 'User not found.' });
         }
         const { id, name, rating, cover, genres, platforms, platform, summary, screenshots, condition } = req.body;
-        const status = saveGame(user, id, rating, summary, name, genres, platforms, platform, screenshots, cover, condition);
+        const status = await saveGame(user, id, rating, summary, name, genres, platforms, platform, screenshots, cover, condition);
         if (!status) {
             return res.status(409).json({ message: 'Game already exists.' })
         }
-
         return res.status(200).json({ message: 'Game saved.' })
 
     } catch (err) {
-        console.error(err); // Log the error for debugging
-        return res.status(500).json({ message: 'Database error' });
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired. Please log in again.' })
+        }
+        else if (err instanceof mongoose.Error) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error. Please try again later.' });
+        }
+
+        return res.status(403).json({ message: 'Unauthorized access.' });
     }
 
 })
@@ -210,18 +263,28 @@ app.post('/addGame', verifyToken, async (req, res) => {
 app.post('/deleteGame', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, 'secretkey');
-        const user = await User.findOne({ username: payload.sanitizedUser.username}).exec();
+        const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
         }
-        
+        const gameId = req.body.id;
+        const status = deleteGame(user, gameId);
+        if (status) {
+            return res.status(200).json({ collection: user.gameCollection });
+        }
+
+        return res.status(404).json({ message: "Resource not found." });
     }
     catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Database error' });
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired. Please log in again.' })
+        }
+        else if (err instanceof mongoose.Error) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error. Please try again later.' });
+        }
+        return res.status(403).json({ message: 'Unauthorized access.' });
     }
-
-
 })
 
 function verifyToken(req, res, next) {

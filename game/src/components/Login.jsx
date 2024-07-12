@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { IoPerson, IoLockClosed, IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
 import { GiSwordsEmblem } from "react-icons/gi";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -16,6 +18,8 @@ const Login = () => {
     const [toastType, setToastType] = useState();
     const [isVisible, setIsVisible] = useState();
     const timeoutRef = useRef(null);
+    const {toggleLoggedIn } = useAuth();
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const newValues = {...values, [e.target.name] : e.target.value};
@@ -77,8 +81,10 @@ const Login = () => {
             }).then(response => {
                 if (response.status === 201) {
                     return (response.json()).then(data => {
+                        toggleLoggedIn(true);
                         const token = data.token;
                         localStorage.setItem('access', token);
+                        navigate("/collection");
                     }); 
                 }
                 else if (response.status === 401) {

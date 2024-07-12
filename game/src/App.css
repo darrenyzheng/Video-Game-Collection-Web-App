@@ -13,6 +13,33 @@
 
 
 /* global.css */
+
+.wrapperGameCard {
+  display: flex;
+  position: absolute;
+  top: 3%;
+  left: 50%;
+  flex-direction: column;
+  width: 25%;
+  min-width: 200px;
+  height: 10%;
+  box-sizing: border-box;
+  color: black;
+  z-index: 2;
+}
+
+.wrapperSettings {
+  display: flex;
+  position: absolute;
+  top: 2.5%;
+  left: 40%;
+  flex-direction: column;
+  width: 25%;
+  min-width: 200px;
+  height: 10%;
+  box-sizing: border-box;
+  color: black;
+}
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -56,7 +83,7 @@
 
 .totalGames {
   position: absolute;
-  top: 50%;
+  top: 47.5%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -383,6 +410,7 @@
   text-decoration: none;
   color: white;
   width: 100%;
+  cursor: pointer;
 }
 
 .sideBar .bottomNavigation {
@@ -504,7 +532,9 @@
 }
 
 .leftUserNameContainer {
-  display: block;
+  display: flex;
+  align-items: center;
+
 }
 
 .userNameValidation {
@@ -643,14 +673,28 @@
   font-size: 35px;
 }
 
-.leftProfilePictureContainer {
-  display: block;
-}
 
 .profilePictureContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.rightProfilePictureContainer {
+  display: flex;
+  width: 12%;
+  flex-direction: column;
+}
+
+.rightProfilePictureContainer img {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+  
+.acctProfilePicture {
+  margin-bottom: 10px;
 }
 
 .firstNameContainer {
@@ -738,7 +782,6 @@
   padding: 20px;
   min-height: 45px;
   width: 39vw;
-
   margin-left: 20px;
 }
 
@@ -748,7 +791,7 @@
   /* Make the search container take full width */
   padding: 20px;
   min-height: 45px;
-  width: 20%;
+  width: 15vw;
 }
 
 .collectionFilter {
@@ -757,7 +800,8 @@
   /* Make the search container take full width */
   padding: 20px;
   min-height: 45px;
-  width: 22%;
+  width: 22vw;
+  min-width: 200px;
   margin-left: 20px;
 }
 
@@ -775,6 +819,7 @@
   top: 0;
   right: 0;
   padding: 10px;
+
 }
 
 .filterComponent svg {
@@ -1085,6 +1130,27 @@
   min-width: 185px;
 }
 
+.clearFilterButton {
+  font-size: 14px;
+  font-family: 'Raedex Pro', sans-serif;
+  padding: 0.5em 1em;
+  margin: 0.25em;
+  border-radius: 1em;
+  border: none;
+  outline: none;
+  background-color: #155EEF;
+  color: white;
+  width: 15%;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  min-width: 185px;
+  margin-left: 40px;
+  margin-top: 20px;
+  height: 5%;
+}
 .filterHeaders {
   color: white;
   padding-left: 20px;
@@ -1258,10 +1324,8 @@
     /* Ensure the image fits within the container */
     height: auto;
   }
-
-  .screenshotContainer {}
-
 }
+
 
 .ratingContainer {
   display: flex;
