@@ -4,11 +4,11 @@ import { Chart as ChartJS, Tooltip, Legend, ArcElement } from "chart.js"
 
 ChartJS.register(Tooltip, Legend, ArcElement);
 
-const PieChart = ({ conditions, totalGames, title  }) => {
-    // Data to be represented in the pie chart
+const PieChart = ({ graphCategory, totalGames, title  }) => {
     let randomColors = [];
 
-    for (let i of conditions) {
+    const categories = graphCategory.size;
+    for (let i = 0; i < categories; i++) {
         const r = Math.floor(Math.random() * 256);
         const g = Math.floor(Math.random() * 256);
         const b = Math.floor(Math.random() * 256);
@@ -17,10 +17,10 @@ const PieChart = ({ conditions, totalGames, title  }) => {
     };
 
     const data = {
-        labels: Array.from(conditions.keys()),
+        labels: Array.from(graphCategory.keys()),
         datasets: [
             {
-                data: Array.from(conditions.values()),
+                data: Array.from(graphCategory.values()),
                 backgroundColor: randomColors
                 ,
                 borderColor: randomColors
@@ -32,9 +32,9 @@ const PieChart = ({ conditions, totalGames, title  }) => {
     const options = {
         plugins: {
             legend: {
-                position: 'bottom', // Positioning the legend at the bottom
+                position: 'bottom', 
                 labels: {
-                    color: 'white', // Legend text color
+                    color: 'white', 
                 },
             },
         },
@@ -42,7 +42,7 @@ const PieChart = ({ conditions, totalGames, title  }) => {
     return (
         <div className='chart'>
             <h1 className='chartTitle'> {title} </h1> 
-            {totalGames && <p className='totalGames'> Total games: {totalGames} </p>}
+            {totalGames && <p className='totalGamesNumber'> Total games: {totalGames} </p>}
             <Doughnut data={data} options={options} />
         </div>
     );

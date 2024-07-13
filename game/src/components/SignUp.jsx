@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import '../App.css';
 import { IoPerson, IoLockClosed, IoMail, IoGameController, IoCheckmarkOutline, IoCloseSharp, IoWarningOutline, IoCloseCircleSharp } from "react-icons/io5";
 
 const SignUp = () => {
+
     const [values, setValues] = useState({
         username: '',
         emailAddress: '',
@@ -24,6 +24,7 @@ const SignUp = () => {
         const newValues = { ...values, [e.target.name]: e.target.value }
         setValues(newValues);
     }
+
     const handleToast = (boolean) => {
         setIsVisible(boolean);
         const progressBar = document.querySelector('.progressBar');
@@ -32,10 +33,10 @@ const SignUp = () => {
 
             timeoutRef.current = setTimeout(() => {
                 setIsVisible(false);
-            }, 5000);
+            }, 2000);
             setTimeout(() => {
                 progressBar.classList.add('active');
-            }, 0); // Start the animation immediately after setting the timeout
+            }, 0);
         }
 
         else {
@@ -163,7 +164,6 @@ const SignUp = () => {
                     </div>
                 </div>
 
-
             </div>
 
             <div className='headings'>
@@ -176,7 +176,7 @@ const SignUp = () => {
 
                 <div className='inputs'>
                     <div className='input'>
-                        <IoPerson className='img' />
+                        <IoPerson className='inputImg' />
                         <input
                             name='username'
                             id='username'
@@ -189,7 +189,7 @@ const SignUp = () => {
                     {errors.username && <p className='registerError'> {errors.username} </p>}
 
                     <div className='input'>
-                        <IoMail className='img' />
+                        <IoMail className='inputImg' />
                         <input
                             name='emailAddress'
                             id='email'
@@ -202,7 +202,7 @@ const SignUp = () => {
 
                     {errors.emailAddress && <p className='registerError'> {errors.emailAddress} </p>}
                     <div className='input'>
-                        <IoLockClosed className='img' />
+                        <IoLockClosed className='inputImg' />
                         <input
                             name='password'
                             id='password'

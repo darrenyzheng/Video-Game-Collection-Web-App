@@ -1,20 +1,17 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-// Resolve the path to the .env file
+
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
-// Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Resolve the path to the .env file
 const envPath = resolve(__dirname, '../.env');
 
-// Load the .env file
 dotenv.config({ path: envPath });
-// Load the .env file
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { body, validationResult } from 'express-validator';
@@ -42,7 +39,6 @@ function isPasswordValid(password) {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$/;
     return passwordRegex.test(password);
 }
-// body: `search "${search}"; limit 500; fields rating, cover.*, release_date, genres.name, name, platforms.name, screenshots.*, summary;`
 
 
 app.post('/search', (req, res) => {
@@ -63,7 +59,7 @@ app.post('/search', (req, res) => {
             console.log('Error response status code:', response.status);
         }
         else {
-            return response.json(); // parse the JSON response
+            return response.json(); 
         }
     }).then(data => {
         res.json(data);
@@ -82,7 +78,6 @@ app.post('/users',
         .custom(isPasswordValid)
         .withMessage('Invalid password'),
     async (req, res) => {
-        // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
@@ -91,13 +86,11 @@ app.post('/users',
         const { username, emailAddress, password } = req.body;
 
         try {
-            // Check for duplicates in parallel
             const [usernameDuplicate, emailDuplicate] = await Promise.all([
                 User.findOne({ username }),
                 User.findOne({ emailAddress })
             ]);
 
-            // If any duplicates are found, respond with a 409 Conflict status
             if (!usernameDuplicate && !emailDuplicate) {
                 const newUser = await createUser(username, emailAddress, password);
                 return res.status(201).json({ message: 'User registered successfully', user: newUser });
@@ -127,7 +120,6 @@ app.post('/login',
         .custom(isPasswordValid)
         .withMessage('Invalid password'),
     async (req, res) => {
-        // Check for validation errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
@@ -140,7 +132,7 @@ app.post('/login',
             }
 
             const sanitizedUser = { username: user.username }
-            jwt.sign({ sanitizedUser }, 'secretkey', { expiresIn: '3d' }, (err, token) => {
+            jwt.sign({ sanitizedUser }, process.env.Secret_Key, { expiresIn: '3d' }, (err, token) => {
                 return res.status(201).json({ token });
             })
 
@@ -155,7 +147,7 @@ app.post('/login',
 
 app.get('/settings', verifyToken, async (req, res) => {
     try {
-        const payload = jwt.verify(req.token, 'secretkey');
+        const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
@@ -184,7 +176,7 @@ app.post('/settings', verifyToken,
         .withMessage('Invalid password'),
     async (req, res) => {
         try {
-            const payload = jwt.verify(req.token, 'secretkey');
+            const payload = jwt.verify(req.token, process.env.Secret_Key);
             const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
             if (!user) {
                 return res.status(403).json({ message: 'User not found.' });
@@ -212,7 +204,7 @@ app.post('/settings', verifyToken,
 
 app.get('/collection', verifyToken, async (req, res) => {
     try {
-        const payload = jwt.verify(req.token, 'secretkey');
+        const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
@@ -234,7 +226,7 @@ app.get('/collection', verifyToken, async (req, res) => {
 
 app.post('/addGame', verifyToken, async (req, res) => {
     try {
-        const payload = jwt.verify(req.token, 'secretkey');
+        const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });
@@ -262,7 +254,7 @@ app.post('/addGame', verifyToken, async (req, res) => {
 
 app.post('/deleteGame', verifyToken, async (req, res) => {
     try {
-        const payload = jwt.verify(req.token, 'secretkey');
+        const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
         if (!user) {
             return res.status(403).json({ message: 'User not found.' });

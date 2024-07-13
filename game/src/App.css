@@ -12,8 +12,106 @@
 }
 
 
-/* global.css */
+.MainContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 86%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+.routes {
+  flex: 1;
+}
+
+/*************************************************************************
+* CSS CLASSES FOR COLLECTION 
+*************************************************************************/
+
+.collectionComponent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+.collectionHeader {
+  margin-left: 40px;
+}
+
+.filterText {
+  color: white;
+  margin-left: 40px;
+  margin-top: 10px
+}
+
+.collectionFilter {
+  display: flex;
+  height: 5vh;
+  padding: 20px;
+  min-height: 45px;
+  width: 22vw;
+  min-width: 200px;
+  margin-left: 20px;
+}
+
+/*************************************************************************
+* CSS CLASSES FOR STATISTICS 
+*************************************************************************/
+
+.statisticsComponent {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid white;
+  justify-content: center;
+  align-items: center;
+}
+
+.statisticsComponentHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 40px;
+  color: white;
+}
+
+/*************************************************************************
+* CSS CLASSES FOR PIE CHART 
+*************************************************************************/
+
+.chart {
+  padding: 100px;
+  height: 500px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+}
+
+.chartTitle {
+  margin-bottom: 20px;
+}
+
+.totalGamesNumber {
+  position: absolute;
+  top: 47.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*************************************************************************
+* CSS CLASSES FOR TOAST 
+*************************************************************************/
 .wrapperGameCard {
   display: flex;
   position: absolute;
@@ -27,19 +125,20 @@
   color: black;
   z-index: 2;
 }
-
-.wrapperSettings {
+.wrapperCollectionSettings {
   display: flex;
   position: absolute;
-  top: 2.5%;
-  left: 40%;
+  top: 3%;
+  left: 50%;
   flex-direction: column;
   width: 25%;
   min-width: 200px;
   height: 10%;
   box-sizing: border-box;
   color: black;
+  z-index: 2;
 }
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -61,47 +160,6 @@
   opacity: 0;
   box-sizing: border-box;
 
-}
-
-.statisticsComponent {
-  display: flex;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border: 1px solid white;
-  justify-content: center;
-  align-items: center;
-}
-
-.statisticsHeader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-left: 40px;
-  color: white;
-}
-
-.totalGames {
-  position: absolute;
-  top: 47.5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.chartTitle {
-  margin-bottom: 20px;
-}
-
-.chart {
-  padding: 100px;
-  height: 500px;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  position: relative;
 }
 
 .toast.show {
@@ -146,7 +204,7 @@
 }
 
 .progressBar.active::after {
-  animation: progress 5s linear forwards;
+  animation: progress 2s linear forwards;
   transform-origin: left;
 }
 
@@ -204,28 +262,13 @@
   padding: 1em;
 }
 
-
 .toast.hide {
   opacity: 0;
 }
 
-
-
-.MainContent {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 86%;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.routes {
-  flex: 1;
-}
+/*************************************************************************
+* CSS CLASSES FOR SIGNUP/LOGIN
+*************************************************************************/
 
 .card {
   background-color: #fff;
@@ -266,7 +309,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Center form elements horizontally */
   width: 100%;
 }
 
@@ -274,7 +316,6 @@
   display: flex;
   flex-direction: column;
   width: 80%;
-  /* Ensure inputs container takes full width of the form */
   box-sizing: border-box;
   gap: 12px;
   margin-bottom: 20px;
@@ -286,21 +327,18 @@
   background: #eaeaea;
   height: 55px;
   width: 100%;
-  /* Take full width of the container */
   border-radius: 6px;
   border: 1px solid black;
   box-sizing: border-box;
 }
 
-.input .img {
+.input .inputImg {
   margin: 0px 30px;
 }
 
 .input input {
   height: 100%;
-  /* Full height of the input container */
   width: 100%;
-  /* Full width of the remaining space in the input container */
   background: transparent;
   border: none;
   outline: none;
@@ -323,14 +361,6 @@
   box-sizing: border-box;
 }
 
-.form-button.settings {
-  width: 20%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 95%;
-  left: 50%
-}
-
 .form-button:hover {
   cursor: pointer;
 }
@@ -346,10 +376,17 @@
   box-sizing: border-box;
 }
 
-
-.icons {
-  flex: 30%;
+.form-button.settings {
+  width: 20%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 95%;
+  left: 50%
 }
+
+/*************************************************************************
+* CSS CLASSES FOR SIDEBAR
+*************************************************************************/
 
 .sideBar {
   background-color: #333333;
@@ -365,10 +402,9 @@
   align-items: center;
   width: 100%;
   margin: auto;
-  /* Center vertically */
 }
 
-.sideBar .list {
+.sideBar .navList {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -388,15 +424,6 @@
     "Lucida Sans", Arial, sans-serif;
 }
 
-.sideBar .bottomNavigation {
-  transform: translateY(-50px);
-}
-
-.sideBar .signupLogin {
-  margin-left: 20px;
-  width: 60%;
-}
-
 .sideBar .row-active {
   background-color: #666666;
 }
@@ -413,28 +440,15 @@
   cursor: pointer;
 }
 
-.sideBar .bottomNavigation {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
+.icons {
+  flex: 30%;
 }
 
-.active-link {
-  text-decoration: underline;
-}
+/*************************************************************************
+* CSS CLASSES FOR SETTINGS 
+*************************************************************************/
 
-.sideBar .signupLogin .links {
-  margin-right: 20px;
-  text-decoration: none;
-  color: white;
-  font-size: 13px;
-}
-
-.sideBar .bottomLinks {
-  transform: translateX(-5px);
-}
-
-.settingsBig {
+.settingsComponent {
   display: flex;
   flex-direction: column;
   width: 85%;
@@ -446,35 +460,28 @@
   position: relative;
 }
 
-.collectionComponent {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  color: white;
-
-}
-
 .acctForm {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   flex: 1;
   justify-content: flex-start;
-  /* Ensure space between sections */
 }
 
-.content {
-  display: none;
-  height: 100%;
-  justify-content: space-around;
+.settingsHeader {
+  font-size: 50px;
 }
 
-.active-content {
-  display: flex;
-  flex-direction: column;
+.settingsParagraph {
+  font-size: 20px;
 }
 
+
+
+.bar {
+  border-bottom: 1px solid black;
+  display: block;
+}
 
 .tabContainer {
   display: flex;
@@ -507,238 +514,48 @@
   height: 100%;
 }
 
-.settingsHeader {
-  font-size: 50px;
+.content {
+  display: none;
+  height: 100%;
+  justify-content: space-around;
 }
 
-.settingsParagraph {
-  font-size: 20px;
+.active-content {
+  display: flex;
+  flex-direction: column;
 }
 
-.bar {
-  border-bottom: 1px solid black;
-  display: block;
-}
-
-.label1 {
+.label {
   font-weight: bold;
   font-size: 35px;
 }
 
-.userNameContainer {
+.container {
   display: flex;
   justify-content: space-between;
-  box-sizing: border-box;
-}
-
-.leftUserNameContainer {
-  display: flex;
   align-items: center;
-
-}
-
-.userNameValidation {
-  font-size: 20px;
-}
-
-.emailContainer {
-  display: flex;
-  justify-content: space-between;
   box-sizing: border-box;
-}
-
-.leftEmailContainer {
-  display: block;
-}
-
-.acctUsernameText {
-  font-size: 20px;
-}
-
-.emailValidation {
-  font-size: 20px;
-}
-
-.acctEmailText {
-  font-size: 20px;
-}
-
-.label2 {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-.label3 {
-  font-weight: bold;
-  font-size: 35px;
-
-}
-
-.leftPasswordContainer {
-  display: block;
-}
-
-.acctPasswordText {
-  font-size: 20px;
-}
-
-.passwordContainer {
-  display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  box-sizing: border-box;
-
 }
 
-.passwordValidation {
-  font-size: 18px;
-}
-
-.rightUserNameContainer {
-  display: flex;
-  flex-direction: column;
-  width: 15%;
-}
-
-.rightEmailContainer {
-  display: flex;
-  flex-direction: column;
-  width: 15%;
-}
-
-.rightPasswordContainer {
+.rightContainer {
   display: flex;
   flex-direction: column;
   width: 15%;
   justify-content: center;
 }
 
-.favoriteGenreContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-
-}
-
-.leftFavoriteGenreContainer {
-  display: block;
-}
-
-.acctFavoriteGenreLabel {
-  font-weight: bold;
-  font-size: 35px;
-
-}
-
-.acctFavoriteGameLabel {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-.favoriteGameContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-}
-
-.leftFavoriteGameContainer {
-  display: block;
-
-}
-
-.acctFavoriteGameText {
+.text {
   font-size: 20px;
 }
 
-.acctFavoriteGenreText {
+.validation {
   font-size: 20px;
 }
 
-.acctFirstNameText {
-  font-size: 20px;
-}
-
-.acctLastNameText {
-  font-size: 20px;
-}
-
-.acctBirthdayText {
-  font-size: 20px;
-}
-
-.acctProfilePictureLabel {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-
-.profilePictureContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-.rightProfilePictureContainer {
-  display: flex;
-  width: 12%;
-  flex-direction: column;
-}
-
-.rightProfilePictureContainer img {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-  
-.acctProfilePicture {
-  margin-bottom: 10px;
-}
-
-.firstNameContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.leftFirstNameContainer {
-  display: block;
-}
-
-.acctFirstNameLabel {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-.acctLastNameLabel {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-.acctBirthdayLabel {
-  font-weight: bold;
-  font-size: 35px;
-}
-
-.leftLastNameContainer {
-  display: block;
-
-}
-
-.lastNameContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-}
-
-.birthdayContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/*************************************************************************
+* CSS CLASSES FOR SEARCH 
+*************************************************************************/
 
 .searchComponent {
   display: flex;
@@ -747,37 +564,19 @@
   height: 100%;
 }
 
-.collectionHeader {
-  margin-left: 40px;
-}
-
-.filterText {
-  color: white;
-  margin-left: 40px;
-  margin-top: 10px
-}
-
 .searchHeader {
   margin-left: 20px;
 }
 
-.interactable {
+.searchQuery {
   display: flex;
-  justify-content: flex-start;
   width: 100%;
+  height: 10%;
 }
 
-
-.platformItems {
-  list-style: none;
-  font-size: 1rem;
-  font-family: 'Kanit', sans-serif;
-}
-
-.search {
+.searchField {
   display: flex;
-  height: 40%;
-  /* Make the search container take full width */
+  height: 5vh;
   justify-content: flex-start;
   padding: 20px;
   min-height: 45px;
@@ -785,103 +584,48 @@
   margin-left: 20px;
 }
 
-.filter {
+.searchableFilterableDiv {
   display: flex;
-  height: 40%;
-  /* Make the search container take full width */
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.searchField input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.searchField svg {
+  position: relative;
+  right: 40px;
+  transform: translateY(10%);
+  cursor: pointer;
+}
+
+.searchField button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filterField {
+  display: flex;
+  height: 5vh;
   padding: 20px;
   min-height: 45px;
   width: 15vw;
 }
 
-.collectionFilter {
-  display: flex;
-  height: 40%;
-  /* Make the search container take full width */
-  padding: 20px;
-  min-height: 45px;
-  width: 22vw;
-  min-width: 200px;
-  margin-left: 20px;
-}
-
-.gameInfo {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border: 1px solid green;
+.filterField input {
   flex: 1;
-  position: absolute;
-}
-
-.trashCan {
-  position: absolute;
-  top: 0;
-  right: 0;
   padding: 10px;
-
-}
-
-.filterComponent svg {
-  padding: 10px;
-}
-
-.collectionFilter input {
-  flex: 1;
-  /* Allow the input to grow and take available space */
-  padding: 10px;
-  /* Add padding for a bigger feel */
   font-size: 16px;
-  /* Adjust font size for better readability */
   border: 1px solid #ccc;
-  /* Add a border */
   border-radius: 10px;
-  /* Optional: add rounded corners */
-}
-
-.filterComponent {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  align-content: space-around;
-  padding: 20px;
-  margin-left: 20px;
-  position: fixed;
-  flex-wrap: wrap;
-  width: 82%;
-  height: 88%;
-  left: 14%;
-  top: 8%;
-  background-color: #555;
-  opacity: 97%;
-  border-radius: 2em;
-  overflow: auto;
-}
-
-.filterGenreContainer,
-.filterPlatformContainer {
-  display: flex;
-  flex-wrap: wrap;
-  color: white;
-}
-
-.filter input {
-  flex: 1;
-  /* Allow the input to grow and take available space */
-  padding: 10px;
-  /* Add padding for a bigger feel */
-  font-size: 16px;
-  /* Adjust font size for better readability */
-  border: 1px solid #ccc;
-  /* Add a border */
-  border-radius: 10px;
-  /* Optional: add rounded corners */
-}
-
-.filterForm {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .filterSvgContainer {
@@ -892,242 +636,6 @@
   position: relative;
   cursor: pointer;
   color: black;
-}
-
-.filterButton {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-}
-
-
-.search input {
-  flex: 1;
-  /* Allow the input to grow and take available space */
-  padding: 10px;
-  /* Add padding for a bigger feel */
-  font-size: 16px;
-  /* Adjust font size for better readability */
-  border: 1px solid #ccc;
-  /* Add a border */
-  border-radius: 10px;
-  /* Optional: add rounded corners */
-}
-
-.search svg {
-  position: relative;
-  right: 40px;
-  /* Position the icon 10px from the right */
-  transform: translateY(10%);
-  /* Adjust to vertically center */
-  cursor: pointer;
-}
-
-.search button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
-.gamecover {
-  display: flex;
-  padding-left: 5px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  cursor: pointer;
-}
-
-.gamecard {
-  display: flex;
-  position: fixed;
-  width: 86%;
-  height: 100vh;
-  left: 14%;
-  /* Positioning it to the right of the sidebar */
-  min-width: 1200px;
-  background-color: #555;
-  padding: 30px;
-  border-radius: 2em;
-  color: #fff;
-  font-family: 'Kanit', sans-serif;
-  justify-content: space-around;
-  box-sizing: border-box;
-  min-height: 600px;
-}
-
-.genreHeader {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2rem;
-}
-
-.platformHeader {
-  font-size: 2rem;
-  font-family: 'Oswald', sans-serif;
-}
-
-.gamecard .coverContainer {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid white;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.gamecard .miscallenous {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding-top: 10px;
-  padding-left: 10px;
-}
-
-.gamecard .genreItems {
-  list-style-type: none;
-  font-size: 1em;
-  font-weight: 100;
-  font-family: 'Kanit', sans-serif;
-}
-
-.gamecard .coverContainer img {
-  height: 50%;
-  max-width: 500px;
-  object-fit: cover;
-  border-bottom: 2px solid white;
-}
-
-.gamecard .releaseDateContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-
-.gamesList {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 20px;
-  padding-top: 20px;
-  width: 100%;
-
-}
-
-.gameWrapper {
-  display: flex;
-  flex-direction: column;
-  color: white;
-  width: 300px;
-  height: 400px;
-  align-items: center;
-  padding: 5px;
-  position: relative;
-}
-
-.gameWrapper:hover .gamecover {
-  opacity: 0.5;
-}
-
-.gamecover {
-  cursor: pointer;
-}
-
-.gameWrapper:hover .gameInfo {
-  display: flex;
-}
-
-.gameInfo {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Semi-transparent background */
-  flex-direction: column;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.collectionGames {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 20px;
-  margin-top: 20px;
-}
-
-.searchHeader {
-  color: white;
-  padding-left: 20px;
-}
-
-.searchQuery {
-  display: flex;
-  width: 100%;
-  height: 10%;
-
-}
-
-.screenshot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-
-}
-
-.screenshot img {
-  display: flex;
-  width: 100%;
-  height: auto;
-}
-
-.genreContainer {
-  padding-bottom: 40px;
-  font-weight: 500;
-}
-
-.rightSide {
-  display: flex;
-  width: 70%;
-  padding: 20px 50px;
-  margin-left: 10px;
-  margin-right: 10px;
-  flex-direction: column;
-  border: 2px solid white;
-  justify-content: space-between;
-  box-sizing: border-box;
-  height: 100%;
-  overflow-x: auto;
-
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  height: 60%;
-  position: relative;
-  align-items: center;
-}
-
-.addButton {
-  font-size: 14px;
-  font-family: 'Raedex Pro', sans-serif;
-  padding: 0.5em 1em;
-  margin: 0.25em;
-  border-radius: 1em;
-  border: none;
-  outline: none;
-  background-color: #155EEF;
-  color: white;
-  height: 60px;
-  width: 15%;
-  box-sizing: border-box;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-
-  align-items: center;
-  min-width: 185px;
 }
 
 .clearFilterButton {
@@ -1151,10 +659,264 @@
   margin-top: 20px;
   height: 5%;
 }
+
+.gamesList {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 20px;
+  padding-top: 20px;
+  width: 100%;
+}
+
+.gameWrapper {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  width: 300px;
+  height: 400px;
+  align-items: center;
+  padding: 5px;
+  position: relative;
+}
+
+.gameWrapper:hover .gamecover {
+  opacity: 0.5;
+}
+
+.gameWrapper:hover .gameInfo {
+  display: flex;
+}
+
+.gameInfo {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 1px solid green;
+  flex: 1;
+  position: absolute;
+}
+
+.trashCan {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+
+}
+
+/*************************************************************************
+* CSS CLASSES FOR FILTER 
+*************************************************************************/
+
+.filterComponent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+  padding: 20px;
+  margin-left: 20px;
+  position: fixed;
+  flex-wrap: wrap;
+  width: 82%;
+  height: 88%;
+  left: 14%;
+  top: 8%;
+  background-color: #555;
+  opacity: 97%;
+  border-radius: 2em;
+  overflow: auto;
+}
+
 .filterHeaders {
   color: white;
   padding-left: 20px;
 
+}
+.filterComponent svg {
+  padding: 10px;
+}
+
+.filterForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.collectionFilter input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.platformGenreFilter {
+  position: relative;
+  border: 1px solid white;
+  height: 4em;
+  width: 10em;
+  margin: 20px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+
+.platformGenreFilter input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.filterGenreContainer,
+.filterPlatformContainer {
+  display: flex;
+  flex-wrap: wrap;
+  color: white;
+}
+
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.closeFilter {
+  display: flex;
+  cursor: pointer;
+  color: #CCCCCC;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  top: 0;
+}
+
+
+/*************************************************************************
+* CSS CLASSES FOR GAMECOVER
+*************************************************************************/
+
+.gamecover {
+  display: flex;
+  padding-left: 5px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+/*************************************************************************
+* CSS CLASSES FOR GAMECARD
+*************************************************************************/
+
+.gamecard {
+  display: flex;
+  position: fixed;
+  width: 86%;
+  height: 100vh;
+  left: 14%;
+  min-width: 1200px;
+  background-color: #555;
+  padding: 30px;
+  border-radius: 2em;
+  color: #fff;
+  font-family: 'Kanit', sans-serif;
+  justify-content: space-around;
+  box-sizing: border-box;
+  min-height: 600px;
+}
+
+.gamecard .coverContainer {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid white;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.gamecard .coverContainer img {
+  height: 50%;
+  max-width: 500px;
+  object-fit: cover;
+  border-bottom: 2px solid white;
+}
+
+
+.gamecard .genrePlatformDiv {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.genreContainer, .platformContainer {
+  padding-bottom: 40px;
+  font-weight: 500;
+}
+
+.gamecard .genreItems {
+  list-style-type: none;
+  font-size: 1em;
+  font-weight: 100;
+  font-family: 'Kanit', sans-serif;
+}
+
+.genreHeader {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+}
+
+.platformHeader {
+  font-size: 2rem;
+  font-family: 'Oswald', sans-serif;
+}
+
+.platformItems {
+  list-style: none;
+  font-size: 1rem;
+  font-family: 'Kanit', sans-serif;
+}
+
+.rightCard {
+  display: flex;
+  width: 70%;
+  padding: 20px 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex-direction: column;
+  border: 2px solid white;
+  justify-content: space-between;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-x: auto;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 60%;
+  position: relative;
+  align-items: center;
+}
+
+.ratingContainer {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  border-radius: 50%;
+  font-family: 'Anton';
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
 }
 
 .nameHeader {
@@ -1169,11 +931,6 @@
   padding-top: 10px;
 }
 
-.nameHeader {
-  display: flex;
-  justify-content: center;
-}
-
 .screenshotContainer {
   display: flex;
   justify-content: center;
@@ -1181,6 +938,48 @@
   position: relative;
   width: 35%;
   height: 100%;
+}
+
+.rightArrow,
+.leftArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.rightArrow {
+  right: 0;
+}
+
+.leftArrow {
+  left: 0;
+}
+
+.closeModal {
+  cursor: pointer;
+  color: #CCCCCC;
+}
+
+
+.paginationDots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.dots {
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.dots.active {
+  background-color: #333;
 }
 
 .addContainer {
@@ -1192,49 +991,82 @@
   box-sizing: border-box;
 }
 
-.itemCondition {
+
+.gameInfo {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.searchHeader {
+  color: white;
+  padding-left: 20px;
+}
+
+.screenshot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+}
+
+.screenshot img {
+  display: flex;
+  width: 100%;
+  height: auto;
+}
+
+.addButton {
+  font-size: 14px;
+  font-family: 'Raedex Pro', sans-serif;
+  padding: 0.5em 1em;
+  margin: 0.25em;
+  border-radius: 1em;
+  border: none;
+  outline: none;
+  background-color: #155EEF;
+  color: white;
+  height: 60px;
+  width: 15%;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  min-width: 185px;
+}
+
+.nameHeader {
+  display: flex;
+  justify-content: center;
+}
+
+.addContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.formContainerWrapper {
   display: flex;
   box-sizing: border-box;
   flex-wrap: wrap;
 }
 
-.itemConditionContainer {
+.itemStatus {
   position: relative;
-  /* Ensure relative positioning for absolute child */
   border: 1px solid white;
-  /* Adjust border styling */
   height: 4em;
   width: 12em;
-  margin: 20px;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-}
-
-.itemConditionContainer input {
-  position: absolute;
-  /* Hide the radio button visually */
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  cursor: pointer;
-  opacity: 0;
-}
-
-.platformFilter {
-  display: flex;
-  box-sizing: border-box;
-  flex-wrap: wrap;
-}
-
-
-
-.platformFilter {
-  position: relative;
-  /* Ensure relative positioning for absolute child */
-  border: 1px solid white;
-  /* Adjust border styling */
-  height: 4em;
-  width: 10em;
   margin: 20px;
   box-sizing: border-box;
   flex-wrap: wrap;
@@ -1248,14 +1080,22 @@
   font-size: 1rem;
 }
 
-.platformFilter input {
+.itemStatus input {
   position: absolute;
-  /* Hide the radio button visually */
   height: 100%;
   width: 100%;
   margin: 0;
   cursor: pointer;
   opacity: 0;
+}
+
+.itemStatus input[type="radio"]:checked+.radioTile {
+  background-color: black;
+  color: white;
+}
+
+.itemStatus input[type="radio"]:hover+.radioTile {
+  background-color: darkgray;
 }
 
 .radioTile {
@@ -1267,34 +1107,17 @@
   width: 100%;
   border: 2px solid black;
   box-sizing: border-box;
-
 }
 
-/* Style when the radio button is checked */
-.itemConditionContainer input[type="radio"]:checked+.radioTile {
+.platformGenreFilter input[type="checkbox"]:checked+.radioTile {
   background-color: black;
   color: white;
-  /* Adjust text color for visibility if needed */
 }
 
-/* Hover effect for the radio button */
-.itemConditionContainer input[type="radio"]:hover+.radioTile {
+.platformGenreFilter input[type="checkbox"]:hover+.radioTile {
   background-color: darkgray;
-  /* Example: Change color on hover */
 }
 
-/* Style when the radio button is checked */
-.platformFilter input[type="checkbox"]:checked+.radioTile {
-  background-color: black;
-  color: white;
-  /* Adjust text color for visibility if needed */
-}
-
-/* Hover effect for the radio button */
-.platformFilter input[type="checkbox"]:hover+.radioTile {
-  background-color: darkgray;
-  /* Example: Change color on hover */
-}
 
 @media (max-height: 1080px) {
   .rightSide {
@@ -1321,80 +1144,8 @@
 
   .coverContainer img {
     max-width: 100%;
-    /* Ensure the image fits within the container */
     height: auto;
   }
 }
 
 
-.ratingContainer {
-  display: flex;
-  height: 40px;
-  width: 40px;
-  font-size: 25px;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid white;
-  border-radius: 50%;
-  font-family: 'Anton';
-  position: absolute;
-  right: 0;
-  box-sizing: border-box;
-}
-
-.rightArrow,
-.leftArrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  /* Add cursor pointer for usability */
-}
-
-.rightArrow {
-  right: 0;
-  /* Position to the right edge */
-}
-
-.leftArrow {
-  left: 0;
-  /* Position to the left edge */
-}
-
-.paginationDots {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  bottom: 0;
-}
-
-.dots {
-  height: 10px;
-  width: 10px;
-  background-color: #bbb;
-  border-radius: 50%;
-  margin: 0 5px;
-  /* Adjust spacing between dots */
-  cursor: pointer;
-}
-
-.dots.active {
-  background-color: #333;
-  /* Active dot color */
-}
-
-.closeModal {
-  cursor: pointer;
-  color: #CCCCCC;
-}
-
-.closeFilter {
-  display: flex;
-  cursor: pointer;
-  color: #CCCCCC;
-  position: absolute;
-  right: 0;
-  padding: 10px;
-
-  top: 0;
-}

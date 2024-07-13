@@ -1,16 +1,12 @@
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
-// Resolve the path to the .env file
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
-const { Schema } = mongoose;
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Resolve the path to the .env file
 
 const envPath = resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
@@ -20,7 +16,6 @@ mongoose.connect(
 );
 
 const db = mongoose.connection;
-// The open event is called when the database connection successfully opens
 db.once("open", () => {
     console.log("Successfully connected to MongoDB using Mongoose!");
 });
@@ -32,23 +27,15 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     favoriteGenre: {
         type: String, default: '', trim: true,
-        minlength: 2,
-        maxlength: 10
     },
     favoriteGame: {
         type: String, default: '', trim: true,
-        minlength: 2,
-        maxlength: 25
     },
     firstName: {
         type: String, default: '', trim: true,
-        minlength: 2,
-        maxlength: 20
     },
     lastName: {
         type: String, default: '', trim: true,
-        minlength: 2,
-        maxlength: 20,
     },
     birthday: { type: Date },
     gameCollection: [{
@@ -133,7 +120,7 @@ userSchema.statics.login = async function (username, password) {
         return user;
     } catch (error) {
         console.error('Error during login:', error);
-        throw error; // Or handle the error appropriately
+        throw error; 
     }
 };
 

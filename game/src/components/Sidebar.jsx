@@ -19,10 +19,7 @@ const Sidebar = () => {
                 toggleLoggedIn(true);
             }
         };
-
         checkLoggedIn();
-
-
     }, [toggleLoggedIn]);
 
     const logout = () => {
@@ -34,7 +31,7 @@ const Sidebar = () => {
     return (
         <nav className='sideBar'>
             <div className='middleNavigation'>
-                {isLoggedIn ? <ul className='list'>
+                {isLoggedIn ? <ul className='navList'>
                     <li className={`row ${location.pathname === '/collection' ? 'row-active' : ''}`}>
                         <IoFileTrayStacked className='icons' />
                         <Link to='/collection' className='navlinks'  >
@@ -71,7 +68,7 @@ const Sidebar = () => {
                         </label>
                     </li>
                 </ul> :
-                    <ul className='list'>
+                    <ul className='navList'>
                         <li className={`row ${location.pathname === '/register' ? 'row-active' : ''}`}>
                             <IoCreateOutline className='icons' />
                             <Link to='/register' className='navlinks'>

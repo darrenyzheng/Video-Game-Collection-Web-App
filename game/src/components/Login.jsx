@@ -56,10 +56,10 @@ const Login = () => {
 
             timeoutRef.current = setTimeout(() => {
                 setIsVisible(false);
-            }, 5000);
+            }, 2000);
             setTimeout(() => {
                 progressBar.classList.add('active');
-            }, 0); // Start the animation immediately after setting the timeout
+            }, 0); 
         }
 
         else {
@@ -144,7 +144,7 @@ const Login = () => {
             <form onSubmit = {handleSubmit} action = '/login' method ='POST'>
                 <div className='inputs'>
                     <div className='input'>
-                        <IoPerson className='img' />
+                        <IoPerson className='inputImg' />
                         <input
                             name ='username'
                             id='username'
@@ -157,7 +157,7 @@ const Login = () => {
                     {errors.username && <p className='registerError'> {errors.username} </p>}
 
                     <div className='input'>
-                        <IoLockClosed className='img' />
+                        <IoLockClosed className='inputImg' />
                         <input
                             name = 'password'
                             id='password'

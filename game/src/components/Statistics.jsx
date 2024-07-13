@@ -2,8 +2,7 @@ import PieChart from "./PieChart";
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../contexts/AuthContext";
-import { IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
-
+import { IoCloseCircleSharp, IoCloseSharp } from "react-icons/io5";
 
 const Statistics = () => {
   const navigate = useNavigate();
@@ -15,7 +14,6 @@ const Statistics = () => {
   const [isVisible, setIsVisible] = useState();
   const timeoutRef = useRef(null);
 
-
   const handleToast = (boolean) => {
     setIsVisible(boolean);
     const progressBar = document.querySelector('.progressBar');
@@ -24,12 +22,12 @@ const Statistics = () => {
 
       timeoutRef.current = setTimeout(() => {
         setIsVisible(false);
-      }, 5000);
+      }, 2000);
       setTimeout(() => {
         if (progressBar) {
           progressBar.classList.add('active');
         }
-      }, 0); // Start the animation immediately after setting the timeout
+      }, 0);
     }
 
     else {
@@ -63,10 +61,12 @@ const Statistics = () => {
         return response.json();
       })
       .then(data => {
+
         const allGenres = data.collection.map(game => game.genres).filter(genre => genre !== undefined);
         const allPlatforms = data.collection.map(game => game.platformOwned).filter(platform => platform !== undefined);
         const uniqueGenres = [...new Set(allGenres.flatMap(genreArray => genreArray.map(obj => obj.name)))].sort();
         const uniquePlatforms = [...new Set(allPlatforms.flatMap(obj => Object.keys(obj)))].sort();
+
         let platformMap = new Map();
         let genreMap = new Map();
         for (let platform of uniquePlatforms) {
@@ -96,10 +96,10 @@ const Statistics = () => {
             }
           }
         }
+
         setGenres(genreMap);
         setPlatforms(platformMap);
         setTotalGames(totalGames);
-
 
       })
       .catch(error => {
@@ -107,41 +107,34 @@ const Statistics = () => {
         setToastType('failure');
         handleToast(true);
       });
-  }, [navigate, toggleLoggedIn]); // Empty dependency array means this effect runs once on mount
+  }, [navigate, toggleLoggedIn]);
 
 
   return (
 
-    <div className='statisticsComponent'><div className='wrapperSettings'>
-      <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
-
-        {toastType === 'success' ? (
-          <IoCheckmarkOutline size={15} className='icon success' />
-        ) : toastType === 'warning' ? (
-          <IoWarningOutline size={15} className='icon warning' />
-        ) : (
+    <div className='statisticsComponent'>
+      <div className='wrapperCollectionSettings'>
+        <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
           <IoCloseCircleSharp size={15} className='icon failure' />
-        )}
-        <div className='message'>
-          {toastType === 'failure' && (
-            <>
-              <p><b>Failure!</b></p>
-              <p> Server error. </p>
-            </>
-          )}
+          <div className='message'>
+            {toastType === 'failure' && (
+              <>
+                <p><b>Failure!</b></p>
+                <p> Server error. </p>
+              </>
+            )}
 
+          </div>
+          <IoCloseSharp className='close' onClick={() => handleToast()} />
+          <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+          </div>
         </div>
-        <IoCloseSharp className='close' onClick={() => handleToast()} />
-        <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
-        </div>
+
+
       </div>
-
-
-    </div>
-      <h1 className='statisticsHeader'> Statistics </h1>
-      <PieChart conditions={platforms} totalGames={totalGames} title={'Platforms'} />
-      <PieChart conditions={genres} title={'Genres'} />
-
+      <h1 className='statisticsComponentHeader'> Statistics </h1>
+      <PieChart graphCategory={platforms} totalGames={totalGames} title={'Platforms'} />
+      <PieChart graphCategory={genres} title={'Genres'} />
     </div>
   )
 }

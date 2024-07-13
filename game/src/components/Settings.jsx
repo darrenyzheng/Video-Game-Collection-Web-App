@@ -24,10 +24,10 @@ const Settings = () => {
         if (boolean === true) {
             timeoutRef.current = setTimeout(() => {
                 setIsVisible(false);
-            }, 5000);
+            }, 2000);
             setTimeout(() => {
                 progressBar.classList.add('active');
-            }, 0); // Start the animation immediately after setting the timeout
+            }, 0); 
         }
 
         else {
@@ -81,7 +81,7 @@ const Settings = () => {
                 setToastType('failure');
                 handleToast(true);
             });
-    }, [navigate, toggleLoggedIn]); // Empty dependency array means this effect runs once on mount
+    }, [navigate, toggleLoggedIn]); 
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -100,7 +100,7 @@ const Settings = () => {
                 toggleLoggedIn(false);
                 return; 
             }
-            return response.json();
+            return response
         }).then(response => {
             if (response.status === 200) {
                 return (response.json()).then(data => {
@@ -122,14 +122,14 @@ const Settings = () => {
             });
     }
     return (
-        <div className='settingsBig'>
+        <div className='settingsComponent'>
             <form className='acctForm' onSubmit={handleSubmit} >
-                <div className='settingsDiv'>
+                <>
                     <h2 className='settingsHeader'> Settings </h2>
                     <p className='settingsParagraph'> Manage your account and profile settings. </p>
-                </div>
+                </>
                 <span className='bar' />
-                <div className='wrapperSettings'>
+                <div className='wrapperCollectionSettings'>
                     <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
 
                         {toastType === 'success' ? (
@@ -174,14 +174,14 @@ const Settings = () => {
                 </div>
 
                 <div className={tab === 1 ? "content active-content" : "content"}>
-                    <div className='userNameContainer'>
+                    <div className='container'>
                         <div className='leftUserNameContainer'>
-                            <label htmlFor="acctUsername" className='label1'> Username</label>
+                            <label htmlFor="acctUsername" className='label'> Username</label>
                         </div>
 
 
-                        <div className='rightUserNameContainer'>
-                            <p className='userNameValidation'> Usernames must be between 5 - 16 characters. </p>
+                        <div className='rightContainer'>
+                            <p className='validation'> Usernames must be between 5 - 16 characters. </p>
                             <input
                                 name='username'
                                 type='text'
@@ -193,13 +193,13 @@ const Settings = () => {
                     </div>
                     <span className='bar' >  </span>
 
-                    <div className='emailContainer'>
+                    <div className='container'>
                         <div className='leftEmailContainer'>
-                            <label htmlFor="acctEmail" className='label2'> Email Address </label>
-                            <p className='acctEmailText'> Update your email address.  </p>
+                            <label htmlFor="acctEmail" className='label'> Email Address </label>
+                            <p className='text'> Update your email address.  </p>
                         </div>
-                        <div className='rightEmailContainer'>
-                            <p className='emailValidation'> Emails must have an @ and a domain. </p>
+                        <div className='rightContainer'>
+                            <p className='validation'> Emails must have an @ and a domain. </p>
                             <input
                                 name='emailAddress' type='email' className='acctEmail'
                                 value={userData.emailAddress} onChange={handleChange}
@@ -208,14 +208,14 @@ const Settings = () => {
                     </div>
                     <span className='bar' >  </span>
 
-                    <div className='passwordContainer'>
+                    <div className='container'>
                         <div className='leftPasswordContainer'>
-                            <label htmlFor="acctPassword" className='label3'> Password </label>
-                            <p className='acctPasswordText'> Update your password. </p>
+                            <label htmlFor="acctPassword" className='label'> Password </label>
+                            <p className='text'> Update your password. </p>
                         </div>
 
-                        <div className='rightPasswordContainer'>
-                            <p className='passwordValidation'> Passwords must be between 6-16 characters and have a digit, a letter, and a character from the set. </p>
+                        <div className='rightContainer'>
+                            <p className='validation'> Passwords must be between 6-16 characters and have a digit, a letter, and a character from the set. </p>
                             <input type="password" name='password' className='acctPassword' value={userData.password} pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,16}$"
 
                                 onChange={handleChange} />
@@ -225,19 +225,19 @@ const Settings = () => {
 
                 <div className={tab === 2 ? "content active-content" : "content"}>
 
-                    <div className='favoriteGenreContainer'>
+                    <div className='container'>
                         <div className='leftFavoriteGenreContainer'>
-                            <label htmlFor="acctFavoriteGenre" className='acctFavoriteGenreLabel'> Favorite Genre</label>
-                            <p className='acctFavoriteGenreText'> Update your favorite genre. </p>
+                            <label htmlFor="acctFavoriteGenre" className='label'> Favorite Genre</label>
+                            <p className='text'> Update your favorite genre. </p>
                         </div>
                         <input name='favoriteGenre' type='text' className='acctFavoriteGenre' value={userData.favoriteGenre} onChange={handleChange} minLength={2} maxLength={10} />
                     </div>
                     <span className='bar' >  </span>
 
-                    <div className='favoriteGameContainer'>
+                    <div className='container'>
                         <div className='leftFavoriteGameContainer'>
-                            <label htmlFor="acctFavoriteGenre" className='acctFavoriteGameLabel'> Favorite Game </label>
-                            <p className='acctFavoriteGameText'> Update your favorite game.</p>
+                            <label htmlFor="acctFavoriteGenre" className='label'> Favorite Game </label>
+                            <p className='text'> Update your favorite game.</p>
                         </div>
 
                         <input name='favoriteGame' type='text' className='acctFavoriteGame' value={userData.favoriteGame} onChange={handleChange} minLength={2} maxLength={25} />
@@ -247,12 +247,12 @@ const Settings = () => {
 
 
                 <div className={tab === 3 ? "content active-content" : "content"}>
-                    <div className='firstNameContainer'>
+                    <div className='container'>
                         <div className='leftFirstNameContainer'>
-                            <label htmlFor="acctFirstName" className='acctFirstNameLabel'> First Name</label>
-                            <p className='acctFirstNameText'> Update your first name. </p>
+                            <label htmlFor="acctFirstName" className='label'> First Name</label>
+                            <p className='text'> Update your first name. </p>
                         </div>
-                        <div className='rightFirstNameContainer'>
+                        <div className='rightContainer'>
                             <input name='firstName' type="text" className="acctFirstName" value={userData.firstName} onChange={handleChange} minLength={2} maxLength={20} />
                         </div>
 
@@ -260,12 +260,12 @@ const Settings = () => {
                     <span className='bar' />
 
 
-                    <div className='lastNameContainer'>
+                    <div className='container'>
                         <div className='leftLastNameContainer'>
-                            <label htmlFor="acctLastName" className='acctLastNameLabel'> Last Name</label>
-                            <p className='acctLastNameText'> Update your last name. </p>
+                            <label htmlFor="acctLastName" className='label'> Last Name</label>
+                            <p className='text'> Update your last name. </p>
                         </div>
-                        <div className='rightLastNameContainer'>
+                        <div className='rightContainer'>
                             <input name='lastName' type="text" className="acctLastName" minLength={2} maxLength={20}
                                 value={userData.lastName} onChange={handleChange} />
                         </div>
@@ -274,12 +274,12 @@ const Settings = () => {
 
 
 
-                    <div className='birthdayContainer'>
+                    <div className='container'>
                         <div className='leftBirthdayContainer'>
-                            <label htmlFor="acctBirthday" className='acctBirthdayLabel'> Birthday</label>
-                            <p className='acctBirthdayText'> Update your birthday. </p>
+                            <label htmlFor="acctBirthday" className='label'> Birthday</label>
+                            <p className='text'> Update your birthday. </p>
                         </div>
-                        <div className='rightBirthdayContainer'>
+                        <div className='rightContainer'>
                             <input type="date" name='birthday' className='acctBirthday' value={userData.birthday} onChange={handleChange} max={today} />
                         </div>
                     </div>

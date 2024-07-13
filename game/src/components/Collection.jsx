@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoFilter, IoTrashSharp, IoFunnelOutline, IoCheckmarkOutline, IoCloseCircleSharp, IoCloseSharp } from "react-icons/io5";
-import GameCover from "./GameCover"; // Ensure correct import for GameCover
+import GameCover from "./GameCover";
 import Filter from './Filter';
-import GameCard from "./GameCard"; // Ensure correct import for GameCover
+import GameCard from "./GameCard";
 import { useAuth } from "../contexts/AuthContext";
 
 
 const Collection = () => {
     const navigate = useNavigate();
     const [games, setGames] = useState([]);
-    const [searchTerm, setSearchTerm] = useState(''); // State to track search status
-    const [filteredGames, setFilteredGames] = useState([]); // State for filtered games
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredGames, setFilteredGames] = useState([]);
     const [filter, setFilter] = useState(null);
     const filterBarRef = useRef(null);
     const [searchQuery, setSearchQuery] = useState();
@@ -66,8 +66,7 @@ const Collection = () => {
                 setToastType('failure');
                 handleToast(true);
             });
-    }, [navigate, toggleLoggedIn]); // Empty dependency array means this effect runs once on mount
-
+    }, [navigate, toggleLoggedIn]);
     useEffect(() => {
         if (!selectedGame) {
             return;
@@ -105,8 +104,7 @@ const Collection = () => {
     }
 
     const addFilters = (filter) => {
-        setFilters(filter); // Update filters state with selected filters
-        // Apply filters to games based on selected platforms and genres
+        setFilters(filter);
         const gamesWithGenresPlatforms = games.filter((game => game.genres && game.platforms));
 
         const filteredGames = gamesWithGenresPlatforms.filter(game => {
@@ -117,7 +115,7 @@ const Collection = () => {
                     genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
                 );
         });
-        setFilteredGames(filteredGames); // Update filtered games state
+        setFilteredGames(filteredGames);
         setSearchQuery(!searchQuery);
     }
     const handleSearchFilter = (e) => {
@@ -125,12 +123,12 @@ const Collection = () => {
         setSearchTerm(searchTerm);
 
         if (searchTerm === "") {
-            setFilteredGames(games); // Reset to original games if search term is empty
+            setFilteredGames(games);
         } else {
             const filteredResults = games.filter(game =>
                 game.name.toLowerCase().includes(searchTerm)
             );
-            setFilteredGames(filteredResults); // Update filtered games with filtered results
+            setFilteredGames(filteredResults);
             setFilters();
         }
     };
@@ -184,13 +182,12 @@ const Collection = () => {
         const progressBar = document.querySelector('.progressBar');
 
         if (boolean === true) {
-
             timeoutRef.current = setTimeout(() => {
                 setIsVisible(false);
-            }, 5000);
+            }, 2000);
             setTimeout(() => {
                 progressBar.classList.add('active');
-            }, 0); // Start the animation immediately after setting the timeout
+            }, 0);
         }
 
         else {
@@ -209,36 +206,8 @@ const Collection = () => {
     }
 
     return (
-        <div className='collectionComponent'>      <div className='wrapperSettings'>
-            <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
+        <div className='collectionComponent'>
 
-                {toastType === 'success' ? (
-                    <IoCheckmarkOutline size={15} className='icon success' />
-                ) : (
-                    <IoCloseCircleSharp size={15} className='icon failure' />
-                )}
-                <div className='message'>
-                    {toastType === 'success' && (
-                        <>
-                            <p><b>Success!</b></p>
-                            <p> Game successfully deleted! </p>
-                        </>
-                    )}
-                    {toastType === 'failure' && (
-                        <>
-                            <p><b>Failure!</b></p>
-                            <p> Server error. </p>
-                        </>
-                    )}
-
-                </div>
-                <IoCloseSharp className='close' onClick={() => handleToast()} />
-                <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
-                </div>
-            </div>
-
-
-        </div>
             <h1 className='collectionHeader'> Collection </h1>
             <div>
                 <div className="collectionFilter">
@@ -246,7 +215,7 @@ const Collection = () => {
                         type="text"
                         name='filter'
                         placeholder='Filter'
-                        ref={filterBarRef} // Assign ref to the input field
+                        ref={filterBarRef}
 
                         onChange={handleSearchFilter}
                     />
@@ -256,7 +225,36 @@ const Collection = () => {
                     </div>
                 </div>
             </div>
+            <div className='wrapperCollectionSettings'>
+                <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
 
+                    {toastType === 'success' ? (
+                        <IoCheckmarkOutline size={15} className='icon success' />
+                    ) : (
+                        <IoCloseCircleSharp size={15} className='icon failure' />
+                    )}
+                    <div className='message'>
+                        {toastType === 'success' && (
+                            <>
+                                <p><b>Success!</b></p>
+                                <p> Game successfully deleted! </p>
+                            </>
+                        )}
+                        {toastType === 'failure' && (
+                            <>
+                                <p><b>Failure!</b></p>
+                                <p> Server error. </p>
+                            </>
+                        )}
+
+                    </div>
+                    <IoCloseSharp className='close' onClick={() => handleToast()} />
+                    <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
+                    </div>
+                </div>
+
+
+            </div>
             <dialog ref={filterRef}>
                 {filter && (<Filter platforms={platforms} genres={genres} onFilter={addFilters} onClose={closeFilter} />)}
             </dialog>

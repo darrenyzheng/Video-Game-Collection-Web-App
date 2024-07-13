@@ -13,7 +13,6 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
   const { toggleLoggedIn } = useAuth();
   const navigate = useNavigate();
 
-  // Function to handle changing the active screenshot
   const increaseScreenshot = () => {
     setActiveScreenshot((activeScreenshot + 1) % screenshots.length);
   };
@@ -24,19 +23,18 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
   };
 
   const handleToast = (boolean) => {
-    setIsVisible(boolean);
     const progressBar = document.querySelector('.progressBar');
+    setIsVisible(boolean);
 
     if (boolean === true) {
-
       timeoutRef.current = setTimeout(() => {
         setIsVisible(false);
-      }, 5000);
+      }, 2000);
       setTimeout(() => {
         if (progressBar) {
           progressBar.classList.add('active');
         }
-      }, 0); // Start the animation immediately after setting the timeout
+      }, 0); 
     }
 
     else {
@@ -90,7 +88,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
         toggleLoggedIn(false);
         return;
       }
-      return response.json();
+      return response
     }).then(response => {
       if (response.status === 200) {
         return (response.json()).then(data => {
@@ -155,7 +153,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
       <div className='coverContainer'>
 
         {cover && <img src={`//images.igdb.com/igdb/image/upload/t_1080p/${cover.image_id}.jpg`} alt={name} />}
-        <div className='miscallenous'>
+        <div className='genrePlatformDiv'>
           {genres && (
             <div className='genreContainer'>
               <h3 className='genreHeader'>Genres</h3>
@@ -178,8 +176,8 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
           )}
         </div>
       </div>
-      <div className='rightSide'>
-        <div className='info'>
+      <div className='rightCard'>
+        <div className='cardInfo'>
           {rating && (
             <span className='ratingContainer'>   {Math.round(rating)} </span>)}
           {name && <h2 className='nameHeader'> {name} </h2>}
@@ -213,9 +211,9 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
         </div>
         {search && <form onSubmit={handleSubmit} className='addContainer' id='gameDetails'>
           {platforms && (
-            <div className="itemCondition">
+            <div className="formContainerWrapper">
               {platforms.map((platform, index) => (
-                <div className="itemConditionContainer">
+                <div className="itemStatus">
                   <input type="radio" name="platform" value={platform.name} required />
                   <div className='radioTile'>
                     <span className="radio-label-console"> {platform.name} </span>
@@ -225,15 +223,15 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
               ))}
             </div>
           )}
-          <div className="itemCondition">
-            <div className="itemConditionContainer">
+          <div className="formContainerWrapper">
+            <div className="itemStatus">
               <input type="radio" name="condition[]" value="loose" required />
               <div className='radioTile'>
                 <FaBoxOpen />
                 <span className="radio-label"> &nbsp; Loose </span>
               </div>
             </div>
-            <div className="itemConditionContainer">
+            <div className="itemStatus">
               <input type="radio" name="condition[]" value="complete" />
               <div className='radioTile'>
                 <FaBox />

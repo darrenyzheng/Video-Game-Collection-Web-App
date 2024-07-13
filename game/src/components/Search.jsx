@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IoSearch, IoFilter, IoFunnelOutline } from "react-icons/io5";
-import GameCover from "./GameCover"; // Ensure correct import for GameCover
-import GameCard from "./GameCard"; // Ensure correct import for GameCover
+import GameCover from "./GameCover"; 
+import GameCard from "./GameCard"; 
 import Filter from './Filter';
 
 const Search = () => {
-    const [games, setGames] = useState([]); // State for all games
-    const [filteredGames, setFilteredGames] = useState([]); // State for filtered games
-    const [searchTerm, setSearchTerm] = useState(''); // State to track search status
-    const [platforms, setPlatforms] = useState([]); // State for unique platforms
-    const [genres, setGenres] = useState([]); // State for unique genres
+    const [games, setGames] = useState([]); 
+    const [filteredGames, setFilteredGames] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [platforms, setPlatforms] = useState([]); 
+    const [genres, setGenres] = useState([]); 
     const filterBarRef = useRef(null);
     const [selectedGame, setSelectedGame] = useState(null);
     const [filter, setFilter] = useState(null);
@@ -52,7 +52,7 @@ const Search = () => {
         filterRef.current?.close();
         setFilter(false);
     }
-    // Function to handle form submission
+
     const handleSubmit = (event) => {
         setSearchTerm('');
 
@@ -76,7 +76,6 @@ const Search = () => {
             setGames(data);
             setSearchQuery();
 
-            // Extract unique genres and platforms
             const allGenres = data.flatMap(game => game.genres).filter(genre => genre !== undefined);
             const uniqueGenres = Array.from(new Set(allGenres.map(genre => genre.name)));
 
@@ -98,18 +97,17 @@ const Search = () => {
         });
     };
 
-    // Function to handle filtering based on input
     const handleSearchFilter = (e) => {
         const searchTerm = e.target.value.toLowerCase();
         setSearchTerm(searchTerm);
 
         if (searchTerm === "") {
-            setFilteredGames(games); // Reset to original games if search term is empty
+            setFilteredGames(games);
         } else {
             const filteredResults = games.filter(game =>
                 game.name.toLowerCase().includes(searchTerm)
             );
-            setFilteredGames(filteredResults); // Update filtered games with filtered results
+            setFilteredGames(filteredResults); 
             setFilters();
         }
     };
@@ -125,8 +123,8 @@ const Search = () => {
     }
 
     const addFilters = (filter) => {
-        setFilters(filter); // Update filters state with selected filters
-        // Apply filters to games based on selected platforms and genres
+        setFilters(filter); 
+
         const gamesWithGenresPlatforms = games.filter((game => game.genres && game.platforms));
 
         const filteredGames = gamesWithGenresPlatforms.filter(game => {
@@ -137,7 +135,7 @@ const Search = () => {
                     genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
                 );
         });
-        setFilteredGames(filteredGames); // Update filtered games state
+        setFilteredGames(filteredGames); 
         setSearchQuery(!searchQuery);
         console.log(filteredGames);
     }
@@ -175,8 +173,8 @@ const Search = () => {
                 {filter && (<Filter platforms={platforms} genres={genres} onFilter={addFilters} onClose={closeFilter} />)}
             </dialog>
             <form onSubmit={handleSubmit} className='searchQuery'>
-                <div className='interactable'>
-                    <div className="search">
+                <div className='searchableFilterableDiv'>
+                    <div className="searchField">
                         <input
                             type="text"
                             name='search'
@@ -186,12 +184,12 @@ const Search = () => {
                             <IoSearch size={30} />
                         </button>
                     </div>
-                    <div className="filter">
+                    <div className="filterField">
                         <input
                             type="text"
                             name='filter'
                             placeholder='Filter'
-                            ref={filterBarRef} // Assign ref to the input field
+                            ref={filterBarRef}
 
                             onChange={handleSearchFilter}
                         />

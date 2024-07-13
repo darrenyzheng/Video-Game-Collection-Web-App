@@ -43,7 +43,7 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
                 <div className='filterPlatformContainer'>
 
                     {platforms.map((platform, index) => (
-                        <div className="platformFilter">
+                        <div className="platformGenreFilter">
                             <input type="checkbox" name="platform" value={platform} onChange={handlePlatform} />
                             <div className='radioTile'>
                                 <span className="radio-label-console"> {platform} </span>
@@ -55,7 +55,7 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
                 <h2 className='filterHeaders'> Genres </h2>
                 <div className='filterGenreContainer'>
                     {genres.map((genre, index) => (
-                        <div className="platformFilter">
+                        <div className="platformGenreFilter">
                             <input type="checkbox" name="genre" value={genre} onChange={handleGenre} />
                             <div className='radioTile'>
                                 <span className="radio-label-console"> {genre} </span>
