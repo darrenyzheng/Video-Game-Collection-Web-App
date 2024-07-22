@@ -141,7 +141,7 @@ const Collection = () => {
     const deleteGame = (e, gameToDelete) => {
         e.stopPropagation();
         const token = localStorage.getItem('access');
-        fetch('https://videogamecollectionwebapp.vercel.app/deleteGame', {
+        fetch('http://localhost:5000/deleteGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
