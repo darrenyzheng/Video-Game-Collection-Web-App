@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@playwright/test": "^1.45.2"
+    "@playwright/test": "^1.45.2",
+    "@types/cors": "^2.8.17"
   }
 }
