@@ -1,1 +1,1 @@
-{ "version": 2, "routes": [{ "source": "/(.*)", "destination": "/server.mjs" }] }
+{ "version": 2, "routes": [{ "src": "/(.*)", "destination": "/server.mjs" }] }
