@@ -41,7 +41,7 @@ function isPasswordValid(password) {
 }
 
 
-app.post('/search', (req, res) => {
+app.post('/api/search', (req, res) => {
 
     const url = new URL('https://api.igdb.com/v4/games');
     const search = req.body.search;
@@ -70,7 +70,7 @@ app.post('/search', (req, res) => {
 });
 
 
-app.post('/users',
+app.post('/api/users',
     body('username')
         .custom(isUsernameValid)
         .withMessage('Invalid username'),
@@ -112,7 +112,7 @@ app.post('/users',
     }
 );
 
-app.post('/login',
+app.post('/api/login',
     body('username')
         .custom(isUsernameValid)
         .withMessage('Invalid username'),
@@ -145,7 +145,7 @@ app.post('/login',
 );
 
 
-app.get('/settings', verifyToken, async (req, res) => {
+app.get('/api/settings', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
@@ -167,7 +167,7 @@ app.get('/settings', verifyToken, async (req, res) => {
     }
 });
 
-app.post('/settings', verifyToken,
+app.post('/api/settings', verifyToken,
     body('emailAddress')
         .custom(isEmailAddressValid)
         .withMessage('Invalid email address'),
@@ -202,7 +202,7 @@ app.post('/settings', verifyToken,
         }
     });
 
-app.get('/collection', verifyToken, async (req, res) => {
+app.get('/api/collection', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
@@ -224,7 +224,7 @@ app.get('/collection', verifyToken, async (req, res) => {
     }
 });
 
-app.post('/addGame', verifyToken, async (req, res) => {
+app.post('/api/addGame', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();
@@ -252,7 +252,7 @@ app.post('/addGame', verifyToken, async (req, res) => {
 
 })
 
-app.post('/deleteGame', verifyToken, async (req, res) => {
+app.post('/api/deleteGame', verifyToken, async (req, res) => {
     try {
         const payload = jwt.verify(req.token, process.env.Secret_Key);
         const user = await User.findOne({ username: payload.sanitizedUser.username }).exec();

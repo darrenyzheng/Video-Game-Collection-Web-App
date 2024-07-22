@@ -72,7 +72,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            fetch('https://videogamecollectionwebapp.vercel.app/login', {
+            fetch('https://videogamecollectionwebapp.vercel.app/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
