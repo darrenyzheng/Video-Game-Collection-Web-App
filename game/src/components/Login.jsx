@@ -18,11 +18,11 @@ const Login = () => {
     const [toastType, setToastType] = useState();
     const [isVisible, setIsVisible] = useState();
     const timeoutRef = useRef(null);
-    const {toggleLoggedIn } = useAuth();
+    const { toggleLoggedIn } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        const newValues = {...values, [e.target.name] : e.target.value};
+        const newValues = { ...values, [e.target.name]: e.target.value };
         setValues(newValues);
     }
 
@@ -59,7 +59,7 @@ const Login = () => {
             }, 2000);
             setTimeout(() => {
                 progressBar.classList.add('active');
-            }, 0); 
+            }, 0);
         }
 
         else {
@@ -81,11 +81,11 @@ const Login = () => {
             }).then(response => {
                 if (response.status === 201) {
                     return (response.json()).then(data => {
+                        navigate("/collection");
                         toggleLoggedIn(true);
                         const token = data.token;
                         localStorage.setItem('access', token);
-                        navigate("/collection");
-                    }); 
+                    });
                 }
                 else if (response.status === 401) {
                     return (response.json()).then(data => {
@@ -106,9 +106,7 @@ const Login = () => {
             <div className='wrapper'>
                 <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
 
-                    {toastType === 'success' ? (
-                        <IoCheckmarkOutline size={15} className='icon success' />
-                    ) : toastType === 'warning' ? (
+                    {toastType === 'warning' ? (
                         <IoWarningOutline size={15} className='icon warning' />
                     ) : (
                         <IoCloseCircleSharp size={15} className='icon failure' />
@@ -116,19 +114,19 @@ const Login = () => {
                     <div className='message'>
                         {toastType === 'warning' && (
                             <>
-                                <p><b>Warning!</b></p>
-                                <p> Incorrect username or password. Please try again.</p>
+                                <p aria-label="warning-title"> <b>Warning!</b></p>
+                                <p aria-label="warning-message"> Incorrect username or password. Please try again.</p>
                             </>
                         )}
                         {toastType === 'failure' && (
                             <>
-                                <p><b>Failure!</b></p>
-                                <p> Server error. </p>
+                                <p aria-label="failure-title"><b>Failure!</b></p>
+                                <p aria-label="failure-message"> Server error. </p>
                             </>
                         )}
 
                     </div>
-                    <IoCloseSharp className='close' onClick={() => handleToast()} />
+                    <IoCloseSharp className='close' aria-label='closeToast' onClick={() => handleToast()} />
                     <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
                     </div>
                 </div>
@@ -141,12 +139,12 @@ const Login = () => {
                 <h2 className='header'> Continue your adventure. </h2>
                 <GiSwordsEmblem size={30} />
             </div>
-            <form onSubmit = {handleSubmit} action = '/login' method ='POST'>
+            <form onSubmit={handleSubmit} action='/login' method='POST'>
                 <div className='inputs'>
                     <div className='input'>
                         <IoPerson className='inputImg' />
                         <input
-                            name ='username'
+                            name='username'
                             id='username'
                             type='text'
                             placeholder='Username'
@@ -154,12 +152,12 @@ const Login = () => {
                             required>
                         </input>
                     </div>
-                    {errors.username && <p className='registerError'> {errors.username} </p>}
+                    {errors.username && <p className='registerError' aria-describedby='usernameError' role='alert'> {errors.username} </p>}
 
                     <div className='input'>
                         <IoLockClosed className='inputImg' />
                         <input
-                            name = 'password'
+                            name='password'
                             id='password'
                             type='password'
                             placeholder='Password'
@@ -167,7 +165,7 @@ const Login = () => {
                             required>
                         </input>
                     </div>
-                    {errors.password && <p className='registerError'> {errors.password} </p>}
+                    {errors.password && <p className='registerError' aria-describedby='passwordError' role='alert'> {errors.password} </p>}
 
                     <button className='form-button'
                         type='submit'

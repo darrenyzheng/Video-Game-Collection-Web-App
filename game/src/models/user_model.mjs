@@ -64,9 +64,39 @@ const createUser = async (username, emailAddress, password) => {
     return user;
 }
 
+const verifyUser = async (username) => {
+    try {
+        const user = await User.findOne({ username });
+        if (user) {
+            return true;
+        }
+        return false;
+    }
+    catch (err) {
+        throw err;
+
+    }
+}
+
+const deleteUser = async (username) => {
+    try {
+        const result = await User.findOneAndDelete({ username });
+        if (!result) {
+            console.log(`${username} not found`);
+            return false;
+        }
+        console.log(`${username} deleted successfully.`)
+        return true;
+    }
+    catch (err) {
+        console.log(`Error: ${err}`)
+        throw err;
+    }
+}
+
 const editUser = async (user, userDetails, newPassword) => {
     try {
-        const count = await User.countDocuments({emailAddress: userDetails.emailAddress});
+        const count = await User.countDocuments({ emailAddress: userDetails.emailAddress });
         if (count > 0 && user.emailAddress != userDetails.emailAddress) {
             return false;
         }
@@ -87,24 +117,20 @@ const editUser = async (user, userDetails, newPassword) => {
 
 userSchema.pre('save', async function (next) {
     try {
-        const salt = await bcrypt.genSalt();
-        const hash = await bcrypt.hash(this.password, salt);
-        this.password = hash;
-        return next();
+        if (this.isModified('password')) {
+            const salt = await bcrypt.genSalt();
+            const hash = await bcrypt.hash(this.password, salt);
+            this.password = hash;
+            return next();
+        }
     } catch (error) {
         return next(error);
     }
 });
 
-userSchema.methods.updatePassword = async function(newPassword) {
-    try {
-        const salt = await bcrypt.genSalt();
-        const hash = await bcrypt.hash(newPassword, salt);
-        this.password = hash;
-        return;
-    } catch (error) {
-        return next(error);
-    }
+userSchema.methods.updatePassword = async function (newPassword) {
+    this.password = newPassword;
+    await this.save();
 };
 
 userSchema.statics.login = async function (username, password) {
@@ -113,14 +139,14 @@ userSchema.statics.login = async function (username, password) {
         if (!user) {
             return false;
         }
-        const correctPassword = bcrypt.compare(password, user.password);
+        const correctPassword = await bcrypt.compare(password, user.password);
         if (!correctPassword) {
             return false;
         }
         return user;
     } catch (error) {
         console.error('Error during login:', error);
-        throw error; 
+        throw error;
     }
 };
 
@@ -175,4 +201,4 @@ const deleteGame = async (user, id) => {
 
 const User = mongoose.model("User", userSchema);
 
-export { createUser, saveGame, deleteGame, editUser, User }
+export { createUser, verifyUser, saveGame, deleteGame, editUser, deleteUser, User }

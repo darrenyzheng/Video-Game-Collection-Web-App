@@ -47,7 +47,6 @@
 .filterText {
   color: white;
   margin-left: 40px;
-  margin-top: 10px
 }
 
 .collectionFilter {
@@ -60,6 +59,10 @@
   margin-left: 20px;
 }
 
+.filterData {
+  display: flex;
+  flex-direction: column;
+}
 /*************************************************************************
 * CSS CLASSES FOR STATISTICS 
 *************************************************************************/
@@ -325,7 +328,7 @@
   display: flex;
   align-items: center;
   background: #eaeaea;
-  height: 55px;
+  height: 45px;
   width: 100%;
   border-radius: 6px;
   border: 1px solid black;
@@ -561,7 +564,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 }
 
 .searchHeader {
@@ -643,29 +646,29 @@
   font-family: 'Raedex Pro', sans-serif;
   padding: 0.5em 1em;
   margin: 0.25em;
+  height: 47px;
   border-radius: 1em;
   border: none;
   outline: none;
   background-color: #155EEF;
   color: white;
-  width: 15%;
   box-sizing: border-box;
   cursor: pointer;
-  display: flex;
   justify-content: space-evenly;
   align-items: center;
-  min-width: 185px;
+  width: 300px;
   margin-left: 40px;
-  margin-top: 20px;
-  height: 5%;
+
 }
 
 .gamesList {
   display: flex;
   flex-wrap: wrap;
   padding-left: 20px;
-  padding-top: 20px;
+  padding-top: 30px;
   width: 100%;
+  min-height: 0;
+  height: 100%;
 }
 
 .gameWrapper {
@@ -750,7 +753,7 @@
   border-radius: 10px;
 }
 
-.platformGenreFilter {
+.platformFilter, .genreFilter {
   position: relative;
   border: 1px solid white;
   height: 4em;
@@ -761,7 +764,7 @@
 }
 
 
-.platformGenreFilter input {
+.platformFilter input, .genreFilter input {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -1109,16 +1112,26 @@
   box-sizing: border-box;
 }
 
-.platformGenreFilter input[type="checkbox"]:checked+.radioTile {
+.platformFilter input[type="checkbox"]:checked+.radioTile {
   background-color: black;
   color: white;
 }
 
-.platformGenreFilter input[type="checkbox"]:hover+.radioTile {
-  background-color: darkgray;
+.genreFilter input[type="checkbox"]:checked+.radioTile {
+  background-color: black;
+  color: white;
 }
 
 
+.genreFilter input[type="checkbox"]:hover+.radioTile {
+  background-color: darkgray;
+}
+
+.genreFilter input[type="checkbox"]:hover+.radioTile {
+  background-color: darkgray;
+}
+
+/* 
 @media (max-height: 1080px) {
   .rightSide {
     padding: 10px;
@@ -1146,6 +1159,6 @@
     max-width: 100%;
     height: auto;
   }
-}
+} */
 
 

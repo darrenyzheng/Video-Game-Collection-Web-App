@@ -236,8 +236,8 @@ const Collection = () => {
                     <div className='message'>
                         {toastType === 'success' && (
                             <>
-                                <p><b>Success!</b></p>
-                                <p> Game successfully deleted! </p>
+                                <p aria-label='success-title'><b>Success!</b></p>
+                                <p aria-label='success-message'> Game successfully deleted! </p>
                             </>
                         )}
                         {toastType === 'failure' && (
@@ -325,7 +325,7 @@ const Collection = () => {
                                     <div className='gameInfo'
                                         onClick={() => handleClick(game)}
                                     >
-                                        <IoTrashSharp size={30} className='trashCan' onClick={(e) => deleteGame(e, game)} />
+                                        <IoTrashSharp size={30} className='trashCan' aria-label='Delete Game' onClick={(e) => deleteGame(e, game)} />
 
                                         <p> Consoles owned: </p>
                                         {Object.entries(game.platformOwned).map(([console, owned], index) => (

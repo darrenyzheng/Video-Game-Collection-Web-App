@@ -36,15 +36,15 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
     return (
         <div className='filterComponent'>
             <h1 className='filterHeaders'> Filter on Genre and Platform</h1>
-            <IoCloseCircle className='closeFilter' size={30} onClick={onClose} />
+            <IoCloseCircle className='closeFilter' size={30} onClick={onClose} aria-label='Close filter'/>
 
             <form action="" className='filterForm'>
                 <h2 className='filterHeaders'> Platforms </h2>
                 <div className='filterPlatformContainer'>
 
                     {platforms.map((platform, index) => (
-                        <div className="platformGenreFilter">
-                            <input type="checkbox" name="platform" value={platform} onChange={handlePlatform} />
+                        <div className="platformFilter">
+                            <input type="checkbox" className="platformFilterOption" name="platform" value={platform} onChange={handlePlatform} aria-label={platform} />
                             <div className='radioTile'>
                                 <span className="radio-label-console"> {platform} </span>
                             </div>
@@ -55,8 +55,8 @@ const Filter = ({ platforms, genres, onFilter, onClose }) => {
                 <h2 className='filterHeaders'> Genres </h2>
                 <div className='filterGenreContainer'>
                     {genres.map((genre, index) => (
-                        <div className="platformGenreFilter">
-                            <input type="checkbox" name="genre" value={genre} onChange={handleGenre} />
+                        <div className="genreFilter">
+                            <input type="checkbox" name="genre" className="genreFilterOption" value={genre} onChange={handleGenre} aria-label={genre} />
                             <div className='radioTile'>
                                 <span className="radio-label-console"> {genre} </span>
                             </div>

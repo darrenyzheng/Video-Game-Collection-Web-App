@@ -138,28 +138,28 @@ const SignUp = () => {
                     ) : (
                         <IoCloseCircleSharp size={15} className='icon failure' />
                     )}
-                    <div className='message'>
+                    <div className='message' aria-describedby='toast'>
                         {toastType === 'success' && (
                             <>
-                                <p><b>Success!</b></p>
-                                <p>User can now log in.</p>
+                                <p aria-label="success-title"><b>Success!</b></p>
+                                <p aria-label="success-message">User can now log in.</p>
                             </>
                         )}
                         {toastType === 'warning' && (
                             <>
-                                <p><b>Warning!</b></p>
-                                <p> Check for errors.</p>
+                                <p aria-label="warning-title"><b>Warning!</b></p>
+                                <p aria-label="warning-message">Check for errors.</p>
                             </>
                         )}
                         {toastType === 'failure' && (
                             <>
-                                <p><b>Failure!</b></p>
-                                <p> Server error. </p>
+                                <p aria-label="failure-title"><b>Failure!</b></p>
+                                <p aria-label="failure-message">Server error.</p>
                             </>
                         )}
 
                     </div>
-                    <IoCloseSharp className='close' onClick={() => handleToast()} />
+                    <IoCloseSharp className='close' aria-label='closeToast' onClick={() => handleToast()} />
                     <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ const SignUp = () => {
                             required>
                         </input>
                     </div>
-                    {errors.username && <p className='registerError'> {errors.username} </p>}
+                    {errors.username && <p className='registerError' aria-describedby='usernameError' role='alert'> {errors.username} </p>}
 
                     <div className='input'>
                         <IoMail className='inputImg' />
@@ -200,7 +200,7 @@ const SignUp = () => {
                         </input>
                     </div>
 
-                    {errors.emailAddress && <p className='registerError'> {errors.emailAddress} </p>}
+                    {errors.emailAddress && <p className='registerError' aria-describedby='emailAddressError' role='alert'> {errors.emailAddress} </p>}
                     <div className='input'>
                         <IoLockClosed className='inputImg' />
                         <input
@@ -212,7 +212,7 @@ const SignUp = () => {
                             required>
                         </input>
                     </div>
-                    {errors.password && <p className='registerError'> {errors.password} </p>}
+                    {errors.password && <p className='registerError' aria-describedby='passwordError' role='alert'> {errors.password} </p>}
 
                     <button className='form-button'
                         type='submit'

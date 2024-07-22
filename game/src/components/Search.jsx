@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IoSearch, IoFilter, IoFunnelOutline } from "react-icons/io5";
-import GameCover from "./GameCover"; 
-import GameCard from "./GameCard"; 
+import GameCover from "./GameCover";
+import GameCard from "./GameCard";
 import Filter from './Filter';
 
 const Search = () => {
-    const [games, setGames] = useState([]); 
+    const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [platforms, setPlatforms] = useState([]); 
-    const [genres, setGenres] = useState([]); 
+    const [platforms, setPlatforms] = useState([]);
+    const [genres, setGenres] = useState([]);
     const filterBarRef = useRef(null);
     const [selectedGame, setSelectedGame] = useState(null);
     const [filter, setFilter] = useState(null);
@@ -90,7 +90,6 @@ const Search = () => {
             if (filterBarRef.current) {
                 filterBarRef.current.value = '';
             }
-            console.log(games);
 
         }).catch(error => {
             console.error('Fetch error:', error);
@@ -107,7 +106,7 @@ const Search = () => {
             const filteredResults = games.filter(game =>
                 game.name.toLowerCase().includes(searchTerm)
             );
-            setFilteredGames(filteredResults); 
+            setFilteredGames(filteredResults);
             setFilters();
         }
     };
@@ -123,7 +122,7 @@ const Search = () => {
     }
 
     const addFilters = (filter) => {
-        setFilters(filter); 
+        setFilters(filter);
 
         const gamesWithGenresPlatforms = games.filter((game => game.genres && game.platforms));
 
@@ -135,11 +134,10 @@ const Search = () => {
                     genres.length === 0 || game.genres.some(genre => genres.includes(genre.name))
                 );
         });
-        setFilteredGames(filteredGames); 
+        setFilteredGames(filteredGames);
         setSearchQuery(!searchQuery);
-        console.log(filteredGames);
     }
-    
+
     const clearFilters = () => {
         setFilters();
         setSearchQuery();
@@ -169,7 +167,7 @@ const Search = () => {
                 )}
             </dialog>
 
-            <dialog ref={filterRef}>
+            <dialog aria-label='FilterModal' ref={filterRef}>
                 {filter && (<Filter platforms={platforms} genres={genres} onFilter={addFilters} onClose={closeFilter} />)}
             </dialog>
             <form onSubmit={handleSubmit} className='searchQuery'>
@@ -193,33 +191,38 @@ const Search = () => {
 
                             onChange={handleSearchFilter}
                         />
+
                         <div className='filterSvgContainer'>
                             <IoFilter size={30}
-                                onClick={showFilter} />
+                                onClick={showFilter} aria-label="Filter Modal Button" />
                         </div>
                     </div>
                 </div>
 
             </form>
+
+            <div className='filterData'>
+            {(searchTerm || searchQuery !== undefined) &&
+                <button className='clearFilterButton' onClick={clearFilters}>
+                    <IoFunnelOutline />
+                    <p>
+                        Clear Filters
+                    </p>
+                </button>
+            }
             {filters && filters.genres && filters.genres.length > 0 && <p className='filterText'> Selected genre: {filters.genres.join(', ')}  </p>}
             {filters && filters.platforms && filters.platforms.length > 0 && <p className='filterText'> Selected platform: {filters.platforms.join(', ')} </p>}
-            {(searchTerm || searchQuery !== undefined) && <button className='clearFilterButton' onClick={clearFilters}>
-                <IoFunnelOutline />
-                <p>
-                    Clear Filters
-                </p>
-            </button>}
-            <div className="gamesList">
+            </div>
+            {games.length && (<div className="gamesList" aria-label='List of Games'>
                 {searchTerm || searchQuery !== undefined ? (
                     filteredGames.map(filteredGame => (
                         <div key={filteredGame.id}>
                             {filteredGame.cover && (
-                                <div className='gameWrapper'>
-
+                                <div className='gameWrapper' aria-label='game' onClick={() => handleClick(filteredGame)}>
                                     <GameCover
                                         key={filteredGame.id}
                                         cover={filteredGame.cover}
-                                        onClick={() => handleClick(filteredGame)}
+                                        
                                     />
                                     <h5>{filteredGame.name}</h5>
 
@@ -231,12 +234,11 @@ const Search = () => {
                     games.map(game => (
                         <div key={game.id}>
                             {game.cover && (
-                                <div className='gameWrapper'>
-
+                                <div className='gameWrapper' aria-label='game'onClick={() => handleClick(game)}>
                                     <GameCover
                                         key={game.id}
                                         cover={game.cover}
-                                        onClick={() => handleClick(game)}
+                                        
                                     />
                                     <h5>{game.name}</h5>
 
@@ -247,6 +249,7 @@ const Search = () => {
                     ))
                 )}
             </div>
+            )}
 
         </div>
     );

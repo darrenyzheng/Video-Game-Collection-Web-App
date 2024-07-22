@@ -52,7 +52,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
     const form = document.getElementById('gameDetails');
     const formData = new FormData(form);
 
-    const condition = formData.get('condition[]');
+    const condition = formData.get('condition');
     const platform = formData.get('platform');
 
     const game = {
@@ -124,14 +124,14 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
           <div className='message'>
             {toastType === 'success' && (
               <>
-                <p><b>Success!</b></p>
-                <p> Game successfully added! </p>
+                <p aria-label="success-title"><b>Success!</b></p>
+                <p aria-label='success-message'> Game successfully added! </p>
               </>
             )}
             {toastType === 'warning' && (
               <>
-                <p><b>Warning!</b></p>
-                <p> This game and condition already exist in the database. </p>
+                <p aria-label='warning-title'><b>Warning!</b></p>
+                <p aria-label='warning-message'> This game and condition already exist in the database. </p>
               </>
             )}
             {toastType === 'failure' && (
@@ -159,7 +159,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
               <h3 className='genreHeader'>Genres</h3>
               <ul>
                 {genres.map((g, index) => (
-                  <li className='genreItems' key={index}>{g.name}</li>
+                  <li className='genreItems' key={index} aria-label={g.name}>{g.name} </li>
                 ))}
               </ul>
             </div>
@@ -169,7 +169,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
               <h3 className='platformHeader'>Platforms</h3>
               <ul>
                 {platforms.map((platform, index) => (
-                  <li className='platformItems' key={index}>{platform.name}</li>
+                  <li className='platformItems' key={index} aria-label={platform.name}>{platform.name}</li>
                 ))}
               </ul>
             </div>
@@ -225,14 +225,14 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
           )}
           <div className="formContainerWrapper">
             <div className="itemStatus">
-              <input type="radio" name="condition[]" value="loose" required />
+              <input type="radio" name="condition" value="loose" required />
               <div className='radioTile'>
                 <FaBoxOpen />
                 <span className="radio-label"> &nbsp; Loose </span>
               </div>
             </div>
             <div className="itemStatus">
-              <input type="radio" name="condition[]" value="complete" />
+              <input type="radio" name="condition" value="complete" />
               <div className='radioTile'>
                 <FaBox />
 
@@ -253,7 +253,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
 
 
       </div >
-      <IoCloseCircle className='closeModal' size={30} onClick={onClose} />
+      <IoCloseCircle className='closeModal' size={30} onClick={onClose} aria-label='Close Game Card' />
     </div >
 
   );
