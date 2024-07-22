@@ -1,1 +1,24 @@
-{ "version": 2, "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }] }
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/server.mjs",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "game/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "game/build" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/server.mjs"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/game/build/index.html"
+    }
+  ]
+}
