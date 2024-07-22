@@ -33,7 +33,7 @@ const Collection = () => {
             toggleLoggedIn(false);
             return;
         };
-        fetch('https://videogamecollectionwebapp.vercel.app/api/collection', {
+        fetch('http://localhost:5000/api/collection', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const Collection = () => {
     const deleteGame = (e, gameToDelete) => {
         e.stopPropagation();
         const token = localStorage.getItem('access');
-        fetch('https://videogamecollectionwebapp.vercel.app/api/deleteGame', {
+        fetch('http://localhost:5000/api/deleteGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -77,7 +77,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            fetch('https://videogamecollectionwebapp.vercel.app/api/users', {
+            fetch('http://localhost:5000/api/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
