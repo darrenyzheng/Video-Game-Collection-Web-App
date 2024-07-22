@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "game/api/server.mjs",
+        "src": "game/server.mjs",
         "use": "@vercel/node"
       },
       {
@@ -15,8 +15,8 @@
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
-        "dest": "/game/api/server.mjs"
+        "src": "/(.*)\\.js",
+        "dest": "/game/server.mjs"
       },
       {
         "src": "/(.*)",
