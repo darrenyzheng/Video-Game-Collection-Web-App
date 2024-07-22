@@ -3,7 +3,7 @@
     "rewrites": [
       {
         "source": "/api/(.*)",
-        "destination": "/game/api/$1"
+        "destination": "/api/" 
       }
     ]
   }
