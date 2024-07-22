@@ -6,10 +6,10 @@
         "use": "@vercel/node"
       },
       {
-        "src": "game/components/build/index.html",
+        "src": "game/public/index.html",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "game/components/build"
+          "distDir": "game/public"
         }
       }
     ],
@@ -20,7 +20,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "/game/components/build/$1"
+        "dest": "/game/public/$1"
       }
     ]
   }
