@@ -1,15 +1,26 @@
 {
     "version": 2,
     "builds": [
-        {
-            "src": "index.js",
-            "use": "@vercel/node"
+      {
+        "src": "game/src/index.js",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "game/build"
         }
+      },
+      {
+        "src": "game/server.mjs",
+        "use": "@vercel/node"
+      }
     ],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/server.mjs"
-        }
+      {
+        "src": "/server.mjs",
+        "dest": "/game/server.mjs"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/game/build/$1"
+      }
     ]
-}
+  }
