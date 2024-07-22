@@ -16,7 +16,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { body, validationResult } from 'express-validator';
 
-import { createUser, User, editUser, saveGame, deleteGame } from '../src/models/user_model.mjs';
+import { createUser, User, editUser, saveGame, deleteGame } from './src/models/user_model.mjs';
 const app = express();
 
 const port = 5000;
@@ -299,4 +299,4 @@ app.listen(port, (error) => {
     else { "Error occurred, server can't start", error }
 })
 
-module.exports = app;
+export default server;
