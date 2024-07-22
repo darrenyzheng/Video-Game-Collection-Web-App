@@ -21,7 +21,13 @@ const app = express();
 
 const port = 5000;
 
-app.use(cors());
+const corsOptions = {
+    origin: '*', // Allow all origins (use a specific domain in production)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+};
+
+app.use(cors(corsOptions)); // Apply CORS with options
 app.use(express.json());
 app.use(bodyParser.json());
 
