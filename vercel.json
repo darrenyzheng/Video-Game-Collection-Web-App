@@ -1,14 +1,5 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "game/src/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "game/src/build"
-        }
-      }
-    ],
     "routes": [
       {
         "src": "/(.*)",
