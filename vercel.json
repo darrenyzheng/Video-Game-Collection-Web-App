@@ -1,13 +1,1 @@
-{
-    "version": 2,
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/game/server.mjs"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/game/public/$1"
-      }
-    ]
-  }
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/server.mjs" }] }
