@@ -1,1 +1,1 @@
-{ "version": 2, "rewrites": [{ "source": "api/(.*)", "destination": "/game/server.mjs" }] }
+{ "version": 2, "rewrites": [{ "source": "api/(.*)", "destination": "/game/api/" }] }
