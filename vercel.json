@@ -15,7 +15,7 @@
     ],
     "routes": [
       {
-        "src": "/game/(.*)",
+        "src": "/(.*)",
         "dest": "/game/server.mjs"
       },
       {
