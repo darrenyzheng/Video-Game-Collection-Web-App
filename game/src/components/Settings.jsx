@@ -48,7 +48,7 @@ const Settings = () => {
             toggleLoggedIn(false);
             return;
         };
-        fetch('http://localhost:5000/settings', {
+        fetch('https://videogamecollectionwebapp.vercel.app/settings', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const Settings = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access');
-        fetch('http://localhost:5000/settings', {
+        fetch('https://videogamecollectionwebapp.vercel.app/settings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

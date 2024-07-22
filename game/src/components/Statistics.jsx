@@ -44,7 +44,7 @@ const Statistics = () => {
       navigate("/login");
       return;
     };
-    fetch('http://localhost:5000/collection', {
+    fetch('https://videogamecollectionwebapp.vercel.app/collection', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

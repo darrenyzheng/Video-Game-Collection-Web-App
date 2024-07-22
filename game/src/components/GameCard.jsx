@@ -74,7 +74,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
       toggleLoggedIn(false);
       return;
     };
-    fetch('http://localhost:5000/addGame', {
+    fetch('https://videogamecollectionwebapp.vercel.app/addGame', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

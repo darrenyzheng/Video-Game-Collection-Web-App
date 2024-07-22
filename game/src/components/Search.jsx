@@ -61,7 +61,7 @@ const Search = () => {
         const objectFormData = Object.fromEntries(formData.entries());
         const jsonObjectFormData = JSON.stringify(objectFormData);
 
-        fetch('http://localhost:5000/search', {
+        fetch('https://videogamecollectionwebapp.vercel.app/search', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
