@@ -17,10 +17,6 @@
       {
         "src": "/api/(.*)",
         "dest": "/game/server.mjs"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/game/build/$1"
       }
     ]
 }
