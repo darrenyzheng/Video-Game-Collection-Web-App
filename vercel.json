@@ -15,12 +15,12 @@
     ],
     "routes": [
       {
-        "src": "/static/(.*)",
-        "dest": "/game/build/static/$1"
-      },
-      {
         "src": "/(.*)",
         "dest": "/game/build/$1"
+      },
+      {
+        "src": "/server.mjs",
+        "dest": "/game/server.mjs"
       }
     ]
   }
