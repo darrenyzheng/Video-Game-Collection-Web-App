@@ -78,7 +78,7 @@ test('Search for game to add, add game, and check to see if it increases the tot
     await collectionPage.deleteMostRecentGame();
     await collectionPage.checkSuccessToast();
 
-    // check to see if the saeme amunt of games 
+    // check to see if the same amount of games 
     await stastisticsPage.goto();
     await stastisticsPage.compareAmountOfGames(totalGamesBeforeAdd);
   });
