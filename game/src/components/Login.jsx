@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { IoPerson, IoLockClosed, IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
+import { IoPerson, IoLockClosed, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
 import { GiSwordsEmblem } from "react-icons/gi";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from 'react-router-dom';
