@@ -31,6 +31,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#lessons-learned">Lessons Learned</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -176,7 +177,9 @@ Project Link: [https://github.com/darrenyzheng/Video-Game-Collection-Web-App](ht
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Lessons Learned 
+<!-- LESSONS LEARNED -->
+
+## Lessons Learned 
 
 <p> This is the first time that I was able to consume data from a public API rather than using static data. I had some trouble getting started because I was not sure of the format, so I had initially tested it with Postman and configuring with the headers. Once I was able to get data from the API, I switched to using my server and using a route handler for the endpoint. Otherwise, passing down a global variable using useContext so that I can have a state variable be available for my sidebar when I'm logged in / out was a big revalation.   </p>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
