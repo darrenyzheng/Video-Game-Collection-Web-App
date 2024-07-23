@@ -86,7 +86,7 @@ I've always loved video games. As a kid, I played them and collected them. Unfor
    const Authorization = 'Bearer ENTER YOUR OAUTH FROM API";
    const MONGODB_CONNECT_STRING = 'ENTER YOUR KEY'
    ```
-6.    
+6.  Start the application    
    ```sh
     cd game
     npm start 
