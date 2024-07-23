@@ -86,13 +86,14 @@ I've always loved video games. As a kid, I played them and collected them. Unfor
    const Authorization = 'Bearer ENTER YOUR OAUTH FROM API";
    const MONGODB_CONNECT_STRING = 'ENTER YOUR KEY'
    ```
-6.    ```sh
-   cd game 
-   node server.mjs
-
-   cd game
-   npm start
-   ```
+6.    
+   ```sh
+    cd game
+    npm start 
+     
+    cd game
+    node server.mjs
+    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
