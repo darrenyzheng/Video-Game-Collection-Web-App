@@ -6,7 +6,7 @@
   <a href="https://github.com/darrenyzheng/Video-Game-Collection-Web-App">
   </a>
 
-  <h3 align="center">Video-Game-Collection-Web-App</h3>
+  <h3 align="center">Video Game Collection Web App</h3>
 
 </div>
 
