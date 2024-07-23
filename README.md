@@ -69,7 +69,6 @@ I've always loved video games. As a kid, I played them and collected them. Unfor
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Get a free API Key at [https://api-docs.igdb.com/#getting-started] (https://api-docs.igdb.com/#getting-started)
 2. Get a MongoDB Atlas Cluster connect String at [https://www.mongodb.com/] (https://www.mongodb.com/)
@@ -94,8 +93,6 @@ _Below is an example of how you can instruct your audience on installing and set
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples, and demos work well in this space. You may also link to more resources.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
