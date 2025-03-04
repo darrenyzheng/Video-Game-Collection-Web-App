@@ -68,11 +68,14 @@ const Login = () => {
         }
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        const apiUrl = import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000/api'
+        : '/api';  
+
         if (handleValidation()) {
-            fetch('http://localhost:5000/api/user/login', {
+            fetch(`${apiUrl}/user/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -127,11 +130,8 @@ const Login = () => {
 
                     </div>
                     <IoCloseSharp className='close' aria-label='closeToast' onClick={() => handleToast()} />
-                    <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
-                    </div>
+                    <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`} />
                 </div>
-
-
             </div>
 
             <div className='headings'>

@@ -25,6 +25,10 @@ const Collection = () => {
     const timeoutRef = useRef(null);
     const { toggleLoggedIn } = useAuth();
 
+    const apiUrl = import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000/api'
+        : '/api';  
+
     useEffect(() => {
         const token = localStorage.getItem('access');
         if (token === null) {
@@ -32,7 +36,7 @@ const Collection = () => {
             toggleLoggedIn(false);
             return;
         };
-        fetch('http://localhost:5000/api/collection', {
+        fetch(`${apiUrl}/collection`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,6 +70,7 @@ const Collection = () => {
                 handleToast(true);
             });
     }, [navigate, toggleLoggedIn]);
+
     useEffect(() => {
         if (!selectedGame) {
             return;
@@ -98,6 +103,7 @@ const Collection = () => {
         filterRef.current?.close();
         setFilter(false);
     }
+
     const handleClick = (game) => {
         setSelectedGame(game);
     }
@@ -117,6 +123,7 @@ const Collection = () => {
         setFilteredGames(filteredGames);
         setSearchQuery(!searchQuery);
     }
+
     const handleSearchFilter = (e) => {
         const searchTerm = e.target.value.toLowerCase();
         setSearchTerm(searchTerm);
@@ -140,7 +147,7 @@ const Collection = () => {
     const deleteGame = (e, gameToDelete) => {
         e.stopPropagation();
         const token = localStorage.getItem('access');
-        fetch('http://localhost:5000/api/collection/deleteGame', {
+        fetch(`${apiUrl}/collection/deleteGame`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -206,7 +213,6 @@ const Collection = () => {
 
     return (
         <div className='collectionComponent'>
-
             <h1 className='collectionHeader'> Collection </h1>
             <div>
                 <div className="collectionFilter">
@@ -215,18 +221,15 @@ const Collection = () => {
                         name='filter'
                         placeholder='Filter'
                         ref={filterBarRef}
-
                         onChange={handleSearchFilter}
                     />
                     <div className='filterSvgContainer'>
-                        <IoFilter size={30}
-                            onClick={showFilter} />
+                        <IoFilter size={30} onClick={showFilter} />
                     </div>
                 </div>
             </div>
             <div className='wrapperCollectionSettings'>
                 <div className={`toast ${isVisible === undefined ? '' : isVisible ? 'show' : 'hide'} ${toastType}`}>
-
                     {toastType === 'success' ? (
                         <IoCheckmarkOutline size={15} className='icon success' />
                     ) : (
@@ -245,14 +248,11 @@ const Collection = () => {
                                 <p> Server error. </p>
                             </>
                         )}
-
                     </div>
                     <IoCloseSharp className='close' onClick={() => handleToast()} />
                     <div className={`progressBar ${isVisible ? 'active' : 'inactive'} ${toastType}`}>
                     </div>
                 </div>
-
-
             </div>
             <dialog ref={filterRef}>
                 {filter && (<Filter platforms={platforms} genres={genres} onFilter={addFilters} onClose={closeFilter} />)}
@@ -279,9 +279,7 @@ const Collection = () => {
             {filters && filters.platforms && filters.platforms.length > 0 && <p className='filterText'> Selected platform: {filters.platforms.join(', ')} </p>}
             {(searchTerm || searchQuery !== undefined) && <button className='clearFilterButton' onClick={clearFilters}>
                 <IoFunnelOutline />
-                <p>
-                    Clear Filters
-                </p>
+                <p> Clear Filters </p>
             </button>}
             <div className="gamesList">
                 {searchTerm || searchQuery !== undefined ? (
@@ -289,7 +287,6 @@ const Collection = () => {
                         <div key={filteredGame.id}>
                             {filteredGame.cover && (
                                 <div className='gameWrapper'>
-
                                     <GameCover
                                         key={filteredGame.id}
                                         cover={filteredGame.cover}
@@ -302,11 +299,8 @@ const Collection = () => {
                                         {Object.entries(filteredGame.platformOwned).map(([console, owned], index) => (
                                             <p key={console}>{console}, {owned.join(' ')} </p>
                                         ))}
-
                                     </div>
-
                                     <h5>{filteredGame.name}</h5>
-
                                 </div>
                             )}
                         </div>
@@ -325,27 +319,20 @@ const Collection = () => {
                                         onClick={() => handleClick(game)}
                                     >
                                         <IoTrashSharp size={30} className='trashCan' aria-label='Delete Game' onClick={(e) => deleteGame(e, game)} />
-
                                         <p> Consoles owned: </p>
                                         {Object.entries(game.platformOwned).map(([console, owned], index) => (
                                             <p key={console}>{console}, {owned.join(' ')} </p>
                                         ))}
-
                                     </div>
-
                                     <h5>{game.name}</h5>
-
-
-
                                 </div>
                             )}
                         </div>
                     ))
                 )}
             </div>
-
         </div>
-    )
+    );
 }
 
 export default Collection;

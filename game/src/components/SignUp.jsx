@@ -19,6 +19,7 @@ const SignUp = () => {
     const [isVisible, setIsVisible] = useState();
     const timeoutRef = useRef(null);
 
+    const apiUrl = import.meta.env.MODE === 'development' ? 'http://localhost:5000/api' : '/api'; 
 
     const handleChange = (e) => {
         const newValues = { ...values, [e.target.name]: e.target.value }
@@ -77,7 +78,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            fetch('http://localhost:5000/api/user/register', {
+            fetch(`${apiUrl}/user/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

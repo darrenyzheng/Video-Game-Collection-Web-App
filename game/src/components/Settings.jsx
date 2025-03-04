@@ -42,6 +42,10 @@ const Settings = () => {
     }
 
     useEffect(() => {
+        const apiUrl = import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000/api'
+        : '/api';  
+
         const token = localStorage.getItem('access');
         if (token === null) {
             navigate("/login");
