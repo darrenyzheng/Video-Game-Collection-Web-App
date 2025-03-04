@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { IoPerson, IoLockClosed, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
 import { GiSwordsEmblem } from "react-icons/gi";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext.js";
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -72,7 +72,7 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            fetch('http://localhost:5000/api/login', {
+            fetch('http://localhost:5000/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

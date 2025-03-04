@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { IoAdd, IoCloseCircle, IoCheckmarkOutline, IoCloseCircleSharp, IoWarningOutline, IoCloseSharp } from "react-icons/io5";
 import { FaBoxOpen, FaBox } from 'react-icons/fa';
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext.js";
 import { useNavigate } from 'react-router-dom';
 
 const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screenshots, search, onClose }) => {
@@ -74,7 +74,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
       toggleLoggedIn(false);
       return;
     };
-    fetch('http://localhost:5000/api/addGame', {
+    fetch('http://localhost:5000/api/collection/addGame', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

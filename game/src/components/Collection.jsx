@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoFilter, IoTrashSharp, IoFunnelOutline, IoCheckmarkOutline, IoCloseCircleSharp, IoCloseSharp } from "react-icons/io5";
-import GameCover from "./GameCover";
-import Filter from './Filter';
-import GameCard from "./GameCard";
-import { useAuth } from "../contexts/AuthContext";
-
+import GameCover from "./GameCover.jsx";
+import Filter from './Filter.jsx';
+import GameCard from "./GameCard.jsx";
+import { useAuth } from "../contexts/AuthContext.js";
 
 const Collection = () => {
     const navigate = useNavigate();
@@ -141,7 +140,7 @@ const Collection = () => {
     const deleteGame = (e, gameToDelete) => {
         e.stopPropagation();
         const token = localStorage.getItem('access');
-        fetch('http://localhost:5000/api/deleteGame', {
+        fetch('http://localhost:5000/api/collection/deleteGame', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,15 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-
-const envPath = resolve(__dirname, '../../../.env');
-dotenv.config({ path: envPath });
+dotenv.config();
 
 mongoose.connect(
     process.env.MONGODB_CONNECT_STRING,
@@ -55,8 +48,6 @@ const userSchema = mongoose.Schema({
         cover: { type: Object },
     }]
 }, { timestamps: true });
-
-
 
 const createUser = async (username, emailAddress, password) => {
     const user = new User({ username: username, emailAddress: emailAddress, password: password })

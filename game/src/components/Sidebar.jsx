@@ -2,7 +2,7 @@ import { IoLogOutOutline, IoSettings, IoFileTrayStacked, IoLogInOutline, IoCreat
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext.js";
 
 const Sidebar = () => {
     const location = useLocation();

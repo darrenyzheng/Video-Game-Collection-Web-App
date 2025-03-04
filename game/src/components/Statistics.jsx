@@ -1,7 +1,7 @@
-import PieChart from "./PieChart";
+import PieChart from "./PieChart.jsx";
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext.js";
 import { IoCloseCircleSharp, IoCloseSharp } from "react-icons/io5";
 
 const Statistics = () => {

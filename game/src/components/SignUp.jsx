@@ -77,7 +77,7 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (handleValidation()) {
-            fetch('http://localhost:5000/api/users', {
+            fetch('http://localhost:5000/api/user/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

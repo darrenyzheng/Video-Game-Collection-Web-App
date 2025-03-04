@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IoSearch, IoFilter, IoFunnelOutline } from "react-icons/io5";
-import GameCover from "./GameCover";
-import GameCard from "./GameCard";
-import Filter from './Filter';
+import GameCover from "./GameCover.jsx";
+import GameCard from "./GameCard.jsx";
+import Filter from './Filter.jsx';
 
 const Search = () => {
     const [games, setGames] = useState([]);

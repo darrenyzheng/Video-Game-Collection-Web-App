@@ -1,13 +1,13 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
-import Search from './components/Search';
-import Sidebar from './components/Sidebar';
-import Settings from './components/Settings';
-import Collection from './components/Collection';
-import Statistics from './components/Statistics';
-import { AuthProvider } from './contexts/AuthContext'; 
+import SignUp from './components/SignUp.jsx';
+import Login from './components/Login.jsx';
+import Search from './components/Search.jsx';
+import Sidebar from './components/Sidebar.jsx';
+import Settings from './components/Settings.jsx';
+import Collection from './components/Collection.jsx';
+import Statistics from './components/Statistics.jsx';
+import { AuthProvider } from './contexts/AuthContext.js'; 
 
 function App() {
   return (
