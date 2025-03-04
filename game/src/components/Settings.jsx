@@ -12,7 +12,6 @@ const Settings = () => {
     const [isVisible, setIsVisible] = useState();
     const timeoutRef = useRef(null);
     const { toggleLoggedIn } = useAuth();
-    const apiUrl = '/api';  
 
     const handleTab = (index) => {
         setTab(index);

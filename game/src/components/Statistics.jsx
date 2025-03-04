@@ -13,7 +13,8 @@ const Statistics = () => {
   const [toastType, setToastType] = useState();
   const [isVisible, setIsVisible] = useState();
   const timeoutRef = useRef(null);
-
+  const apiUrl = '/api';  
+  
   const handleToast = (boolean) => {
     setIsVisible(boolean);
     const progressBar = document.querySelector('.progressBar');
