@@ -44,7 +44,7 @@ const Statistics = () => {
       navigate("/login");
       return;
     };
-    fetch('http://localhost:5000/api/collection', {
+     fetch(`${apiUrl}/statistics`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
