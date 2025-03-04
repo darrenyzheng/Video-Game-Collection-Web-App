@@ -42,9 +42,7 @@ const Settings = () => {
     }
 
     useEffect(() => {
-        const apiUrl = import.meta.env.MODE === 'development'
-        ? 'http://localhost:5000/api'
-        : '/api';  
+        const apiUrl = '/api';  
 
         const token = localStorage.getItem('access');
         if (token === null) {
@@ -52,7 +50,7 @@ const Settings = () => {
             toggleLoggedIn(false);
             return;
         };
-        fetch('http://localhost:5000/api/settings', {
+        fetch(`${apiUrl}/settings`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +88,8 @@ const Settings = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const token = localStorage.getItem('access');
-        fetch('http://localhost:5000/api/settings', {
+        const apiUrl = '/api';  
+        fetch(`${apiUrl}/settings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

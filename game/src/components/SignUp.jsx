@@ -19,7 +19,7 @@ const SignUp = () => {
     const [isVisible, setIsVisible] = useState();
     const timeoutRef = useRef(null);
 
-    const apiUrl = import.meta.env.MODE === 'development' ? 'http://localhost:5000/api' : '/api'; 
+    const apiUrl = '/api'; 
 
     const handleChange = (e) => {
         const newValues = { ...values, [e.target.name]: e.target.value }

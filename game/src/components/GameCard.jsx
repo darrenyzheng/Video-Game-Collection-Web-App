@@ -12,7 +12,7 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
   const timeoutRef = useRef(null);
   const { toggleLoggedIn } = useAuth();
   const navigate = useNavigate();
-
+  const apiUrl = '/api';  
   const increaseScreenshot = () => {
     setActiveScreenshot((activeScreenshot + 1) % screenshots.length);
   };
@@ -74,7 +74,8 @@ const GameCard = ({ id, name, rating, cover, genres, platforms, summary, screens
       toggleLoggedIn(false);
       return;
     };
-    fetch('http://localhost:5000/api/collection/addGame', {
+
+    fetch(`${apiUrl}/collection/addGame`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

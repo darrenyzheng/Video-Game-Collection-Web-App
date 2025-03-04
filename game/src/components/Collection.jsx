@@ -25,9 +25,7 @@ const Collection = () => {
     const timeoutRef = useRef(null);
     const { toggleLoggedIn } = useAuth();
 
-    const apiUrl = import.meta.env.MODE === 'development'
-        ? 'http://localhost:5000/api'
-        : '/api';  
+    const apiUrl = '/api';  
 
     useEffect(() => {
         const token = localStorage.getItem('access');

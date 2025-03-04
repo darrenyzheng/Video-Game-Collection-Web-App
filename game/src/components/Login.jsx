@@ -70,9 +70,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const apiUrl = import.meta.env.MODE === 'development'
-        ? 'http://localhost:5000/api'
-        : '/api';  
+        const apiUrl = '/api';  
 
         if (handleValidation()) {
             fetch(`${apiUrl}/user/login`, {

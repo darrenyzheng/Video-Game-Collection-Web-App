@@ -61,12 +61,9 @@ const Search = () => {
         const objectFormData = Object.fromEntries(formData.entries());
         const jsonObjectFormData = JSON.stringify(objectFormData);
 
-        const apiUrl = import.meta.env.MODE === 'development'
-        ? 'http://localhost:5000/api'
-        : '/api';  
+        const apiUrl = '/api';  
 
-        
-        fetch('http://localhost:5000/api/search', {
+        fetch(`${apiUrl}/search`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
