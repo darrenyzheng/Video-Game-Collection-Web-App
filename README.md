@@ -93,8 +93,9 @@ I've always loved video games. As a kid, I played them and collected them. Unfor
    ```
   7. Start the backend server
    ```sh
-   cd game 
-   node server.mjs
+   cd game
+   cd api
+   node server.js
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
